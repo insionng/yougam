@@ -7,4 +7,7 @@ http://www.yougam.com/
 ##开发版本测试网站
 http://inchina.xin:8000/
 
-##联系作者通信方式，微信账号：xiongtuntianxia （雄吞天下）
+#联系作者
+##通信方式：
+###微信账号：
+xiongtuntianxia （雄吞天下）
