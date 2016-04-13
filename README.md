@@ -8,6 +8,5 @@ http://www.yougam.com/
 http://inchina.xin:8000/
 
 #联系作者
-##通信方式：
 ###微信账号：
 xiongtuntianxia （雄吞天下）
