@@ -8,7 +8,7 @@ http://www.yougam.com/
 http://inchina.xin:8000/
 
 ##购买YOUGAM源码与商业授权
-###￥998
+###原价：￥~~2000~~，现价：￥998
 ###作者微信：
 xiongtuntianxia （雄吞天下）
 ###作者QQ：
