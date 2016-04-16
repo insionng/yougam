@@ -1,5 +1,4 @@
-# YOUGAM V3.0+
-Yougam 问题反馈专用
+# YOUGAM V3.0+ 问题反馈专用
 
 ###YOUGAM 官方网站
 http://www.yougam.com/
