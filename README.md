@@ -7,8 +7,10 @@ http://www.yougam.com/
 ###开发版本测试网站
 http://inchina.xin:8000/
 
-##联系作者
-###微信：
+##购买Yougam源码与商业授权
+#￥998
+###作者微信：
 xiongtuntianxia （雄吞天下）
-###QQ：
+###作者QQ：
 547092001
+
