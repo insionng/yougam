@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <head>
+    <title>Video.js | HTML5 Video Player</title>
+    <link href="../../video-js.css" rel="stylesheet">
+    <script src="../../ie8/videojs-ie8.min.js"></script>
+    <script src="../../video.js"></script>
+    <script>
+      videojs.options.flash.swf = "../../video-js.swf";  
+    </script>
+  </head>
+</head>
+<body>
+    <!-- Begin VideoJS -->      
+    <div class="video-js-box">  
+    <video id="example_video_1" class="video-js" width="720" height="360" controls preload="auto">  
+      <object id="flash_fallback_1" class="vjs-flash-fallback" width="720" height="360" type="application/x-shockwave-flash" data="http://player.youku.com/player.php/sid/XMTM4MzIwNDEwNA==/v.swf">
+        <param name="allowfullscreen" value="true" />
+      </object>
+    </video>
+<object id="flash_fallback_1" class="vjs-flash-fallback" width="720" height="360" type="application/x-shockwave-flash" data="http://player.youku.com/player.php/sid/XMTM4MzIwNDEwNA==/v.swf">
+        <param name="allowfullscreen" value="true" />
+      </object>
+    </div>  
+    <!-- End VideoJS --> 
+</body>
+</html>

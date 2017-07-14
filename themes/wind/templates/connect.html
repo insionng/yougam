@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block title %}
+<title>即时聊天 - {{SiteName}}</title>
+{% endblock title %}
+{% block js %}
+    <script src="/js/app.js?wind"></script>
+    <script src="/js/wind.js?wind"></script>
+    {% if IsSigned %}<script src="/js/signed.js"></script>{% endif %}
+    <!--[if lt IE 9]>
+    <script src="/js/ie/html5shiv.js"></script>
+    <script src="/js/ie/respond.min.js"></script>
+    <script src="/js/ie/excanvas.js"></script>
+    <![endif]-->
+    {% if allow and receiver %}
+    <script src="/libs/tinymce/tinymce.min.js"></script>
+    <script src="/libs/sockjs-client-1.1.0/dist/sockjs-1.1.0.min.js"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: ".sendbox",
+            relative_urls:false,
+            menubar : false,
+            height : "48",
+            statusbar : false,
+            language: 'zh_CN',
+            theme: "modern",
+            skin : 'lightgray',
+            extended_valid_elements: "video[*],audio[*],object[data|width|height|classid|codebase],param[name|value],embed[src|type|width|height|align|flashvars|wmode|quality|allowfullscreen|allowscriptaccess]",
+            plugins: [
+                    "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                    "searchreplace visualblocks visualchars code fullscreen",
+                    "insertdatetime media nonbreaking save table contextmenu directionality",
+                    "emoticons paste textcolor colorpicker textpattern imagetools jbimages"
+            ],
+            toolbar: "undo redo | styleselect bullist numlist table outdent indent pagebreak hr | insertdatetime emoticons charmap | searchreplace visualblocks code | link image jbimages media",
+            setup : function(editor) {
+                editor.on('keydown', function(e){
+                    if ((tinymce.isMac ? e.metaKey : e.ctrlKey) && e.keyCode == 13){
+                        $("#b").click();return false;
+                        };
+                    });
+                }
+        });
+    var sock;
+    window.onload=function(){
+
+        if (!window.location.origin) {
+            window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? (':' + window.location.port) : '');
+        }
+
+        sock = new SockJS(window.location.origin+'/sock/?sender={{SignedUser.Username}}&receiver={{receiver}}&token={{token}}');
+        sock.onopen = function() {
+            if (!$("section").hasClass("panel-success")) {
+                $("section").addClass("panel-success");
+            }
+            $('form').submit(function(){
+                var content = tinymce.get('sendbox').getContent();
+                if (content){sock.send(content);}
+                return false;
+            });
+        };
+
+        sock.onmessage = function(e){
+            var newMessage = $('<div>').html(e.data);
+            var m=$("#messages");
+            m.append(newMessage);
+            tinymce.get('sendbox').setContent('');
+            var s=document.getElementById("messages");
+            s.scrollTop=s.scrollHeight;
+        };
+
+        sock.onclose = function() {
+            if ($("section").hasClass("panel-success")) {
+                $("section").removeClass("panel-success");
+            }
+            $("section").addClass("panel-danger");
+            $("#b").addClass("disabled");
+            tinymce.activeEditor.getBody().setAttribute('contenteditable', false);
+            var body = $('<h4>').html("{{SiteName}}聊天服务连接中断..").addClass("alert alert-danger alert-dismissible");
+            var m=$("#messages");
+            m.append(body);
+            var s=document.getElementById("messages");
+            s.scrollTop=s.scrollHeight;
+        };
+
+        sock.onerror = function() {
+            console.log("onerror");
+        };
+    }
+    window.onbeforeunload = function(event) {
+        sock.close();
+    }
+    </script>
+    {% endif %}
+{% endblock js %}
+{% block content %}
+    <div id="content" class="col-lg-9">
+    {% include "msgerr.html" %}
+    {% if allow and recipient %}
+        <section id="mbox" class="panel{% if receiver %} panel-success{% else %} panel-default{% endif %}">
+            <header class="panel-heading" style="padding:0;margin:0;">
+                <section id="nbox" class="panel{% if receiver %} panel-success{% else %} panel-default{% endif %}" style="margin:0;">
+                    <header class="panel-heading" style="padding-bottom:0;margin-bottom:0;">
+                        <a href="/user/{{recipient.Username}}/" class="pull-left">
+                        <img style="width:48px;height:48px;margin-right:1em;" src="{% if recipient.AvatarMedium %}{{File(recipient.AvatarMedium)}}{% else %}/identicon/{{recipient.Username}}/48/default.png{% endif %}" alt="..."></a>
+                        <div class="pull-left" style="line-height:28px;">
+                            <span>{% if receiver %}与[{{receiver}}]聊天中..{% else %}即时聊天{% endif %}</span>
+                            <p>{% if recipient.Content %}{{recipient.Content}}{%else%}有兴趣的话，不如今晚再相逢～{% endif %}</p>
+                        </div>
+                        <div style="clear:both;"></div>
+                    </header>
+                </section>
+            </header>
+            <section class="panel-body messages" id="messages"></section>
+            <footer class="panel-footer">
+                <form class="nomargin m-b-none" id="sendform">
+                    <input type="hidden" id="curuser" name="curuser" value="insion"/>
+                    <textarea class="sendbox" name="sendbox" id="sendbox"></textarea>
+                    <div style="padding-top:.5em;">
+                        <span class="pull-left" style="line-height:45px;">[快捷按键]：Ctrl+Enter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发表言论请遵守当地国家法律</span>
+                        <span class="btn-group pull-right">
+                            <a href="/contact/" class="btn btn-s-md btn-default btn-rounded"> <i class="icon-chevron-sign-left"></i> 关闭 </a>
+                            <button type="submit" class="btn btn-s-md btn-default btn-rounded" id="b">
+                                发送&nbsp;&nbsp; <i class="icon-chevron-sign-right"></i>
+                            </button>
+                        </span>
+                        <div style="clear:both;"></div>
+                    </div>
+                </form>
+            </footer>
+        </section>
+    {% endif %}
+    </div>
+{% endblock content %}
+
+{% block sidebar %}{% include "contact-sidebar.html" %}{% endblock sidebar %}

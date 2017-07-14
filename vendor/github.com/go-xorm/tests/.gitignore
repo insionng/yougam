@@ -1,0 +1,7 @@
+*.db
+mysql/*.sql
+sqlite3/*.sql
+sqlite3/test.db-journal
+mymysql/*.sql
+mssql/*.sql
+postgres/*.sql

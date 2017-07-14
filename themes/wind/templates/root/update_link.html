@@ -1,0 +1,101 @@
+{% include "head.html" %}
+<body>
+{% include "header.html" %}
+{% include "sidebar.html" %}
+
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="/root/dashboard/" title="控制面板" class="tip-bottom"><i class="icon-home"></i> 控制面板</a> <a href="javascript:void();">{% if catpage%}{% if catpage=="RReadLinkHandler" %}阅览{% else %}编辑{% endif %}{% endif %}</a> <a href="/root/create/link/" class="current">页面</a> </div>
+    {% if catpage %}
+      {% if catpage=="RReadLinkHandler" %}阅览{% else %}编辑{% endif %}
+    {% endif %}
+  </div>
+  <div class="container-fluid"><hr>
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="widget-box">
+            <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
+              <h5>撰写</h5>
+            </div>
+            {% include "msgerr.html" %}
+            <div class="widget-content nopadding">
+              <form class="form-horizontal" method="post" action="/root/update/link/{{link.Id}}/" novalidate="novalidate">
+                <div class="control-group">
+                  <label class="control-label">标题</label>
+                  <div class="controls">
+                    <input type="text" name="title" value="{% if link %}{{link.Title}}{% endif %}"/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">内容</label>
+                  <div class="controls">
+                    <textarea rows="14" class="span11 editor" name="content">{% if link%}{{link.Content}}{% endif %}</textarea>
+                  </div>
+                </div>
+                <div style="clear: both;"></div>
+                {% include "../editor.html" %}
+                <div style="clear: both;"></div>
+
+                <div class="control-group">
+                  <label class="control-label">节点</label>
+                  <div class="controls">
+                    <select id="selectError" name="nodeid">
+                    {% if (nodes||link) %}
+                            <option value="-1">归属ROOT</option>
+                            {% if link %}
+                                    {% if link.Pid>0 %}
+                                      <option value="{{link.Pid}}" selected>
+                                      {% if nodes %}
+                                          {% for nd in nodes %}
+                                                {% if nd.Id==link.Pid %}
+                                                    {{nd.Title}}
+                                                {% endif %}
+                                          {% endfor %}
+                                      {% else %}
+                                          {% if link.Pid %}节点{{link.Pid}}{% endif %}
+                                      {% endif %}
+                                      </option>
+                                    {% endif %}
+                            {% endif %}
+                            {% if nodes %}
+                                {% for nd in nodes %}
+                                      <option value="{{nd.Id}}">{{nd.Title}}</option>
+                                {% endfor %}
+                            {% endif %}
+                    {% else %}
+                        <option value="-1" selected>默认归属ROOT</option>
+                    {% endif %}
+                    </select>
+                    <span class="help-inline">（选择所属节点，可选）</span>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <input type="submit" value="发布" class="btn btn-success">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+{%include "footer.html" %}
+<script src="/root/js/jquery.min.js"></script>
+<script src="/root/js/jquery.ui.custom.js"></script>
+<script src="/root/js/bootstrap.min.js"></script>
+<script src="/root/js/jquery.uniform.js"></script>
+<script src="/root/js/select2.min.js"></script>
+<script src="/root/js/jquery.validate.js"></script>
+<script src="/root/js/matrix.js"></script>
+
+<script src="/libs/ibootstrap-markdown/markdown.js"></script> 
+<script src="/libs/ibootstrap-markdown/markdown-editor.js"></script> 
+<script>
+  $(function() {
+    $('#markdown-editor').markdown();
+  });
+</script>
+
+</body>
+</html>

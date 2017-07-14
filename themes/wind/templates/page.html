@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>{% if page.Title %}{{page.Title|truncatechars:50|safe}}{% endif %}{% if page.Node %} / {{page.Node}}{% endif %} - {{SiteName}}</title>
+{% endblock title %}
+
+{% block mainland %}
+<div id="main" class="container">
+    <div class="row">
+        <div id="content" class="col-md-12">
+        <div class="box">
+            <div class="cell first last">
+                    {% if page.Content %}
+                            {% if not (page.Attachment=="") %}
+                                {% for img in Split(page.Attachment,",") %}
+                                    <img src="{{domain47niu}}{{img}}?imageView/2/w/612/q/100" style="display:block;margin-bottom:1em;clear:both;width:100%;height:auto;"/>
+                                {% endfor %}
+                                    <span class="clearfix"></span>
+                            {% endif %}
+                            {{ page.Content | safe }}
+                    {% endif %}
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock mainland %}

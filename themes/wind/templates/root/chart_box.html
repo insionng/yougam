@@ -1,0 +1,24 @@
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div class="widget-title bg_lg"><span class="icon"><i class="icon-signal"></i></span>
+          <h5>网站数据</h5>
+        </div>
+        <div class="widget-content" >
+          <div class="row-fluid">
+            <div class="span9">
+              <div class="chart"></div>
+            </div>
+            <div class="span3">
+              <ul class="site-stats">
+                <li class="bg_lh"><i class="icon-user"></i> <strong>{% if userscount%}{{userscount}}{% else %}N/A{% endif %}</strong> <small>用户总数</small></li>
+                <li class="bg_lh"><i class="icon-signal"></i> <strong>{% if UsersOnline %}{{UsersOnline}}{% else %}N/A{% endif %}</strong> <small>当前活跃</small></li>
+                <li class="bg_lh"><i class="icon-plus"></i> <strong>{% if categoryscount%}{{categoryscount}}{% else %}N/A{% endif %}</strong> <small>分类总数</small></li>
+                <li class="bg_lh"><i class="icon-globe"></i> <strong>{% if nodescount%}{{nodescount}}{% else %}N/A{% endif %}</strong> <small>节点总数</small></li>
+                <li class="bg_lh"><i class="icon-tag"></i> <strong>{% if topicscount%}{{topicscount}}{% else %}N/A{% endif %}</strong> <small>话题总数</small></li>
+                <li class="bg_lh"><i class="icon-repeat"></i> <strong>{% if remotecpus%}{{remotecpus}}{% else %}N/A{% endif %}</strong> <small>CPU数目</small></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

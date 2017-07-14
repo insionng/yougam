@@ -1,0 +1,131 @@
+{% extends "../base.html" %}
+
+{% block title %}
+<title>{{username}} - {{SiteName}}</title>
+{% endblock title %}
+
+{% block mainland %}
+    <div id="main" class="container">
+
+        <div class="row">
+            <div id="content">
+                <div class="col-md-3">
+                    <div class="box">
+                        <ul class="nav nav-side">
+                            <li class="cell first">
+                                <h4 class="head"> <i class="icon icon-cogs"></i>
+                                    设置
+                                </h4>
+                            </li>
+                            <li>
+                                <a href="/settings/profile/">个人信息</a>
+                            </li>
+                            <li class="active">
+                                <a href="/settings/avatar/">我的头像</a>
+                            </li>
+                            <li>
+                                <a href="/settings/password/">修改密码</a>
+                            </li>
+                            <li class="cell last"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="box">
+                        <div class="cell first breadcrumb">
+                            <a href="/"> <i class="icon icon-home"></i>
+                            </a>
+                            <i class="fa fa-caret-right"></i>
+                            <a href="">我的头像</a>
+                        </div>
+                        <div class="cell last slim">
+                            {% comment %}
+                            <h3 class="underline">设置头像</h3>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <form method="POST" action="/settings/avatar/">
+
+                                        <div class="form-group">
+
+                                            <label class="control-label" for="s2id_autogen1">使用头像类型</label>
+                                            <div class="select2-container form-control" id="s2id_UserAvatarForm-AvatarType">
+                                                <a href="javascript:void(0)" onclick="return false;" class="select2-choice" tabindex="-1">
+                                                    <span class="select2-chosen">Gravatar头像</span> <abbr class="select2-search-choice-close"></abbr>
+                                                    <span class="select2-arrow"> <b></b>
+                                                    </span>
+                                                </a>
+                                                <input class="select2-focusser select2-offscreen" type="text" id="s2id_autogen1">
+                                                <div class="select2-drop select2-display-none select2-with-searchbox">
+                                                    <div class="select2-search">
+                                                        <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input"></div>
+                                                    <ul class="select2-results"></ul>
+                                                </div>
+                                            </div>
+                                            <select id="UserAvatarForm-AvatarType" name="AvatarType" class="form-control select2-offscreen" rel="select2" tabindex="-1">
+                                                %!!(string=
+                                                <option></option>
+                                                <option value="1" selected="selected">Gravatar头像</option>
+                                                <option value="2">自定义头像</option>
+                                                )s(MISSING)
+                                            </select>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">
+                                                保存设置&nbsp;&nbsp;
+                                                <i class="icon-chevron-sign-right"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            {% endcomment %}
+
+                            <h3 class="underline">设置头像</h3>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    {% include "../msgerr.html" %}
+                                    <form method="POST" action="" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <p> <strong>支持Jpeg/Png/Gif格式，大小500k以内，推荐尺寸200x200px。</strong>
+                                            </p>
+                                            <p>{{SiteName}}禁止使用任何低俗或者敏感图片作为头像。如果你是男的，请不要用女人的照片作为头像，这样可能会对其他会员产生误导。</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="text-left">
+                                                <span class="btn-group">
+                                                    <button class="btn btn-s-md btn-success btn-rounded btn-rounded"><i class="icon-chevron-sign-left"></i> 选择图片</button>
+                                                    <input id="avatar" type="file" name="avatar" style="opacity:0;filter:alpha(opacity=0);position:absolute;width:120px;height:34px;cursor:pointer;top:0;" />
+                                                    <button type="submit" class="btn btn-s-md btn-dark btn-rounded"> 上传头像&nbsp;&nbsp; <i class="icon-chevron-sign-right"></i> </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                            {% if SignedUser.Avatar %}
+                                                <img src="{{File(SignedUser.Avatar)}}" style="width:200px;height:200px;">
+                                                {% if SignedUser.AvatarLarge %}
+                                                    <img src="{{File(SignedUser.AvatarLarge)}}" style="width:100px;height:100px;">
+                                                {% endif %}
+                                                {% if SignedUser.AvatarMedium %}
+                                                    <img src="{{File(SignedUser.AvatarMedium)}}" style="width:48px;height:48px;">
+                                                {% endif %}
+                                                {% if SignedUser.AvatarSmall %}
+                                                    <img src="{{File(SignedUser.AvatarSmall)}}" style="width:32px;height:32px;">
+                                                {% endif %}
+                                            {% else %}
+                                                <img src="/img/d200.png" style="width:200px;height:200px;">
+                                                <img class="middle" src="/img/d100.png" style="width:100px;height:100px;">
+                                                <img src="/img/d48.png" style="width:48px;height:48px;">
+                                                <img src="/img/d32.png" class="middle">
+                                            {% endif %}
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock mainland %}

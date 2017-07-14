@@ -1,0 +1,143 @@
+{% include "head.html" %}
+<body>
+{% include "header.html" %}
+
+{% include "sidebar.html" %}
+
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="/root/dashboard/" title="控制面板" class="tip-bottom"><i class="icon-home"></i> 控制面板</a> <a href="javascript:void();">创建</a> <a href="/create/topic/" class="current">节点</a> </div>
+    <h1>创建节点</h1>
+  </div>
+  <div class="container-fluid"><hr>
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="widget-box">
+            <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
+              <h5>撰写</h5>
+            </div>
+            {% include "msgerr.html" %}
+            <div class="widget-content nopadding">
+              <form class="form-horizontal" method="post"{% if (catpage=="RUpdateNodeHandler") %} action="/root/update/node/{% if node %}{{node.Id}}{% endif %}/" {%else%} action="/root/create/node/"{% endif %} novalidate="novalidate">
+                <div class="control-group">
+                  <label class="control-label">标题</label>
+                  <div class="controls">
+                    <input type="text" name="title" value="{% if node %}{{node.Title}}{% endif %}"/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">内容</label>
+                  <div class="controls">
+                    <textarea rows="14" class="span11 editor" name="content">{% if node %}{{node.Content}}{% endif %}</textarea>
+                  </div>
+                </div>
+                
+                {% include "../editor.html" %}
+                <div class="control-group">
+                  <label class="control-label">节点</label>
+                  <div class="controls">
+                    <select id="selectError" name="nodeid">
+                    {% if (nodes||node) %}
+                            <option value="-1">归属ROOT</option>
+                            {% if node %}
+                                    {% if node.Pid>0 %}
+                                      <option value="{{node.Pid}}" selected>
+                                      {% if nodes %}
+                                          {% for nd in nodes %}
+                                                {% if nd.Id==node.Pid %}
+                                                    {{nd.Title}}
+                                                {% endif %}
+                                          {% endfor %}
+                                      {% else %}
+                                            {% if node.Title %}{{node.Title}}{% else %}节点{{node.Pid}}{% endif %}
+                                      {% endif %}
+                                      </option>
+                                    {% endif %}
+                            {% endif %}
+                            {% if nodes %}
+                                {% if node %}
+                                    {% for nd in nodes %}
+                                      {% if nd.Id!=node.Id %}
+                                        <option value="{{nd.Id}}">{{nd.Title}}</option>
+                                      {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    {% for nd in nodes %}
+                                        <option value="{{nd.Id}}">{{nd.Title}}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+                    {% else %}
+                        <option value="-1" selected>默认归属ROOT</option>
+                    {% endif %}
+                    </select>
+                    <span class="help-inline">（选择所属节点，可选）</span>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">分类</label>
+                  <div class="controls">
+                    <select id="selectError" name="cid">
+                    {% if (categorys||category) %}
+                            <option value="-1">归属ROOT</option>
+                            <option value="-1">前端展示</option>
+                            <option value="-2">前端隐藏</option>
+                            {% if category %}
+                                    {% if category.Id>0 %}
+                                      <option value="{{category.Id}}" selected>
+                                      {% if categorys %}
+                                          {% for cat in categorys %}
+                                                {% if cat.Id==category.Id %}
+                                                    {{cat.Title}}
+                                                {% endif %}
+                                          {% endfor %}
+                                      {% else %}
+                                            {% if category.Title %}{{category.Title}}{% else %}分类{{category.Id}}{% endif %}
+                                      {% endif %}
+                                      </option>
+                                    {% endif %}
+                            {% endif %}
+                            {% if categorys %}
+                                {% if category %}
+                                    {% for cat in categorys %}
+                                      {% if (cat.Id!=category.Id) %}
+                                          <option value="{{cat.Id}}">{{cat.Title}}</option>
+                                      {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    {% for cat in categorys %}
+                                        <option value="{{cat.Id}}">{{cat.Title}}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+                    {% else %}
+                        <option value="-1" selected>默认归属ROOT</option>
+                        <option value="-1">前端展示</option>
+                        <option value="-2">前端隐藏</option>
+                    {% endif %}
+                    </select>
+                    <span class="help-inline">（选择所属分类，可选）</span>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <input type="submit" value="发布" class="btn btn-success">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+{% include "footer.html" %}
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery.ui.custom.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.uniform.js"></script>
+<script src="/js/select2.min.js"></script>
+<script src="/js/jquery.validate.js"></script>
+<script src="/js/matrix.js"></script>
+
+</body>
+</html>

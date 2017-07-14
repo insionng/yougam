@@ -1,0 +1,250 @@
+{% extends "../base.html" %}
+
+{% block title %}
+<title>{{userProfile.Username}} - {{SiteName}}</title>
+{% endblock title %}
+
+{% block mainland %}
+<div id="main" class="container">
+    <section class="hbox stretch" style="margin-bottom:1em;">
+        {% include "./sidebar.html" %}
+        <aside class="bg-white">
+            <section class="vbox">
+                <header class="header bg-light lt">
+                    <ul class="nav nav-tabs nav-white">
+                        <li class="active">
+                            <a href="#m1" data-toggle="tab">最近回复</a>
+                        </li>
+                        <li class="">
+                            <a href="#m2" data-toggle="tab">最近话题</a>
+                        </li>
+                        <li class="">
+                            <a href="#m3" data-toggle="tab">话题收藏</a>
+                        </li>
+                    </ul>
+                </header>
+                <section class="scrollable">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="m1">
+                            {% if replys %}
+                                <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
+                                    {% for reply in replys %}
+                                    <li class="list-group-item">
+                                        <a href="/user/{{reply.Reply.Author}}/" class="thumb-sm pull-left m-r-sm">
+                                            <img src="{% if userProfile.AvatarMedium %}{{File(userProfile.AvatarMedium)}}{% else %}/identicon/{{userProfile.Username}}/48/default.png{% endif %}" class="img-circle"></a>
+                                            <small class="pull-right">{{TimeSince(reply.Reply.Created)}}</small>
+                                            <strong class="block">
+                                            <a class="color-link" target="_blank" href="/topic/{{reply.Reply.Tid}}/">
+                                                {% with s=Htm2Str(reply.Topic.Title) %}
+                                                  {%if not s %}
+                                                    {{ reply.Reply.Author }} {{TimeSince(reply.Reply.Created)}} 回应了话题#{{reply.Reply.Tid}}
+                                                  {%else%}
+                                                    {{Cropword(s,0,48,"...")}}
+                                                  {%endif%}
+                                                {% endwith %}
+                                            </a>
+                                            </strong>
+                                            <h4>
+                                            <a href="/topic/{{reply.Reply.Tid}}/#reply{{reply.Reply.Id}}" rel="floor-link">#{{reply.Reply.Id}}
+                                                {% with s=Htm2Str(reply.Reply.Content) %}
+                                                  {%if not s %}
+                                                    {{ reply.Reply.Author }} {{TimeSince(reply.Reply.Created)}} 回应了话题#{{reply.Reply.Tid}}
+                                                  {%else%}
+                                                    {{Cropword(s,0,48,"...")}}
+                                                  {%endif%}
+                                                {% endwith %}
+                                            </a>
+                                            </h4>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% if replys|length >= 10 %}
+                                    <div class="cell last low">
+                                        <span class="pull-right"><a href="/user/{{userProfile.Username}}/replys/"><i class="icon-caret-right"></i> 更多回复</a></span>
+                                        <span class="clearfix"></span>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="cell post-list last">这是一个没有节操的家伙.</div>
+                            {% endif %}
+                        </div>
+                        <div class="tab-pane" id="m2">
+                                {% if topics %}
+                                    <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
+                                        {% for topic in topics %}
+                                            <li class="list-group-item">
+                                                <a href="/user/{{userProfile.Username}}/" class="thumb-sm pull-right m-r-sm"><img src="{% if userProfile.AvatarLarge %}{{File(userProfile.AvatarMedium)}}{% else %}/identicon/{{userProfile.Username}}/48/default.png{% endif %}" class="img-circle">
+                                            </a>
+                                                <h4 class="title">
+                                                    <a href="/topic/{{topic.Id}}/">
+                                                        {% with s=Htm2Str(topic.Title) %}
+                                                                  {%if not s %}
+                                                                    {{ topic.Author }} {{TimeSince(topic.Created)}} 发布了话题#{{topic.Id}}
+                                                                  {%else%}
+                                                                    {{Cropword(s,0,48,"...")}}
+                                                                  {%endif%}
+                                                        {% endwith %}
+                                                    </a>
+                                                </h4>
+                                                <div class="meta">
+                                                    {% if topic.Category %}
+                                                    <a class="tag" href="/category/{{ topic.Cid }}/">{{ topic.Category }}</a> •
+                                                    {% endif %}
+                                                    {% if topic.Node %}
+                                                    <a class="tag" href="/node/{{ topic.Nid }}/">{{ topic.Node }}</a> •
+                                                    {% endif %}
+                                                    <span class="time">{{Unix2Time(topic.Created,"2006.01.02 15:04")}}</span>
+                                                    •
+                                                    {% if topic.ReplyLastUsername %}
+                                                    <span class="last-reply">
+                                                        最后回复来自
+                                                        <a href="/user/{{topic.ReplyLastUsername}}/">{{topic.ReplyLastUsername}}</a>
+                                                    </span>
+                                                    {% endif %}
+                                                    {% if topic.ReplyCount %}
+                                                    <div class="data hidden-xs pull-right">
+                                                        {{topic.ReplyCount}}
+                                                        <i class="icon-comment"></i>
+                                                        个回复
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% if topics|length >= 10 %}
+                                    <div class="cell last low">
+                                        <span class="pull-right"><a href="/user/{{userProfile.Username}}/topics/"><i class="icon-caret-right"></i> 更多话题</a></span>
+                                        <span class="clearfix"></span>
+                                    </div>
+                                {% endif %}
+                                {% else %}
+                                <div class="cell post-list last">这是一个没有节操的家伙.</div>
+                                {% endif %}
+                        </div>
+                        <div class="tab-pane" id="m3">
+                            {% if favorites %}
+                                <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
+                                    {% for favorite in favorites %}
+                                    <li class="list-group-item">
+                                        <a href="/user/{{favorite.User.Username}}/" class="thumb-sm pull-right m-r-sm"><img src="{% if favorite.User.AvatarLarge %}{{File(favorite.User.AvatarMedium)}}{% else %}/identicon/{{favorite.User.Username}}/48/default.png{% endif %}" class="img-circle">
+                                        </a>
+                                        <span>
+                                            {% if favorite.Topic.Title %}
+                                                <h4 class="block">
+                                                    <a href="/topic/{{favorite.TopicMark.Tid}}/">
+                                                        {% with s=Htm2Str(favorite.Topic.Title) %}
+                                                                  {%if not s %}
+                                                                    {{ favorite.Topic.Author }} {{TimeSince(favorite.Topic.Created)}} 发布了话题#{{favorite.TopicMark.Tid}}
+                                                                  {%else%}
+                                                                    {{Cropword(s,0,48,"...")}}
+                                                                  {%endif%}
+                                                        {% endwith %}
+                                                    </a>
+                                                </h4>
+                                            {% endif %}
+                                            <small>
+                                                {% if favorite.Topic.Category %}
+                                                <a class="tag" href="/category/{{ favorite.Topic.Cid }}/">{{ favorite.Topic.Category }}</a> •
+                                                {% endif %}
+                                                <a class="tag" href="/node/{{favorite.Topic.Node}}/">{{favorite.Topic.Node}}</a>
+                                                •
+                                                {% if favorite.User.Username %}
+                                                <a href="/user/{{favorite.User.Username}}/">{{favorite.User.Username}}</a>
+                                                •
+                                                {% endif %}
+                                                {% if favorite.Topic.Created %}
+                                                    <span class="time">{{TimeSince(favorite.Topic.Created)}}发布</span> •
+                                                {% endif %}
+                                                {% if favorite.Topic.ReplyLastUsername %}
+                                                <span class="last-reply">
+                                                    <a href="/user/{{favorite.Topic.ReplyLastUsername}}/">{{favorite.Topic.ReplyLastUsername}}</a>
+                                                </span>
+                                                {% endif %}
+                                                {% if favorite.Topic.ReplyTime %}
+                                                    <span class="time">最后回复于{{Unix2Time(favorite.Topic.ReplyTime,"2006.01.02 15:04")}}</span>
+                                                    •
+                                                {% endif %}
+
+                                                {% if favorite.Topic.Views %}
+                                                    <div class="data hidden-xs pull-right">
+                                                        {% if favorite.Topic.ReplyCount %} {{ favorite.Topic.ReplyCount }} <i class="icon-comment"></i>个回复{% endif %}{% if favorite.Topic.Views %}
+                                                        {{ favorite.Topic.Views }} <i class="icon-eye-open"></i>次浏览{% endif %}
+                                                    </div>
+                                                {% endif %}
+                                            </small>
+                                        </span>
+                                        <div class="clear"></div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% if favorites|length >= 10 %}
+                                    <div class="cell last low">
+                                        <span class="pull-right"><a href="/user/{{userProfile.Username}}/favorites/"><i class="icon-caret-right"></i> 更多回复</a></span>
+                                        <span class="clearfix"></span>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="cell post-list last">尚无收藏的话题.</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </aside>
+        <aside class="col-lg-3 b-l">
+            <section class="vbox">
+                <section class="scrollable padder-v" style="padding-top:0;">
+                {% comment %}
+                    <div class="panel">
+                        <h4 class="font-thin padder">博客</h4>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <p>
+                                    不要怪我太坦白！就凭这你们这几个滥番薯，臭鸟蛋，想取我的性命，未免太过儿戏吧！！！！
+                                </p>
+                                <small class="block text-muted"> <i class="fa fa-clock-o"></i>
+                                    2 分钟之前
+                                </small>
+                            </li>
+                            <li class="list-group-item">
+                                <p>
+                                    三十多年前，我上中学的时候，我真的时时刻刻都会想着她，有时候撒尿都会突然间停一下，然后想起她，心里甜甜的，跟着那半泡尿就忘了尿了。
+                                </p>
+                                <small class="block text-muted"> <i class="fa fa-clock-o"></i>
+                                    1 小时之前
+                                </small>
+                            </li>
+                            <li class="list-group-item">
+                                <p>
+                                    十年了，已经十年了，我还以为国家已经把我忘记了。
+                                </p>
+                                <small class="block text-muted">
+                                    <i class="fa fa-clock-o"></i>
+                                    2 小时之前
+                                </small>
+                            </li>
+                        </ul>
+                    </div>
+                {% endcomment %}
+                    <div class="panel clearfix">
+                        <div class="panel-body">
+                            <a href="#" class="thumb pull-left m-r"><img src="{% if userProfile.AvatarMedium %}{{File(userProfile.AvatarMedium)}}{% else %}/identicon/{{userProfile.Username}}/48/default.png{% endif %}" class="img-circle"></a>
+                            <div class="clear">
+                                <span>{% if userProfile.Gender > 0 %}<i class="fa fa-user"></i>{%else%}<i class="fa fa-female"></i>{% endif %}</span>
+                                <a href="#" class="text-info">
+                                    @{{userProfile.Username}}
+                                </a>
+                                <small class="block text-muted">
+                                {{userProfile.ReplyCount}} 评论 / {{userProfile.TopicCount}} 话题 / {{userProfile.NodeCount}} 节点 / {{userProfile.FavoriteCount}} 收藏
+                                </small>
+                                <a href="/friend/add/{{userProfile.Id}}/" class="btn btn-xs btn-success m-t-xs">申请好友</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </aside>
+    </section>
+</div>
+{% endblock mainland %}

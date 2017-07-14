@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <title>{{SiteName}}管理系统</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/root/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/root/css/bootstrap-responsive.min.css" />
+  <link rel="stylesheet" href="/root/css/uniform.css" />
+  <link rel="stylesheet" href="/root/css/select2.css" />
+  <link rel="stylesheet" href="/root/css/matrix-style.css" />
+  <link rel="stylesheet" href="/root/css/matrix-media.css" />
+
+  <link href="/root/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+  <link href='/root/css/opensans.css' rel='stylesheet' type='text/css'></head>
+<body>
+  {% include "header.html" %}
+{% include "sidebar.html" %}
+  <div id="content">
+    <div id="content-header">
+      <div id="breadcrumb">
+        <a href="#" title="控制面板" class="tip-bottom"> <i class="icon-home"></i>
+          控制面板
+        </a>
+        <a href="#" class="current">话题列表</a>
+      </div>
+      <h1>话题列表</h1>
+    </div>
+    <div class="container-fluid">
+      <hr>
+      <div class="row-fluid">
+        <div class="span12">
+          <form action="" method="POST" id="iform">
+            <div class="widget-box">
+              <div class="widget-title">
+                <span class="icon">
+                  <input type="checkbox"/>
+                </span>
+                <h5>数据表格</h5>
+                <button class="label btn btn-danger btn-mini" id="delrows">批量删除</button>
+                <input type="hidden" id="delrowids" name="delrowids" />
+              </div>
+              {% include "msgerr.html" %}
+              <div class="widget-content nopadding">
+                <table class="table table-bordered data-table">
+                  <thead>
+                    <tr>
+                      <th> <i class="icon-remove"></i>
+                      </th>
+                      <th>#</th>
+                      <th>标题</th>
+                      <th>内容</th>
+                      <th>节点</th>
+                      <th>作者</th>
+                      <th>日期</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% if topics %}
+              {% for tp in topics %}
+                    <tr class="gradeX">
+                      <td>
+                        <input data="{{tp.Id}}" type="checkbox" />
+                      </td>
+                      <td>{{tp.Id}}</td>
+                      <td>
+                        <a href="/root/read/topic/{{tp.Id}}/">
+                          {% if tp.Title %}
+                                                {% with s=Htm2Str(tp.Title) %}
+                                                  {%if not s %}
+                                                    {{ tp.Author }} {{TimeSince(tp.Created)}} 发布了话题#{{tp.Id}}
+                                                  {%else%}
+                                                    {{Cropword(s,0,24,"...")}}
+                                                  {%endif%}
+                                                {% endwith %}
+                      {% endif %}
+                        </a>
+                      </td>
+                      <td>
+                        <a href='/topic/{% ifequal tp.Pid|escape "0" %}{{tp.Id}}{% else %}{{tp.Pid}}{% endifequal %}/' target="_blank">
+                          {% if tp.Content %}
+                                                {% with s=Htm2Str(tp.Content) %}
+                                                  {%if not s %}
+                                                    {{ tp.Author }} {{TimeSince(tp.Created)}} 发布了话题#{{tp.Id}}
+                                                  {%else%}
+                                                    {{Cropword(s,0,48,"...")}}
+                                                  {%endif%}
+                                                {% endwith %}
+                      {% endif %}
+                        </a>
+                      </td>
+                      <td>{% if tp.Node %}{{tp.Node}}{% endif %}</td>
+                      <td>{% if tp.Author=="" %}游客{% else %}{{tp.Author}}{% endif %}</td>
+                      <td>
+                        {%if tp.Created%}{{Unix2Time(tp.Created,"2006.01.02 15:04")}}{%endif%}
+                      </td>
+                      <td>
+                        <a href="/root/delete/topic/{{tp.Id}}/">删除</a>
+                        {% if catpage=="RReadTopicHandlerlist" %} |
+                        <a href="/root/read/{{tp.Id}}/topic/">列览</a>
+                        {% endif %} |
+                        <a href="/root/update/topic/{{tp.Id}}/">更新</a>
+                        {% if catpage=="RReadTopicHandlerlist" %} |
+                        <a href="/root/create/{{tp.Id}}/topic/">添加话题</a>
+                        {% endif %} |
+                        <a href="/root/update/topic/move/{{tp.Id}}/">移动</a>
+                      </td>
+                    </tr>
+                    {% endfor %}
+          {% else %}
+                    <tr class="gradeC">
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td>0</td>
+
+                      <td>尚无标题</td>
+                      <td>尚无内容</td>
+                      <td>尚无节点</td>
+                      <td>尚无作者</td>
+                      <td>尚无日期</td>
+                      <td>N/A</td>
+                    </tr>
+                    {% endif %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% include "footer.html" %}
+  <script src="/root/js/jquery.min.js"></script>
+  <script src="/root/js/jquery.ui.custom.js"></script>
+  <script src="/root/js/bootstrap.min.js"></script>
+  <script src="/root/js/jquery.uniform.js"></script>
+  <script src="/root/js/select2.min.js"></script>
+  <script src="/root/js/jquery.dataTables.min.js"></script>
+  <script src="/root/js/matrix.js"></script>
+  <script src="/root/js/matrix.tables.js"></script>
+</body>
+</html>

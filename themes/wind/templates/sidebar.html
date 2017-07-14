@@ -1,0 +1,129 @@
+<div id="sidebar" class="col-lg-3">
+{% block infobox %}
+  {% include "infobox.html" %}
+{% endblock infobox %}
+{% comment %}
+  {% if topics_sidebar_10 %}
+  <div class="box">
+    <div class="cell first">
+      <strong>{{ i18n.Tr("hot-topics") }}</strong>
+    </div>
+    <div class="cell last">
+      <ul class="sidebar-list">
+        {% for topic in topics_sidebar_10 %}
+        <li>
+          <a href="/topic/{{topic.Id}}/">{{ topic.Title|truncatechars:38|safe }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+{% endcomment %}
+{% if topics_sidebar_10 %}
+          <div class="box">
+            <div class="cell first">
+            {% if catpage=="BestGetHandler" %}
+              <strong>{{ i18n.Tr("optimal-topics") }}</strong>
+            {%else%}
+              {% if tab=="hotness" %}
+                <strong>{{ i18n.Tr("latest-topics") }}</strong>
+              {% else %}
+                <strong>{{ i18n.Tr("hot-topics") }}</strong>
+              {% endif %}
+            {% endif %}
+            </div>
+            {% include "adlist.html" %}
+            <div class="cell last sidebar-avatar-list">
+              <ul>
+                {% for topic in topics_sidebar_10 %}
+                <li{% if forloop.Last %} class="last"{% endif %}>
+                    <span class="avatar">
+                      <a href="/user/{{ topic.Author }}/" title="{{ topic.Author }}">
+                        <img src="{% if topic.AvatarSmall %}{{File(topic.AvatarSmall)}}{% else %}/identicon/{{ topic.Author }}/32/default.png{% endif %}" alt="{{topic.Author}}" style="height: 32px;width: 32px;" class="middle"/>
+                      </a>
+                    </span>
+                    {% with s=Htm2Str(topic.Title) %}
+                      <a href="/topic/{{topic.Id}}/">
+                      {%if not s %}
+                        {{ topic.Author }} {{TimeSince(topic.Created)}}在{{topic.Node}}节点发布了话题#{{topic.Id}}
+                      {%else%}
+                        {{Cropword(s,0,24,"...")}}
+                      {%endif%}
+                      </a>
+                    {% endwith %}
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+{% endif %}
+
+{% if nodes_sidebar_confidence_10 %}
+          <div class="box">
+            <div class="cell first">
+              <strong>{{ i18n.Tr("optimal-nodes") }}</strong>
+            </div>
+            <div class="cell last sidebar-avatar-list" style="padding:10px;">
+                {% for node in nodes_sidebar_confidence_10 %}
+                  {%if forloop.Counter<=10 %}
+                    <a href="/node/{{node.Id}}/" class="btn btn-mini btn-default btn-rounded" style="margin:2px;"{% if node.Content %} data-toggle="tooltip" data-placement="right" data-original-title="{% with s=Htm2Str(node.Content) %}{%if not s %}{{ node.Title }}{%else%}{{Cropword(s,0,48,"...")}}{%endif%}{% endwith %}"{% endif %}>{{ node.Title }}</a>
+                  {%endif%}
+                {% endfor %}
+            </div>
+          </div>
+{% endif %}
+
+{% comment %}
+{% if replys %}
+  <div class="box">
+    <div class="cell first">
+      <strong>{{ i18n.Tr("recent-comments") }}</strong>
+    </div>
+    <div class="cell last">
+      <ul class="sidebar-list">
+        {% for reply in replys %}
+        <li>
+          <a href="/topic/{{reply.Tid}}/#reply{{reply.Id}}">
+            {% with s=Htm2Str(reply.Content) %}
+              {%if not s %}
+                {{ reply.Author }} {{TimeSince(reply.Created)}} 回应了话题#{{reply.Tid}}
+              {%else%}
+                {{Cropword(s,0,24,"...")}}
+              {%endif%}
+            {% endwith %}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+{% endcomment %}
+
+{% comment %}
+  <div class="box">
+    <div class="cell first">
+      <strong>友情链接</strong>
+    </div>
+    <div class="cell last">
+      <ul class="sidebar-list">
+        <li>
+          <a href="http://www.yougam.com">YOUGAM</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  {% endcomment %}
+
+<div class="box cell">
+  <div class="cell first"><strong>{{ i18n.Tr("statistics") }}</strong></div>
+  <ul class="cell" style="padding-left:2em;">
+    <li>在线人数: {{UsersOnline}} 人在线</li>
+    <li>社区会员: {{userscount}} 个成员</li>
+    <li>帖子数量: {{topicscount}} 个话题</li>
+    <li>节点数量: {{nodescount}} 个节点</li>
+    <li>回帖数量: {{ReplysCount}} 个回复</li>
+  </ul>
+</div>
+</div>

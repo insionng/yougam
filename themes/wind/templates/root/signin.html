@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>{{SiteName}}管理</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/root/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/root/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="/root/css/matrix-login.css" />
+    <link href="/root/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href='/root/css/opensans.css' rel='stylesheet' type='text/css'>
+</head>
+<body>
+    <div id="loginbox">
+        <form id="loginform" class="form-vertical" action="/root/signin/" method="POST">
+            <div class="control-group normal_text">
+                <h3>
+                    <img src="/root/img/logo.png" alt="Logo" />
+                </h3>
+            </div>
+            {% include "msgerr.html" %}
+            <div class="control-group">
+                <div class="controls">
+                    <div class="main_input_box">
+                        <span class="add-on bg_lg"> <i class="icon-user"></i>
+                        </span>
+                        <input type="text" placeholder="Username" name="username" />
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="main_input_box">
+                        <span class="add-on bg_ly"> <i class="icon-lock"></i>
+                        </span>
+                        <input type="password" placeholder="Password" name="password" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div class="main_input_box">
+                        <input id="RegisterForm-Captcha" name="captcha" type="text" value="" class="form-control" autocomplete="off" placeholder="请输入验证码">
+                        {{Captcha.CreateHTML|safe}}
+                        <p class="help-block">点击图片刷新验证码</p>
+                        <input type="hidden" name="csrf" value="{{csrf}}">
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <span class="pull-left">
+                    <a href="#" class="flip-link btn btn-info" id="to-recover">忘记密码?</a>
+                </span>
+                <span class="pull-right">
+                    <input type="submit" class="btn btn-success" value="登录">
+                </span>
+            </div>
+        </form>
+        <form id="recoverform" action="/forgot/" method="POST" class="form-vertical">
+            <p class="normal_text">
+                在下面输入您的电子邮件地址，我们将指引您如何恢复密码。
+            </p>
+
+            <div class="controls">
+                <div class="main_input_box">
+                    <span class="add-on bg_lo">
+                        <i class="icon-envelope"></i>
+                    </span>
+                    <input type="text" placeholder="E-mail address" name="email" />
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <span class="pull-left">
+                    <a href="#" class="flip-link btn btn-success" id="to-login">&laquo; 返回登录</a>
+                </span>
+                <span class="pull-right">
+                    <input type="submit" class="btn btn-info" value="重新获得"/>
+                </span>
+            </div>
+        </form>
+    </div>
+
+    <script src="/root/js/jquery.min.js"></script>
+    <script src="/root/js/matrix.login.js"></script>
+</body>
+
+</html>

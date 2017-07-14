@@ -1,0 +1,18 @@
+<script src="/libs/tinymce/tinymce.min.js"></script>
+<script type="text/javascript">
+    tinymce.init({
+      selector: ".editor",
+      relative_urls:false,
+      menubar : true,
+      statusbar : true,
+      language: 'zh_CN',
+      theme: "modern",
+      skin : 'lightgray',
+      extended_valid_elements: "video[*],audio[*],object[data|width|height|classid|codebase],param[name|value],embed[src|type|width|height|align|flashvars|wmode|quality|allowfullscreen|allowscriptaccess]",
+      plugins: ["autoresize autosave advlist autolink lists link jbimages image charmap print preview hr anchor pagebreak",
+        "searchreplace visualblocks visualchars code fullscreen",
+        "insertdatetime media nonbreaking save table contextmenu directionality",
+        "emoticons template paste textcolor colorpicker textpattern imagetools"],
+      toolbar: "undo redo | styleselect | bullist numlist outdent indent | pagebreak hr | insertdatetime emoticons charmap | code link | jbimages image media"
+    });
+</script>

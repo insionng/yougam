@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}
+<title>添加好友 - {{SiteName}}</title>
+{% endblock title %}
+
+{% block content %}
+<div id="content" class="col-lg-9">
+    {% include "msgerr.html" %}
+    <section>
+        <form id="wizardform" method="POST">
+            <div class="panel panel-default" style="height:744px;">
+                <div class="panel-heading">添加好友：[{{theUser.Username}}]</div>
+                <div class="panel-body">
+                    <section class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="clearfix text-center m-t">
+                                <div class="inline">
+                                    <div class="easypiechart" data-percent="75" data-line-width="5" data-bar-color="#4cc0c1" data-track-Color="#f5f5f5" data-scale-Color="false" data-size="134" data-line-cap='butt' data-animate="1000">
+                                        <div class="thumb-lg">
+                                            <img src="{% if theUser.AvatarLarge %}{{File(theUser.AvatarLarge)}}{%else%}/identicon/{{theUser.Username}}/100/default.png{%endif%}" class="img-circle" alt="{{theUser.Username}}"></div>
+                                    </div>
+                                    <div class="h4 m-t m-b-xs">{{theUser.Username}}</div>
+                                    <small class="text-muted m-b">{{theUser.Content}}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="panel-footer bg-info text-center">
+                            <div class="row pull-out">
+                                <div class="col-xs-4">
+                                    <div class="padder-v">
+                                        <span class="m-b-xs h3 block text-white">{{theUser.ReplyCount}}</span>
+                                        <small class="text-muted">回复数目</small>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 dk">
+                                    <div class="padder-v">
+                                        <span class="m-b-xs h3 block text-white">{{theUser.TopicCount}}</span>
+                                        <small class="text-muted">话题数目</small>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="padder-v">
+                                        <span class="m-b-xs h3 block text-white">{{theUser.NodeCount}}</span>
+                                        <small class="text-muted">节点数目</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>
+                    </section>
+
+                    <p>在线聊天需要添加对方为好友才能通信。</p>
+                    <div class="line line-lg"></div>
+                    <h4>{% if Compare(accept|lower,"==","1") %}请耐心等待对方通过～{% endif %}</h4>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="step1">
+                            <p>你的留言:</p>
+                            {% if relationship.Content%}
+                            <p>{{relationship.Content}}</p>
+                            {%else%}
+                            <input type="text" class="form-control" name="content" data-trigger="change" placeholder="对{{theUser.Username}}想说的话" value="{{relationship.Content}}">{%endif%}</div>
+                        <ul class="pager wizard m-b-sm">
+                            <li class="next">
+                                <a href="###" onclick="javascript:wizardform.submit();">申请好友</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock content %}
+
+{% block sidebar %}{% include "contact-sidebar.html" %}{% endblock sidebar %}

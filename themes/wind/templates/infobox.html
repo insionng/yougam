@@ -1,0 +1,53 @@
+{% if IsSigned %}
+  {% include "messager.html" %}
+{% else %}
+  {% if curnode %}
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <section class="panel panel-info" style="margin-bottom:1em;">
+          <div class="panel-body">
+            <strong>[{{curnode.Title}}]</strong>
+            <div class="post-span votes pull-right">
+                      <span class="badge" id="bscore-{{curnode.Id}}">{{curnode.Hotscore}}</span> 分 <span class="pull-right"><a href="javascript:void(0);" onclick="javascript:$.get('/touch/like/node/{{curnode.Id}}/?ver='+(new Date()).valueOf(), {Action:'get'}, function (data, textStatus){this;$('#bscore-{{curnode.Id}}').html(data);});" class="vote"><i class="fa fa-chevron-up"></i></a> &nbsp;<a href="javascript:" onclick="javascript:$.get('/touch/hate/node/{{curnode.Id}}/?ver='+(new Date()).valueOf(), {Action:'get'}, function (data, textStatus){this;$('#bscore-{{curnode.Id}}').html(data);});" class="vote"><i class="fa fa-chevron-down"></i></a></span>
+                      <div class="clear"></div>
+            </div>
+            <div class="clear">
+            {% if curnode.Author %}
+              <span>创始人：<a href="/user/{{curnode.Author}}/" class="text-info">@{{curnode.Author}}<i class="icon-twitter"></i></a></span>
+            {% endif %}
+              <small class="block text-muted">{{curnode.Views}} 浏览 / {{curnode.TopicCount}} 话题</small>
+              {% comment %}
+                <a href="#/signin/?next=/subscribe/3/" class="btn btn-xs btn-success m-t-xs">订阅</a>
+              {% endcomment %}
+            </div>
+          </div>
+        </section>
+        <p style="text-align:center;">
+          <a href="/signup/" class="btn btn-s-md btn-default btn-rounded"><i class="icon-double-angle-right"></i> {{ i18n.Tr("signup-now") }}</a>
+        </p>
+      </div>
+      <div class="panel-footer">
+        <p style="text-align:center;">
+          已有账号，请&nbsp;<a href="/signin/" style="color:#666;"><i class="icon-double-angle-right"></i> <strong>{{ i18n.Tr("signin") }}</strong></a>
+        </p>
+      </div>
+    </div>
+  {% else %}
+    <div class="panel panel-default">
+            <div class="panel-body" style="margin-top:10px;">
+              <p style="text-align:center;">
+                <img src="/img/logo-yougam.png" title="潮流神州.." alt="潮流神州 - 记录分享探索世界的有趣轨迹, JavaScript, C, C++, Go, Java, Python, Hack, PHP, Erlang, D, Xhp, ASP.NET, Scala, Ruby on Rails, Perl, C# (ASP.NET MVC), 优姬编程语言技术交流社区" width="250px" height="120px">
+              </p>
+              <p style="text-align:center;">
+                <a href="/signup/" class="btn btn-s-md btn-default btn-rounded"><i class="icon-double-angle-right"></i> {{ i18n.Tr("signup-now") }}</a>
+              </p>
+              <p style="text-align:center;">
+                已有账号，请&nbsp;
+                <a href="/signin/" style="color:#666;"> <strong>{{ i18n.Tr("signin") }}</strong>
+                </a>
+              </p>
+            </div>
+    </div>
+  {% endif %}
+{% endif %}
+

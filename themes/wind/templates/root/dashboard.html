@@ -1,0 +1,48 @@
+{%include "head.html"%}
+<body>
+{%include "header.html"%}
+{%include "sidebar.html"%}
+
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="/root/dashboard/" title="管理面板" class="tip-bottom"><i class="icon-home"></i> 管理面板</a></div>
+  </div>
+<!--End-breadcrumbs-->
+    <div class="container-fluid">
+{%include "action_boxes.html"%}
+{%include "chart_box.html"%}
+        <hr/>
+{%include "widget_boxes.html"%}
+    </div>
+</div>
+
+<!--end-main-container-part-->
+{%include "footer.html"%}
+{% include "js.html" %}
+<script type="text/javascript">
+  // This function is called from the pop-up menus to transfer to
+  // a different page. Ignore if the value returned is a null string:
+  function goPage (newURL) {
+
+      // if url is empty, skip the menu dividers and reset the menu selection to default
+      if (newURL != "") {
+          // if url is "-", it is this page -- reset the menu:
+          if (newURL == "-" ) {
+              resetMenu();
+          }
+          // else, send page to designated URL
+          else {
+            document.location.href = newURL;
+          }
+      }
+  }
+
+// resets the menu selection upon entry to this page:
+function resetMenu() {
+   document.gomenu.selector.selectedIndex = 2;
+}
+</script>
+</body>
+</html>

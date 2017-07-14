@@ -1,0 +1,156 @@
+ <div class="row-fluid">
+   <div class="span6">
+     <div class="widget-box">
+       <div class="widget-title bg_ly" data-toggle="collapse" href="#collapseG2">
+         <span class="icon"> <i class="icon-chevron-down"></i>
+         </span>
+         <h5>最新话题</h5>
+       </div>
+{% if tps %}
+       <div class="widget-content nopadding collapse in" id="collapseG2">
+         <ul class="recent-posts">
+         {% for tp in tps %}
+           <li>
+             <div class="user-thumb">
+               <img width="40" height="40" alt="User" src="/root/img/demo/av1.jpg"></div>
+             <div class="article-post">
+               <span class="user-info">
+                  {% with s=Htm2Str(tp.Title) %}
+                    {%if not s %}
+                      {{ tp.Author }} {{TimeSince(tp.Created)}} 发布了话题#{{tp.Id}}
+                    {%else%}
+                      {{Cropword(s,0,24,"...")}}
+                    {%endif%}
+                  {% endwith %}
+               </span>
+               <p>
+                 <a href="/root/read/topic/{{tp.Id}}/">
+                    {% with s=Htm2Str(tp.Content) %}
+                      {%if not s %}
+                        {{ tp.Author }} {{TimeSince(tp.Created)}} 发布了话题#{{tp.Id}}
+                      {%else%}
+                        {{Cropword(s,0,48,"...")}}
+                      {%endif%}
+                    {% endwith %}
+                 </a>
+               </p>
+             </div>
+             <div style="clear:both;"></div>
+           </li>
+         {% endfor %}
+             <li>
+                <a href="/root/read/topic/" target="_blank" class="btn btn-warning btn-mini">浏览所有</a>
+                <div style="clear:both;"></div>
+             </li>
+           </ul>
+         </div>
+{% else %}
+
+       <div class="widget-content nopadding collapse in" id="collapseG2">
+         <ul class="recent-posts">
+           <li>尚无话题
+                <div style="clear:both;"></div>
+           </li>
+         </ul>
+       </div>
+{% endif %}
+
+       </div>
+     </div>
+     <div class="span6">
+
+       <div class="widget-box">
+         <div class="widget-title">
+           <ul class="nav nav-tabs">
+             <li class="active">
+               <a data-toggle="tab" href="#tab1">最近评论</a>
+             </li>
+             <li>
+               <a data-toggle="tab" href="#tab2">本周趋势</a>
+             </li>
+             <li>
+               <a data-toggle="tab" href="#tab3">最热话题</a>
+             </li>
+           </ul>
+         </div>
+         <div class="widget-content tab-content">
+           <div id="tab1" class="tab-pane active">
+           {% if replys %}
+              <p>
+                <div class="cell last">
+                  <ul class="sidebar-list">
+                    {% for reply in replys %}
+                    <li>
+                      {% with s=Htm2Str(reply.Content) %}
+                        <a href="/topic/{{reply.Tid}}/#reply{{reply.Id}}">
+                          {%if not s %}
+                            {{ reply.Author }} {{TimeSince(reply.Created)}} 回应了话题#{{reply.Tid}}
+                          {%else%}
+                            {{Cropword(s,0,48,"...")}}
+                          {%endif%}
+                        </a>
+                      {% endwith %}
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </p>
+            {%else%}
+              <p>尚无评论</p>
+            {% endif %}
+           </div>
+           <div id="tab2" class="tab-pane">
+            {% if topics_thisWeek_10 %}
+              <p>
+                <div class="cell last">
+                  <ul class="sidebar-list">
+                    {% for topic in topics_thisWeek_10 %}
+                    <li>
+                      {% with s=Htm2Str(topic.Title) %}
+                        <a href="/topic/{{topic.Id}}/">
+                        {%if not s %}
+                          {{ topic.Author }} {{TimeSince(topic.Created)}} 发布了话题#{{topic.Id}}
+                        {%else%}
+                          {{Cropword(s,0,24,"...")}}
+                        {%endif%}
+                        </a>
+                      {% endwith %}
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </p>
+            {%else%}
+              <p>尚无话题</p>
+            {% endif %}
+           </div>
+           <div id="tab3" class="tab-pane">
+            {% if topics_sidebar_10 %}
+              <p>
+                <div class="cell last">
+                  <ul class="sidebar-list">
+                    {% for topic in topics_sidebar_10 %}
+                    <li>
+                    {% with s=Htm2Str(topic.Title) %}
+                      <a href="/topic/{{topic.Id}}/">
+                      {%if not s %}
+                        {{ topic.Author }} {{TimeSince(topic.Created)}} 发布了话题#{{topic.Id}}
+                      {%else%}
+                        {{Cropword(s,0,24,"...")}}
+                      {%endif%}
+                      </a>
+                    {% endwith %}
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </p>
+            {%else%}
+              <p>尚无话题</p>
+            {% endif %}
+           </div>
+         </div>
+       </div>
+     </div>
+
+   </div>

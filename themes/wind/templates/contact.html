@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}
+<title>即时聊天 - {{SiteName}}</title>
+{% endblock title %}
+
+{% block content %}
+    <div id="content" class="col-lg-9">
+    {% include "msgerr.html" %}
+    <section class="panel panel-default" style="min-height:744px;">
+        <header class="panel-heading bg-light">
+            <ul class="nav nav-tabs pull-right">
+            {% comment %}
+                <li>
+                    <a href="#n1" data-toggle="tab"> <i class="fa fa-comments text-muted"></i>
+                        公聊
+                    </a>
+                </li>
+            {% endcomment %}
+                <li{% if contactHome %} class="active"{% endif %}>
+                    <a href="#n2" data-toggle="tab"> <i class="fa fa-user text-muted"></i>
+                        新人
+                    </a>
+                </li>
+                <li{% if contactSearch %} class="active"{% endif %}>
+                    <a href="#n3" data-toggle="tab">
+                        <i class="fa fa-user text-muted"></i>
+                        推荐
+                    </a>
+                </li>
+            </ul>
+            <span class="hidden-sm">通信录</span>
+        </header>
+        <div class="panel-body">
+            {% if contactSearch %}
+                <div class="input-group text-sm">
+                    <input type="text" class="input-sm form-control" placeholder="搜索用户">
+                    <div class="input-group-btn" style="padding-bottom:.5em;">
+                        <button type="button" class="btn btn-sm">搜索</button>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="tab-content">
+            {% comment %}
+                <div class="tab-pane" id="n1">
+                    公共聊天
+                </div>
+            {% endcomment %}
+                <div class="tab-pane{% if contactHome %} active{% endif %}" id="n2">
+                        <section class="panel panel-success">
+                            <div class="panel-heading">推荐新人</div>
+                            <div class="row row-sm panel-body">
+                            {% for usr in UsersByCreated %}
+                                <div class="col-sm-3">
+                                    <div class="item box cell">
+                                        <div class="pos-rlt">
+                                            <div class="item-overlay opacity r r-2x bg-black"{% if usr.Content %} data-toggle="tooltip" data-placement="bottom" data-original-title="{{usr.Content}}"{% endif %}>
+                                                <div class="center text-center m-t-n">
+                                                    <a href="/friend/add/{{usr.Id}}/"> <i class="fa fa-plus i-2x"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <a href="/friend/add/{{usr.Id}}/">
+                                                <img style="width:152px;" src="{% if usr.Avatar %}{{File(usr.Avatar)}}{%else%}/identicon/{{usr.Username}}/200/default.png{% endif %}" alt="{{usr.Username}}" class="r r-2x img-full"></a>
+                                        </div>
+                                        <div class="padder-v">
+                                            <a href="/user/{{usr.Username}}/" class="text-ellipsis">{{usr.Username}}{% if usr.Nickname %}（{{usr.Nickname}}）{% endif %}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            </div>
+                        </section>
+                </div>
+                <div class="tab-pane{% if contactSearch %} active{% endif %}" id="n3">
+                        <section class="panel panel-warning">
+                            <div class="panel-heading">推荐成员</div>
+                            <div class="row row-sm panel-body">
+                            {% for usr  in UsersByConfidence %}
+                                <div class="col-sm-3">
+                                    <div class="item box cell">
+                                        <div class="pos-rlt">
+                                            <div class="item-overlay opacity r r-2x bg-black"{% if usr.Content %} data-toggle="tooltip" data-placement="bottom" data-original-title="{{usr.Content}}"{% endif %}>
+                                                <div class="center text-center m-t-n">
+                                                    <a href="/friend/add/{{usr.Id}}/"> <i class="fa fa-plus i-2x"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <a href="/friend/add/{{usr.Id}}/">
+                                                <img style="width:152px;" src="{% if usr.Avatar %}{{File(usr.Avatar)}}{%else%}/identicon/{{usr.Username}}/200/default.png{% endif %}" alt=".." class="r r-2x img-full"></a>
+                                        </div>
+                                        <div class="padder-v">
+                                            <a href="#" class="text-ellipsis">{{usr.Username}}{% if usr.Nickname %}（{{usr.Nickname}}）{% endif %}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            </div>
+                        </section>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+{% endblock content %}
+
+{% block sidebar %}{% include "contact-sidebar.html" %}{% endblock sidebar %}

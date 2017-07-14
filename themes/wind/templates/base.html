@@ -1,0 +1,91 @@
+{% block doctype %}<!DOCTYPE html>{% endblock doctype %}
+{% block htmlbegin %}<html lang="{{ Lang }}" class="app-fluid">{% endblock htmlbegin %}
+{% block head %}
+<head>
+    {% block charset %}
+    <meta charset="utf-8" />
+    {% endblock charset %}
+    <meta name="renderer" content="webkit" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="author" content="insionng" />
+    <link rel="shortcut icon" href="/img/favicon.png" />
+    {% block description %}
+    <meta name="description" content="{{Description}},{{Keywords}}" />
+    {% endblock description %}
+    {% block keywords %}
+    <meta name="keywords" content="{{Keywords}}" />
+    {% endblock keywords %}
+    {% block title %}
+    <title>{{SiteTitle}}</title>
+    {% endblock title %}
+    {% block css %}
+    <link rel="stylesheet" href="/css/app.css">
+    {% endblock css %}
+    {% block js %}
+    <script src="/js/app.js"></script>
+    <script src="/js/wind.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/js/ie/html5shiv.js"></script>
+    <script src="/js/ie/respond.min.js"></script>
+    <script src="/js/ie/excanvas.js"></script>
+    <![endif]-->
+    {% if IsSigned %}<script src="/js/signed.js"></script>{% endif %}
+    {% endblock js %}
+</head>
+{% endblock head %}
+{% block body %}
+<body>
+    {% block wrapper %}
+    <section id="wrapper" class="vbox">
+        {% block header %}{% include "header.html" %}{% endblock header %}
+
+        {% block mainland %}
+        <div id="main" class="container">
+            <div class="row">
+                {% block content %}
+                <div id="content" class="col-lg-9">
+                    <div class="box">
+                        <div class="cell nav-cats breadcrumb first">
+                                <span class="cat">
+                                        <a class="active" href="/category/0/"> <i class="icon icon-home"></i>
+                                        </a>
+                                </span>
+                        </div>
+
+                        <div class="post-list">
+                            <div class="post cell">
+                                <div class="avatar">
+                                    <a href="/" title=""><img src="/img/d48.png"></a>
+                                </div>
+                                <h3 class="title">
+                                    <a href="/">主题</a>
+                                </h3>
+                                <div class="meta">
+                                    <a href="#">root</a>
+                                    •
+                                    <span class="time">2014.08.16 15:53</span>
+                                    <div class="data hidden-xs pull-right">
+                                        0 <i class="icon-comment"></i>
+
+                                        75 <i class="icon-eye-open"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cell last">
+                        </div>
+
+                    </div>
+                </div>
+                {% endblock content %}
+                {% block sidebar %}{% include "sidebar.html" %}{% endblock sidebar %}
+            </div>
+        </div>
+        {% endblock mainland %}
+        {% block footer %}{% include "footer.html" %}{% endblock footer %}
+    </section>
+    {% endblock wrapper %}
+</body>
+{% endblock body %}
+{% block htmlend %}</html>{% endblock htmlend %}

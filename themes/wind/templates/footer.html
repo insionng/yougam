@@ -1,0 +1,75 @@
+<footer class="footer">
+    <div class="container footer-wrap">
+        <div class="content col-md-12">
+            <p>
+                <span style="margin-right:1em;">
+                    <a href="/"> <strong>{{SiteName}}</strong>
+                    </a>
+                </span>
+                {%if pages %}
+                    {% for page in pages %}
+                <span style="margin-right:1em;">
+                    <a href="/page/{{page.Title|urlencode}}/"> <strong>{{page.Title}}</strong>
+                    </a>
+                </span>
+                {%endfor%}
+                {%endif%}
+                <span style="margin-right:1em;">{{pageviews}}PV</span>
+                <span style="margin-right:1em;">{{gorotines}}个协程</span>
+            </p>
+            <ul class="cell" style="border:0;">
+                <li>
+                    Thanks
+                    <a href="https://github.com/pingcap/tidb" rel="nofollow" target="_blank">Tidb</a>
+                    ,
+                    <a href="http://www.postgresql.org/" rel="nofollow" target="_blank">PostgreSQL</a>
+                    ,
+                    <a href="http://www.mysql.com/" rel="nofollow" target="_blank">MySQL</a>
+                    ,
+                    <a href="https://sqlite.org/" rel="nofollow" target="_blank">Sqlite3</a>
+                    ,
+                    <a href="https://github.com/syndtr/goleveldb" rel="nofollow" target="_blank">GolevelDB</a>
+                    and
+                    <a href="https://github.com/boltdb/bolt" rel="nofollow" target="_blank">BoltDB</a>
+                    for their powerful storage engines.
+                </li>
+                <li>
+                    <span>
+                        <span style="margin-right:1em;">Processed in {{TimeConsuming(PageStartTime)}} seconds,</span>Powered by {% if golangver %} <b style="text-transform:capitalize;">{{golangver}}</b>
+                        {% endif %} and
+                        <a href="https://github.com/insionng/macross" target="_blank" data-toggle="tooltip" data-placement="right" data-original-title="YouGam V{{Version}} Base on Macross.">Macross</a>,
+                        <a href="https://github.com/go-xorm/xorm" rel="nofollow" target="_blank">Xorm</a>
+                        <span style="margin-left:1em;">Historical version:
+                            <a href="https://github.com/go-macaron/macaron" rel="nofollow" target="_blank" data-toggle="tooltip" data-placement="right" data-original-title="YouGam V2.0, V3.0 Base on Macaron.">Macaron</a>,
+                            <a href="https://github.com/astaxie/beego" rel="nofollow" target="_blank" data-toggle="tooltip" data-placement="right" data-original-title="YouGam V1.0 Base on beego.">Beego</a></span>
+                    </span>
+                </li>
+                <li>
+                    <span style="margin-right:1em;">
+                        <span>
+                            Made with love by the <a href="https://github.com/insionng" target="_blank" title="YOUGAM作者">Insion Ng</a>
+                        </span> ，<a href="https://www.nilyes.com/" target="_blank" title="Nilyes Network">凝视网络</a>，版权所有
+                        © 2014 ~ 2017
+                        <a href="/" title="{{Description}}">{{SiteName}}</a> <b>V{{Version}}</b>
+                        /
+                        <a href="https://github.com/insionng/yougam/issues" target="_blank" data-toggle="tooltip" data-placement="right" data-original-title="汇报系统错误或反馈问题.">问题反馈</a>
+                    </span>
+                </li>
+            </ul>
+            {%if links %}
+            <p class="desc">
+                {% for link in links reversed %}
+                <span style="margin-right:1em;margin-top:.5em;">
+                    <a href="{{link.Content}}" title="{{link.Title}}" target="_blank">
+                        <strong>{{link.Title}}</strong>
+                    </a>
+                </span>
+                {%endfor%}
+            </p>
+            {%endif%}
+            <div id="backtop" class="hidden backtop" title="Back to Top">
+                <strong class="hidden">返回顶部</strong>
+            </div>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,79 @@
+<div class="control-group">
+  <style type="text/css">
+    .filePrew {
+              display: block;
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 200px;
+              font-size: 100px;
+              /* 增大不同浏览器的可点击区域 */
+              opacity: 0;
+              /* 实现的关键点 */
+    }
+    .col-md-12{overflow:hidden;padding:0;}
+    .table{margin:0;}
+  </style>
+  <script>
+      function removem(mkey){  
+          str=document.getElementById("imgs").value;
+          var strs= new Array();
+          strs=str.split(",");
+          imgs="";
+          for (i=0;i<strs.length;i++){
+              if (strs[i]!=mkey && strs[i]!=""){
+                  if (imgs!=""){
+                      imgs=strs[i]+","+imgs;
+                  }else{
+                      imgs=strs[i];
+                  }
+              }
+          }
+          if (imgs==""){
+              imgs=",";
+          }
+
+          document.getElementById("imgs").value =imgs;
+
+          var node =document.getElementById("n"+mkey);
+          node.parentNode.removeChild(node);
+      }
+  </script>
+  <label class="control-label">上传图片:</label>
+  <div class="controls">
+    <input type="hidden" id="imgs" name="images" value="{{images}}"/>
+    <input type="hidden" id="domain" value="{{domain47niu}}">
+    <input type="hidden" id="uptoken_url" value="{{uptoken_url}}">
+    <div id="container">
+      <a href="javascript:void(0);" id="pickfiles" class="btn btn-success btn-large span11" style="margin-bottom:1em;color:#ffffff;"> <i class="icon-upload glyphicon glyphicon-plus"></i>
+        <sapn>选择文件</sapn>
+      </a>
+    </div>
+    <div class="span11" style="clear: both;margin-left:0;">
+      <div id="success" style="display:none;">
+        <div class="alert-success" style="padding:1em;">全部文件上传完毕..</div>
+      </div>
+      <div class="col-md-12">
+        <table class="table table-striped table-hover text-left" style="margin-top:0;display:none;">
+          <thead>
+            <tr>
+              <th class="col-md-4" style="padding-left:0;padding-right:0;padding-top:0.5em;padding-bottom:0.5em;">文件</th>
+              <th class="col-md-3" style="padding-left:0;padding-right:0;padding-top:0.5em;padding-bottom:0.5em;">尺寸</th>
+              <th class="col-md-5" style="padding-left:0;padding-right:0;padding-top:0.5em;padding-bottom:0.5em;">详情</th>
+            </tr>
+          </thead>
+          <tbody id="fsUploadProgress"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="/root/js/jquery.min.js"></script>
+    <script src="/libs/plupload-2.1.2/js/plupload.full.min.js"></script>
+
+    <script type="text/javascript" src="/libs/plupload-2.1.2/js/i18n/zh_CN.js"></script>
+    <script type="text/javascript" src="/libs/qiniu-js-sdk-master/src/qiniu.js"></script>
+    <script type="text/javascript" src="/js/ui.js"></script>
+    <script type="text/javascript" src="/js/settings4qiniu.js"></script>
+
+  </div>
+</div>

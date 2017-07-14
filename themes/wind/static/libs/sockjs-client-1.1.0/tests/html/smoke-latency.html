@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="UTF-8" />
+
+  <link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
+
+  <script type="text/javascript" src="lib/sockjs.js"></script>
+  <script type="text/javascript" src="static/jquery.min.js"></script>
+
+  <script type="text/javascript" src="config.js"></script>
+</head>
+<body>
+<form>
+  <input type="text" id="url" size="40">
+  <br />
+  <select id="transport">
+  <option value="">- any - </option>
+  <option value="websocket">websocket</option>
+  <option value="xdr-streaming">xdr-streaming</option>
+  <option value="xhr-streaming">xhr-streaming</option>
+  <option value="eventsource">eventsource</option>
+  <option value="iframe-eventsource">iframe-eventsource</option>
+  <option value="htmlfile">htmlfile</option>
+  <option value="iframe-htmlfile">iframe-htmlfile</option>
+  <option value="xdr-polling">xdr-polling</option>
+  <option value="xhr-polling">xhr-polling</option>
+  <option value="iframe-xhr-polling">iframe-xhr-polling</option>
+  <option value="jsonp-polling">jsonp-polling</option>
+  </select>
+  <input type="checkbox" id="sameOrigin" checked>Same Origin?
+  <input type="button" value="Connect" id="connect">
+  <input type="button" value="Disconnect" id="disconnect" disabled="yes">
+</form>
+
+  Latency: <code id="latency"></code><br>
+  <code id="logs" style="height:200px; overflow:auto; display: block; border: 1px gray solid;">
+  </code>
+
+<script>
+    function log(a) {
+            if ('console' in window && 'log' in window.console) {
+                console.log(a);
+            }
+            $('#logs').append($("<code>").text(a));
+            $('#logs').append($("<br>"));
+            $('#logs').scrollTop($('#logs').scrollTop()+10000);
+      }
+
+    var sjs;
+    function onopen() {
+            log('connected ' + sjs.transport);
+            $('#sameOrigin').attr('disabled', true);
+            send();
+    };
+    function onclose(e) {
+            log('disconnected ' + e.code + ', ' + e.reason);
+            $('#connect').each(function(_,e){e.disabled='';});
+            $('#disconnect').attr('disabled', true);
+            $('#sameOrigin').attr('disabled', false);
+    };
+    function send() {
+        sjs.send(JSON.stringify({t: (new Date()).getTime()}));
+    };
+    var i = 0;
+    function xonmessage(e) {
+            var msg = JSON.parse(e.data);
+            var td = (new Date()).getTime() - msg.t;
+            $('#latency').text(''+i +'  ' + td + ' ms');
+            i += 1;
+            send();
+    };
+
+    $('#connect').click(function() {
+        $('#connect').attr('disabled', true);
+        $('#disconnect').each(function(_,e){e.disabled='';});
+        var transport = $('#transport').val() || undefined;
+        log('[connecting] ' + transport);
+        var url;
+        if ($('#url').val()) {
+          url = $('#url').val();
+        } else if ($('#sameOrigin').prop('checked')) {
+          if (window.location.origin) url = window.location.origin;
+          else {
+            url = window.location.protocol + '//' + window.location.hostname +
+              (window.location.port ? ':' + window.location.port : '');
+          }
+          url += '/echo';
+        } else {
+          url = clientOptions.url + '/echo';
+        }
+        sjs = new SockJS(url, null, { transports: transport });
+        sjs.onopen = onopen
+        sjs.onclose = onclose;
+        sjs.onmessage = xonmessage;
+    });
+    $('#disconnect').click(function() {
+        $('#disconnect').attr('disabled', true);
+        log('[disconnecting]');
+        sjs.close();
+    });
+</script>
+</body>
+</html>

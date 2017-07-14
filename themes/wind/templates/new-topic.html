@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>创建话题 - {{SiteName}}</title>
+{% endblock title %}
+
+{% block mainland %}
+    <link rel="stylesheet" href="/js/chosen/chosen.css" type="text/css" />
+    <div id="main" class="container">
+        <div class="row">
+            <div id="content" class="col-md-9">
+                {% include "msgerr.html" %}
+                <div class="box">
+                    <div class="cell first breadcrumb">
+                        <a href="/"> <i class="icon icon-home"></i>
+                        </a> <i class="fa fa-caret-right"></i>
+                        {% if haspid==false %}创建话题{%else%}补充附言{%endif%}
+                    </div>
+                    <div class="cell last">
+                        <form id="post-new" method="POST">
+                            <div class="control-group">
+                                {% if hasnid==false %}
+                                    {% if haspid==false %}
+                                      <label class="control-label">归属设定</label>
+                                      <div class="controls">
+                                        <p class="btn-group">
+                                            <select style="width:200px" class="chosen-select" name="nodeid">
+                                                {%if categorys %}
+                                                        {% for category in categorys %}
+                                                            <optgroup label="{{category.Title}}">
+                                                                {% for node in GetNodesByCid(category.Id, 0, 0, "id") %}
+                                                                    <option value="{{node.Id}}">{{node.Title}}
+                                                                    </option>
+                                                                {%endfor%}
+                                                            </optgroup>
+                                                        {%endfor%}
+                                                    {% if nodes %}
+                                                        <optgroup label="节点导航">
+                                                            {% for nd in nodes %}
+                                                                <option value="{{nd.Id}}">{{nd.Title}}</option>
+                                                            {% endfor %}
+                                                        </optgroup>
+                                                    {% else %}
+                                                        <optgroup label="缺省设置">
+                                                            <option value="-1" selected>[选择节点]</option>
+                                                        </optgroup>
+                                                    {% endif %}
+                                                {%else%}
+                                                    {% if (nodes||node) %}
+                                                        <optgroup label="节点导航">
+                                                            {% if node %}
+                                                                    {% if node.Pid>0 %}
+                                                                      <option value="{{node.Pid}}" selected>
+                                                                      {% if nodes %}
+                                                                          {% for nd in nodes %}
+                                                                                {% if nd.Id==node.Pid %}
+                                                                                    {{nd.Title}}
+                                                                                {% endif %}
+                                                                          {% endfor %}
+                                                                      {% else %}
+                                                                            {% if node.Title %}{{node.Title}}{% else %}节点{{node.Pid}}{% endif %}
+                                                                      {% endif %}
+                                                                      </option>
+                                                                    {% endif %}
+                                                            {% endif %}
+                                                            {% if nodes %}
+                                                                {% if node %}
+                                                                    {% for nd in nodes %}
+                                                                      {% if nd.Id!=node.Id %}
+                                                                        <option value="{{nd.Id}}">{{nd.Title}}</option>
+                                                                      {% endif %}
+                                                                    {% endfor %}
+                                                                {% else %}
+                                                                    {% for nd in nodes %}
+                                                                        <option value="{{nd.Id}}">{{nd.Title}}</option>
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        </optgroup>
+                                                    {% else %}
+                                                        <optgroup label="缺省设置">
+                                                            <option value="-1" selected>[选择节点]</option>
+                                                        </optgroup>
+                                                    {% endif %}
+                                                {%endif%}
+                                            </select>
+                                            <select style="width:100px" id="se" name="ctype" class="chosen-select" placeholder="选择类型..."  onchange="showholder(this.id)">
+                                                <option value="0" selected>[普通话题]</option>
+                                                <option value="-1">[回复可见]</option>
+                                                <option value="-2">[付费可见]</option>
+                                                <option value="-3">[会员可见]</option>
+                                            </select>
+                                        </p>
+                                        <div class="text-left">
+                                            <span class="btn-group">
+                                                <p class="help-block text-right">请选择节点并撰写标题，如果标题能表述完事情，摘录、正文等内容可忽略..</p>
+                                            </span>
+                                        </div>
+                                      </div>
+                                    {% endif %}
+                                {% else %}
+                                    <input value="{{curnid}}" name="nodeid" type="hidden" />
+                                {% endif %}
+                            </div>
+                            <div class="clearfix"></div>
+                        {% if haspid==false %}
+                            <label class="control-label">标题</label>
+                            <div class="controls">
+                                <div class="form-group">
+                                    <h1 id="PostForm-Title" class="PostForm-Title inline"></h1>
+                                    <input name="title" id="title" type="text" class="form-control hidden" placeholder="请输入标题" autocomplete="off">
+                                </div>
+                            </div>
+                            <div id="excerptor" style="display:none;">
+                                <label class="control-label">摘录</label>
+                                <div class="controls">
+                                    <div class="form-group">
+                                        <textarea name="excerpt" id="excerpt" rows="2" class="form-control editor" placeholder="请输入摘录..." style="overflow: hidden; word-wrap: break-word; resize: none; height:80px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                            <label class="control-label">正文</label>
+                            <div class="controls">
+                                <div class="form-group">
+                                    <textarea id="PostForm-Content" rows="5" class="form-control editor" placeholder="请输入正文内容.." style="overflow: hidden; word-wrap: break-word; resize: none; height: 345px;"></textarea>
+                                    <textarea name="content" id="postcontent" class="hidden"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                    <div class="button-bar" style="position: relative;">
+                                    {% if haspid==false %}
+                                            <button type="submit" class="btn btn-s-md btn-dark btn-rounded" onclick="javascript:SubmitHolder();">
+                                                提交&nbsp;&nbsp;<i class="icon-chevron-sign-right"></i>
+                                            </button>
+                                    {% else %}
+                                            <div class="text-left">
+                                                <span class="btn-group">
+                                                    <a target="_blank" href="/topic/{{curpid}}/" class="btn btn-s-md btn-success btn-rounded"> <i class="icon-chevron-sign-left"></i> 浏览</a>
+                                                    <button type="submit" class="btn btn-s-md btn-dark btn-rounded pull-right" onclick="javascript:SubmitHolder2();">提交 <i class="icon-chevron-sign-right"></i> </button>
+                                                </span>
+                                            </div>
+                                    {% endif %}
+                                        <div class="clearfix"></div>
+                                    {% comment %}
+                                    {% if hasnid==false %}
+                                        {% if haspid==false %}
+                                        <p class="help-block text-right">选择节点</p>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% endcomment %}
+                                    </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </form>
+                        {% include "editor-front.html" %}
+                    </div>
+                </div>
+            </div>
+            {% include "sidebar-editor.html" %}
+        </div>
+    </div>
+    <script src="/js/chosen/chosen.jquery.min.js"></script>
+    <script src="/js/app.plugin.js"></script>
+{% endblock mainland %}

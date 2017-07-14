@@ -1,0 +1,158 @@
+    {% if replys %}
+        <div class="box post-comments" data-user="{{SignedUser.Username}}">
+            <div class="cell first breadcrumb">总共 {{ replys|length }} 回复
+            {% if article.ReplyTime %}
+                <span class="time" style="margin-left:.5em;padding-left:.5em;border-left:1px solid #ccc;">
+                直到 {{ TimeSince(article.ReplyTime) }}
+                </span>
+            {% endif %}
+            </div>
+            {% for reply in replys %}
+                    <div id="reply{{reply.Id}}" class="cell{% if forloop.Last %} last{% endif %} comment" data-user="{{reply.Author}}" data-floor="{{reply.Id}}">
+
+                        <div class="avatar">
+                            <a href="/user/{{reply.Author}}/">
+                            {% if reply.AvatarMedium %}
+                                <img src="{{File(reply.AvatarMedium)}}">
+                            {% else %}
+                                <img src="/identicon/{{reply.Author}}/48/default.png">
+                            {% endif %}
+                            </a>
+                        </div>
+                        <div class="content">
+                            <div class="meta">
+                                <a href="/createdby/{{reply.Author}}/">{{reply.Author}}</a>
+                                {% if reply.Created %}
+                                <span class="time">{{TimeSince(reply.Created)}}</span>
+                                {% endif %}
+                                <span class="pull-right" style="padding-left:.5em;">
+                                    <a rel="comment-reply" href="javascript:;" style="text-decoration:none;"><img src="/img/reply.png" width="20px" height="16px" alt="回复" />{#回复 <i class="icon-reply"></i><i class="fa fa-reply"></i>#}
+                                    </a>&nbsp;<a href="#reply{{reply.Id}}" class="badge" style="padding:4px 8px 4px 8px;">{{forloop.Counter}}</a>
+                                </span>
+                                <span class="pull-right post-span votes" style="padding-right:.25em;border-right:1px solid #ccc;"><a href="javascript:void(0);" onclick="javascript:$.get('/touch/like/reply/{{reply.Id}}/?ver='+(new Date()).valueOf(), {Action:'get'}, function (data, textStatus){this;if (data!=''){$('#rpscore-{{reply.Id}}').html(data);}});" class="vote"><i class="fa fa-chevron-up"></i><span id="rpscore-{{reply.Id}}" style="padding-left:1em;">{{reply.Hotscore}}</span></a>&nbsp;<a href="javascript:" onclick="javascript:$.get('/touch/hate/reply/{{reply.Id}}/?ver='+(new Date()).valueOf(), {Action:'get'}, function (data, textStatus){this;if (data!=null){$('#rpscore-{{reply.Id}}').html(data);}});" class="vote"><i class="fa fa-chevron-down"></i></a></span>
+                            </div>
+                            <div class="reply-body-{{reply.Id}}">
+                                {% if not (reply.Attachment=="") %}
+                                    {% for img in Split(reply.Attachment,",") %}
+                                        <img src="{{img}}" style="display:block;margin-bottom:1em;clear:both;width:100%;height:auto;"/>
+                                    {% endfor %}
+                                        <span class="clearfix"></span>
+                                {% endif %}
+                                {{ reply.Content | safe }}
+                            </div>
+                        </div>
+                        <span class="clearfix"></span>
+                    </div>
+            {% endfor %}
+            {% if not hasavatar %}
+                {%if Flash.WarningMsg%}
+                    <div class="alert-warning cell">
+                        <a class="close" data-dismiss="alert" href="#">×</a>
+                        <h4 class="alert-heading">警告</h4>
+                        {{Flash.WarningMsg}}
+                        <div class="text-center">
+                            <a href="/settings/avatar/" class="btn btn-s-md btn-dark btn-rounded"> <i class="icon-picture"></i> 设置头像</a>
+                        </div>
+                    </div>
+                {%endif%}
+            {% endif %}
+        </div>
+    {% endif %}
+    {% if not IsSigned %}
+    <div class="box">
+        {% comment %}
+        <section class="panel panel-default">
+            <header class="panel-heading font-bold">快键登录</header>
+            <div class="panel-body">
+                <form class="form-inline" role="form" action="/signin/" method="POST">
+                    <div class="form-group">
+                        <label class="sr-only" for="exampleInputEmail2">账号</label>
+                        <input type="email" class="form-control" id="exampleInputEmail2" placeholder="输入Email或用户名称"></div>
+                    <div class="form-group">
+                        <label class="sr-only" for="exampleInputPassword2">密码</label>
+                        <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password"></div>
+                    <div class="checkbox m-l m-r-xs">
+                        <label class="i-checks">
+                            <input type="checkbox"> <i></i>
+                            记住我
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-default">登录</button>
+                    <a href="#modal-form" class="btn btn-success" data-toggle="modal">其他方式</a>
+                </form>
+            </div>
+        </section>
+        <div class="modal fade" id="modal-form">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body wrapper-lg">
+                        <div class="row">
+                            <div class="col-sm-6 b-r">
+                                <h3 class="m-t-none m-b">登录</h3>
+                                <p>Sign in to meet your friends.</p>
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control" placeholder="Enter email"></div>
+                                    <div class="form-group">
+                                        <label>Password</label>
+                                        <input type="password" class="form-control" placeholder="Password"></div>
+                                    <div class="checkbox m-t-lg">
+                                        <button type="submit" class="btn btn-sm btn-success pull-right text-uc m-t-n-xs"> <strong>Log in</strong>
+                                        </button>
+                                        <label>
+                                            <input type="checkbox">Remember me</label>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-sm-6">
+                                <h4>还不是会员?</h4>
+                                <p>
+                                    You can create an account
+                                    <a href="#" class="text-info">here</a>
+                                </p>
+                                <p>OR</p>
+                                <a href="#" class="btn btn-primary btn-block m-b-sm"> <i class="fa fa-facebook pull-left"></i>
+                                    Sign in with Facebook
+                                </a>
+                                <a href="#" class="btn btn-info btn-block m-b-sm">
+                                    <i class="fa fa-twitter pull-left"></i>
+                                    Sign in with Twitter
+                                </a>
+                                <a href="#" class="btn btn-danger btn-block">
+                                    <i class="fa fa-google-plus pull-left"></i>
+                                    Sign in with Google+
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endcomment %}
+        <div class="cell first last text-center">
+            <a href="/signin/{%if requesturi%}?next={{requesturi}}{%endif%}" class="btn btn-s-md btn-info btn-rounded">需要登录才能回复</a>
+        </div>
+    </div>
+    {% endif %}
+    {% if IsSigned %}
+    <div class="box">
+        <div class="cell first last">
+            <form id="post-reply" method="POST" action="/subject/{%if article.Id%}{{article.Id}}{%endif%}/comment/">
+                <div id="md-editor" class="markdown-editor" data-savekey="post/comment">
+                    <div class="form-group">
+                        <textarea id="CommentForm-Message" class="editor" rows="5" class="form-control" style="overflow: hidden; word-wrap: break-word; resize: none; min-height: 122px;height: 122px;width:100%;"></textarea>
+                        <textarea name="comment" id="comment" class="hidden" style="display:none;"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-s-md btn-dark btn-rounded" onclick="javascript:CommentHolder();">
+                        回复&nbsp;&nbsp; <i class="icon-chevron-sign-right"></i>
+                    </button>
+                    <span class="pull-right">请尽量让自己的回复能够对别人有帮助</span>
+                </div>
+            </form>
+            {% include "editor-front.html" %}
+        </div>
+    </div>
+    {% endif %}

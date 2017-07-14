@@ -1,0 +1,84 @@
+<aside class="aside-lg bg-light lter b-r">
+    <section class="vbox">
+        <section class="scrollable">
+            <div class="wrapper">
+                <div class="text-center m-b m-t">
+                    <a href="/user/{{userProfile.Username}}/" class="thumb-lg">
+                        <img src="{% if userProfile.AvatarLarge %}{{File(userProfile.AvatarLarge)}}{% else %}/identicon/{{userProfile.Username}}/100/default.png{% endif %}" class="img-circle"></a>
+                    <div>
+                        <div class="h3 m-t-xs m-b-xs"><a href="/user/{{userProfile.Username}}/">{{userProfile.Username}}</a></div>
+                        {% if userProfile.Province || userProfile.City %}
+                        <small class="text-muted"> <i class="fa fa-map-marker"></i>
+                            {% if userProfile.City %}{{userProfile.City}}, {% endif %}
+                                    {% if userProfile.Province %}{{userProfile.Province}}{% endif %}
+                        </small>
+                        {% endif %}
+                    </div>
+                </div>
+                {% comment %}
+                <div class="panel wrapper">
+                    <div class="row text-center">
+                        <div class="col-xs-6">
+                            <a href="#">
+                                <span class="m-b-xs h4 block">245</span>
+                                <small class="text-muted">粉丝</small>
+                            </a>
+                        </div>
+                        <div class="col-xs-6">
+                            <a href="#">
+                                <span class="m-b-xs h4 block">55</span>
+                                <small class="text-muted">关注</small>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endcomment %}
+                <div class="btn-group btn-group-justified m-b">
+                {% comment %}
+                    <a class="btn btn-success btn-rounded" data-toggle="button">
+                        <span class="text"> <i class="fa fa-eye"></i>
+                            关注
+                        </span>
+                        <span class="text-active">
+                            <i class="fa fa-eye"></i>
+                            取消
+                        </span>
+                    </a>
+                {% endcomment %}
+                    <a class="btn btn-dark btn-rounded" href="/connect/{{userProfile.Username}}/">
+                        <i class="fa fa-comment-o"></i>
+                        聊天
+                    </a>
+                </div>
+                <div>
+                    <p class="clear">
+                        <span class="post-span votes pull-right"><a href="javascript:void(0);" onclick="javascript:$.get('/touch/like/user/{{userProfile.Id}}/?ver='+(new Date()).valueOf(), {Action:'get'}, function (data, textStatus){this;$('#userscore-{{userProfile.Id}}').html(data);});" class="vote" data-toggle="tooltip" data-placement="left" data-original-title="请给我投上你最神圣的壹票吧！"><i class="fa fa-chevron-up"></i><span id="userscore-{{userProfile.Id}}" style="padding-left:1em;">{{userProfile.Hotscore}}</span></a> &nbsp;<a href="javascript:" onclick="javascript:$.get('/touch/hate/user/{{userProfile.Id}}/?ver='+(new Date()).valueOf(), {Action:'get'}, function (data, textStatus){this;$('#userscore-{{userProfile.Id}}').html(data);});" class="vote" name="_once"><i class="fa fa-chevron-down"></i></a></span>
+                    </p>
+                    <small class="text-uc text-xs text-muted">关于我，</small>
+                    <p>
+                        {% if userProfile.Occupation %}职业：{{userProfile.Occupation}}，{% endif %}
+                        {% if userProfile.Nickname %}昵称：{{userProfile.Nickname}}，{% endif %}
+                        性别： <strong>
+                        {% if userProfile.Gender > 0 %}男神{%else%}
+                            {% if userProfile.Gender < 0 %}女神{% else %}保密{% endif %}
+                        {% endif %}</strong>
+                    </p>
+                        {% if userProfile.Content %}
+                            <small class="text-uc text-xs text-muted">个人说明</small>
+                            <p>{{userProfile.Content}}</p>
+                        {% else %}
+                            <small class="text-uc text-xs text-muted">个人说明</small>
+                            <p>我还以为我们的交往是建筑在感情之上，想不到，原来亦都只是一盘生意～</p>
+                        {% endif %}
+                            <div class="line"></div>
+                            <small class="text-uc text-xs text-muted">加入时间</small>
+                            <p class="m-t-sm">
+                                {%if userProfile.Created%}
+                                <i class="icon-time"></i>
+                                加入时间 {{Unix2Time(userProfile.Created,"2006.01.02 15:04")}}{%endif%}
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+</aside>

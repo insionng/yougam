@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VAST version="2.0">    <Ad id="229">
+    	<InLine>
+    		<AdSystem version="4.11.1-2">LiveRail</AdSystem>
+    		<AdTitle><![CDATA[LiveRail creative 1]]></AdTitle>
+    		<Description><![CDATA[]]></Description>
+    		    		 <Error><![CDATA[http://t4.liverail.com/?metric=error&erc=[ERRORCODE]&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=&redirect=]]></Error>
+    		<Impression id="LR"><![CDATA[http://t4.liverail.com/?metric=impression&cofl=0&flid=0&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=121&y=121&xy=0b79&z2=0.00100]]></Impression>
+            <Impression id="QC"><![CDATA[http://pixel.quantserve.com/pixel/p-d05JkuPGiy-jY.gif?r=7252]]></Impression>
+        	<Impression id="CS"><![CDATA[http://b.scorecardresearch.com/p?c1=1&c2=9864668&c3=1331&c4=&c5=09]]></Impression>
+			<Creatives>
+				<Creative sequence="1" id="331">
+            		<Linear>
+            			<Duration>00:00:11</Duration>
+            			
+                        <TrackingEvents>
+                            <Tracking event="firstQuartile"><![CDATA[http://t4.liverail.com/?metric=view25&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="midpoint"><![CDATA[http://t4.liverail.com/?metric=view50&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="thirdQuartile"><![CDATA[http://t4.liverail.com/?metric=view75&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="complete"><![CDATA[http://t4.liverail.com/?metric=view100&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="mute"><![CDATA[http://t4.liverail.com/?metric=mute&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="unmute"><![CDATA[http://t4.liverail.com/?metric=unmute&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="pause"><![CDATA[http://t4.liverail.com/?metric=pause&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="resume"><![CDATA[http://t4.liverail.com/?metric=resume&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="fullscreen"><![CDATA[http://t4.liverail.com/?metric=fullscreen&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="close"><![CDATA[http://t4.liverail.com/?metric=close&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="acceptInvitation"><![CDATA[http://t4.liverail.com/?metric=accept&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+                        </TrackingEvents>   
+                        
+                        <VideoClicks>
+            				<ClickThrough><![CDATA[http://t4.liverail.com/?metric=clickthru&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=&redirect=http%3A%2F%2Fliverail.com%2F]]></ClickThrough>
+ 		
+            			</VideoClicks>
+        	   			
+                        <MediaFiles>
+        					<MediaFile delivery="progressive" bitrate="256" width="480" height="352" type="video/x-flv"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/lo.flv]]></MediaFile>
+        					<MediaFile delivery="progressive" bitrate="256" width="640" height="360" type="video/x-ms-wmv"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/lo.wmv]]></MediaFile>
+        					<MediaFile delivery="progressive" bitrate="400" width="320" height="180" type="video/mp4"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/lo.mp4]]></MediaFile>
+        					<MediaFile delivery="progressive" bitrate="400" width="320" height="180" type="video/webm"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/lo.webm]]></MediaFile>
+        					<MediaFile delivery="progressive" bitrate="512" width="480" height="352" type="video/x-flv"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/me.flv]]></MediaFile>
+        					<MediaFile delivery="progressive" bitrate="512" width="640" height="360" type="video/x-ms-wmv"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/me.wmv]]></MediaFile>
+        					<MediaFile delivery="progressive" bitrate="600" width="640" height="480" type="video/mp4"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/me.mp4]]></MediaFile>
+        					<MediaFile delivery="progressive" bitrate="600" width="640" height="480" type="video/webm"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/me.webm]]></MediaFile>
+        					<MediaFile delivery="progressive" bitrate="1024" width="480" height="352" type="video/mp4"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/hi.mp4]]></MediaFile>
+        					<MediaFile delivery="progressive" bitrate="1024" width="480" height="352" type="video/webm"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/hi.webm]]></MediaFile>
+        					<MediaFile delivery="progressive" bitrate="1024" width="480" height="352" type="video/x-flv"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/hi.flv]]></MediaFile>
+        					<MediaFile delivery="progressive" bitrate="1024" width="640" height="360" type="video/x-ms-wmv"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/hi.wmv]]></MediaFile>
+    					</MediaFiles>
+    				</Linear>
+    			</Creative>
+    			<Creative sequence="1" id="331">
+    				<CompanionAds>
+        				<Companion width="300" height="60">
+                            <StaticResource creativeType="image/jpeg"><![CDATA[http://cdn.liverail.com/adasset/229/331/300x60.jpg]]></StaticResource>
+                                                        <TrackingEvents>
+                                <Tracking event="creativeView"><![CDATA[http://t4.liverail.com/?metric=companion&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+                              
+                            </TrackingEvents>
+                            <CompanionClickThrough><![CDATA[http://t4.liverail.com/?metric=cclickthru&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=&redirect=http%3A%2F%2Fwww.liverail.com]]></CompanionClickThrough>
+                        </Companion>
+        				<Companion width="300" height="250">
+                            <StaticResource creativeType="image/jpeg"><![CDATA[http://cdn.liverail.com/adasset/229/331/300x250.jpg]]></StaticResource>
+                                                        <TrackingEvents>
+                                <Tracking event="creativeView"><![CDATA[http://t4.liverail.com/?metric=companion&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+                              
+                            </TrackingEvents>
+                            <CompanionClickThrough><![CDATA[http://t4.liverail.com/?metric=cclickthru&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=&redirect=http%3A%2F%2Fwww.liverail.com]]></CompanionClickThrough>
+                        </Companion>
+        				<Companion width="728" height="90">
+                            <StaticResource creativeType="image/jpeg"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/e325b87ef48ec343e4a5d807f094fc39.jpg]]></StaticResource>
+                                                        <TrackingEvents>
+                                <Tracking event="creativeView"><![CDATA[http://t4.liverail.com/?metric=companion&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=]]></Tracking>
+                              
+                            </TrackingEvents>
+                            <CompanionClickThrough><![CDATA[http://t4.liverail.com/?metric=cclickthru&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=&trid=5426896f529b51.52410067&bidf=0.10000&bids=0.00000&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7252.14.18.235.170.0&ver=1&w=&wy=&x=&y=&xy=&redirect=http%3A%2F%2Fwww.liverail.com]]></CompanionClickThrough>
+                        </Companion>
+    				</CompanionAds>
+    			</Creative>
+    		</Creatives>
+    		<Extensions>
+			</Extensions>
+    	</InLine>
+    </Ad>
+</VAST><!-- 8 CN_GUANGDONG_GUANGZHOU_GUANGZHOU 510000 -->

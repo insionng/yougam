@@ -1,0 +1,77 @@
+{% extends "../base.html" %}
+
+{% block title %}
+<title>{{user.Username}} • 发布的话题 - {{SiteName}}</title>
+{% endblock title %}
+
+{% block mainland %}
+<div id="main" class="container">
+    <section class="hbox stretch" style="margin-bottom:1em;">
+        {% include "./sidebar.html" %}
+                <section class="bg-white">
+                    <section class="vbox">
+                        <header class="header bg-light lt">
+                            <ul class="nav nav-tabs nav-white">
+                                <li class="active">
+                                    <a href="#activity" data-toggle="tab"> <i class="fa fa-caret-right"></i> 最近发布的话题</a>
+                                </li>
+                            </ul>
+                        </header>
+                        <section class="scrollable">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="activity">
+                                    <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
+                                    {% if topics %}
+                                        {% for topic in topics %}
+                                        <li class="list-group-item">
+                                            <a href="/user/{{userProfile.Username}}/" class="thumb-sm pull-right m-r-sm">
+                                                <img src="{% if userProfile.AvatarMedium %}{{File(userProfile.AvatarMedium)}}{% else %}/identicon/{{userProfile.Username}}/48/default.png{% endif %}" class="img-circle"></a>
+                                            <h4 class="title">
+                                                <a href="/topic/{{topic.Id}}/">{{topic.Title|safe}}</a>
+                                            </h4>
+                                            <div class="meta">
+                                                {% if topic.Category %}
+                                                <a class="tag" href="/category/{{ topic.Cid }}/">{{ topic.Category }}</a>
+                                                {% endif %}
+                                                {% if topic.Node %}
+                                                •
+                                                <a class="tag" href="/node/{{ topic.Nid }}/">{{ topic.Node }}</a>
+                                                {% endif %}
+                                                {% if topic.Created %}
+                                                •
+                                                <span class="time">{{TimeSince(topic.Created)}}</span>
+                                                {% endif %}
+                                                {% if topic.ReplyLastUsername %}
+                                                <span class="last-reply">
+                                                • 最后回复来自
+                                                    <a href="/user/{{topic.ReplyLastUsername}}/">{{topic.ReplyLastUsername}}</a>
+                                                </span>
+                                                {% endif %}
+                                                {% if topic.ReplyCount %}
+                                                •
+                                                <div class="data hidden-xs pull-right">
+                                                    {{topic.ReplyCount}} <i class="icon-comment"></i>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li class="list-group-item">
+                                            这是一个懒惰的家伙...
+                                        </li>
+                                    {% endif %}
+                                    </ul>
+                                </div>
+                                {% if pagesbar %}
+                                <div class="clear">
+                                    {{pagesbar|safe}}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </section>
+                    </section>
+                </section>
+    </section>
+</div>
+{% endblock mainland %}

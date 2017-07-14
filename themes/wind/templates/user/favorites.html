@@ -1,0 +1,80 @@
+{% extends "../base.html" %}
+
+{% block title %}
+<title>{{userProfile.Username}} • 收藏的话题 - {{SiteName}}</title>
+{% endblock title %}
+
+{% block mainland %}
+<div id="main" class="container">
+    <section class="hbox stretch" style="margin-bottom:1em;">
+        {% include "./sidebar.html" %}
+                <section class="bg-white">
+                    <section class="vbox">
+                        <header class="header bg-light lt">
+                            <ul class="nav nav-tabs nav-white">
+                                <li class="active">
+                                    <a href="#activity" data-toggle="tab"> <i class="fa fa-caret-right"></i> 收藏的话题</a>
+                                </li>
+                            </ul>
+                        </header>
+                        <section class="scrollable">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="activity">
+                                    <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
+                                    {% if favorites %}
+                                        {% for favorite in favorites %}
+                                        <li class="list-group-item">
+                                            <a href="/user/{{favorite.User.Username}}/" class="thumb-sm pull-right m-r-sm">
+                                                <img src="{% if favorite.User.AvatarMedium %}{{File(favorite.User.AvatarMedium)}}{% else %}/identicon/{{favorite.User.Username}}/48/default.png{% endif %}" class="img-circle"></a>
+                                            <h4 class="title">
+                                                <a href="/topic/{{favorite.TopicMark.Tid}}/">{{favorite.Topic.Title}}</a>
+                                            </h4>
+                                            <div class="meta">
+                                                {% if favorite.Topic.Category %}
+                                                <a class="tag" href="/category/{{ favorite.Topic.Cid }}/">{{ favorite.Topic.Category }}</a>
+                                                {% endif %}
+                                                {% if favorite.Topic.Node %}
+                                                •
+                                                <a class="tag" href="/node/{{favorite.Topic.Node}}/">{{favorite.Topic.Node}}</a>
+                                                {% endif %}
+                                                {% if favorite.Topic.Created %}
+                                                •
+                                                <span class="time">{{TimeSince(favorite.Topic.Created)}}</span>
+                                                {% endif %}
+                                                {% if favorite.Topic.ReplyLastUsername %}
+                                                <span class="last-reply">
+                                                • 最后回复来自
+                                                    <a href="/user/{{favorite.Topic.ReplyLastUsername}}/">{{favorite.Topic.ReplyLastUsername}}</a>
+                                                </span>
+                                                {% endif %}
+                                                {% if favorite.Topic.ReplyTime %}
+                                                     <span class="time">• 最后回复于{{Unix2Time(favorite.Topic.ReplyTime,"2006.01.02 15:04")}}</span>
+                                                {% endif %}
+                                                {% if favorite.Topic.Views %}
+                                                    <div class="data hidden-xs pull-right">
+                                                     • {% if favorite.Topic.ReplyCount %} {{ favorite.Topic.ReplyCount }} <i class="icon-comment"></i> 个评论{% endif %}
+                                                        {{ favorite.Topic.Views }} <i class="icon-eye-open"> 次浏览</i>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li class="list-group-item">
+                                            尚无收藏的话题...
+                                        </li>
+                                    {% endif %}
+                                    </ul>
+                                </div>
+                                {% if pagesbar %}
+                                <div class="clear">
+                                    {{pagesbar|safe}}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </section>
+                    </section>
+                </section>
+    </section>
+</div>
+{% endblock mainland %}

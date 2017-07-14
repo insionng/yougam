@@ -1,0 +1,316 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="content" class="col-lg-9">
+    {% include "msgerr.html" %}
+    <div class="box">
+        {% if curnode %}
+            <div class="cell first">
+                <a href="/">{{SiteName}}</a>
+                {% if curnode.Title %}
+                    <i class="fa fa-caret-right"></i> <a class="tag" href="/node/{{curnode.Title|urlencode}}/">{{curnode.Title}}</a>
+                {% endif %}
+            </div>
+            {% if curnode.Content %}
+                <div class="cell">{{curnode.Content|safe}}</div>
+            {% endif %}
+        {%else%}
+            {%if nodes%}
+                <div class="cell first nav-cats">
+                    {% for node in nodes %}
+                        {%if forloop.Counter<=10 %}
+                            <span class="cat">
+                                <a {% if CurNdTitle ==node.Title %}class="active" {% endif %} href="/node/{{node.Title|urlencode}}/">{{node.Title}}</a>
+                            </span>
+                        {%endif%}
+                    {%endfor%}
+                </div>
+            {%endif%}
+                <div class="cell nav-cats">
+                    <span class="cat">
+                        <a {% if not curnode %}class="active" {% endif %} href="/"> <i class="fa fa-refresh"></i>
+                        </a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="optimal" && isdefault==true %}class="active" {% endif %} href="/topics/optimal/">{{ i18n.Tr("topics-optimal") }}</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="lastest" && isdefault==true %}class="active" {% endif %} href="/topics/lastest/">{{ i18n.Tr("topics-lastest") }}</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="hotness" && isdefault==true %}class="active" {% endif %} href="/topics/hotness/">{{ i18n.Tr("topics-hotness") }}</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="rising" && isdefault==true %}class="active" {% endif %} href="/topics/rising/">{{ i18n.Tr("topics-rising") }}</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="scores" && isdefault==true %}class="active" {% endif %} href="/topics/scores/">{{ i18n.Tr("topics-scores") }}</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="votes" && isdefault==true %}class="active" {% endif %} href="/topics/votes/">{{ i18n.Tr("topics-votes") }}</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="controversial" && isdefault==true %}class="active" {% endif %} href="/topics/controversial/">{{ i18n.Tr("topics-controversial") }}</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="popular" && isdefault==true %}class="active" {% endif %} href="/topics/popular/">{{ i18n.Tr("topics-popular") }}</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="cold" && isdefault==true %}class="active" {% endif %} href="/topics/cold/">{{ i18n.Tr("topics-cold") }}</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="favorites" && isdefault==true %}class="active" {% endif %} href="/topics/favorites/">{{ i18n.Tr("topics-favorites") }}</a>
+                    </span>
+                    {% comment %}
+                    <span class="cat">
+                        <a href="/topics/follow/">{{ i18n.Tr("topics-follow") }}</a>
+                    </span>
+                    {% endcomment %}
+                </div>
+        {% endif %}
+        {% if TopicsBySort %}
+            <div class="panel panel-default">
+                    <div class="panel-heading bg-light bg-light">
+                        <span class="cat">{{ i18n.Tr("top-topics") }}</span>
+                    </div>
+                    <div class="panel-body bg-light lter no-padder">
+                        <div class="post-list lt">
+                        {% for topic in TopicsBySort %}
+                            <div class="post cell">
+                                <div class="avatar">
+                                    <a href="/user/{{ topic.Author|urlencode }}/" data-toggle="tooltip" data-placement="right" data-original-title="{{topic.Author}}"><img src="{% if topic.AvatarMedium %}{{File(topic.AvatarMedium)}}{% else %}/identicon/{{topic.Author}}/48/default.png{% endif %}" alt="{{topic.Author}}" class="img-circle" style="width:48px;height:48px;"/>
+                                    </a>
+                                </div>
+                                <a href="/topic/{{ topic.Id }}/">
+                                    <h3 class="title" onclick="javascript:window.location.href = '/topic/{{ topic.Id }}/';">{{ topic.Title | safe }}</h3>
+                                </a>
+                                <div class="meta">
+                                    {% if topic.Hotscore %}
+                                        <span class="post-span votes"><i class="fa fa-chevron-up"></i>&nbsp;&nbsp;<span id="score-{{topic.Id}}">{{topic.Hotscore}}</span> • </span>
+                                    {% endif %}
+                                    {% if topic.Node %}
+                                    <a class="tag" href="/node/{{ topic.Node|urlencode }}/">{{ topic.Node }}</a>
+                                    •
+                                    {% endif %}
+                                    <a href="/createdby/{{ topic.Author|urlencode }}/">{{ topic.Author }}</a>
+                                    {% if topic.Created %}
+                                    •
+                                    <span class="time">{{TimeSince(topic.Created)}}</span>
+                                    {% endif %}
+                                    {% if topic.ReplyLastUsername %}
+                                        <span class="time"> •
+                                            <span class="last-reply">
+                                            最后回复来自 <a href="/user/{{ topic.ReplyLastUsername|urlencode }}/">{{ topic.ReplyLastUsername }}</a>
+                                            </span>
+                                            {% if topic.ReplyTime %}
+                                                于 {{TimeSince(topic.ReplyTime)}}
+                                            {% endif %}
+                                        </span>
+                                    {% endif %}
+                                    {% if topic.ReplyCount %}
+                                    <span class="data hidden-xs pull-right">
+                                        <a href="/topic/{{ topic.Id }}/" class="badge">{{ topic.ReplyCount }}</a>
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+            </div>
+        {% endif %}
+            <div class="post-list">
+                {% if topics %}
+                    {% for topic in topics %}
+                        <div class="post cell">
+                                <div class="avatar">
+                                    <a href="/user/{{ topic.Author|urlencode }}/" data-toggle="tooltip" data-placement="right" data-original-title="{% if topic.Author %}{{topic.Author}}{% endif %}">
+                                        <img src="{% if topic.AvatarMedium %}{{File(topic.AvatarMedium)}}{% else %}/identicon/{{topic.Author}}/48/default.png{% endif %}" alt="{{topic.Author}}" class="img-circle" style="width:48px;height:48px;"/>
+                                    </a>
+                                </div>
+                                <a href="/topic/{{ topic.Id }}/">
+                                    <h3 class="title" onclick="javascript:window.location.href = '/topic/{{ topic.Id }}/';">{{ topic.Title | safe }}</h3>
+                                </a>
+                                <div class="meta">
+                                    {% if topic.Hotscore %}
+                                        <span class="post-span votes"><i class="fa fa-chevron-up"></i>&nbsp;&nbsp;<span id="score-{{topic.Id}}">{{topic.Hotscore}}</span> • </span>
+                                    {% endif %}
+                                    {% if topic.Node %}
+                                    <a class="tag" href="/node/{{ topic.Node|urlencode }}/">{{ topic.Node }}</a>
+                                    •
+                                    {% endif %}
+                                    <a href="/createdby/{{ topic.Author|urlencode }}/">{{ topic.Author }}</a>
+                                    {% if topic.Created %}
+                                    •
+                                    <span class="time">{{TimeSince(topic.Created)}}</span>
+                                    {% endif %}
+                                    {% if topic.ReplyLastUsername %}
+                                        <span class="time"> •
+                                            <span class="last-reply">
+                                            最后回复来自 <a href="/user/{{ topic.ReplyLastUsername|urlencode }}/">{{ topic.ReplyLastUsername }}</a>
+                                            </span>
+                                            {% if topic.ReplyTime %}
+                                                于 {{TimeSince(topic.ReplyTime)}}
+                                            {% endif %}
+                                        </span>
+                                    {% endif %}
+                                    {% if topic.ReplyCount %}
+                                    <span class="data hidden-xs pull-right">
+                                        <a href="/topic/{{ topic.Id }}/" class="badge">{{ topic.ReplyCount }}</a>
+                                    </span>
+                                    {% endif %}
+                                </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% if not TopicsBySort %}
+                        <div class="post cell text-center">
+                            {% if CurUsrTitle %}
+                                    <a href="/new/node/{{CurUsrTitle|urlencode}}/topic/" class="btn btn-s-md btn-default btn-rounded">创建 {{CurUsrTitle}} 的新话题</a>
+                            {% else %}
+                                    <a href="/new/topic/" class="btn btn-s-md btn-default btn-rounded">尚没有话题 • 创建新话题</a>
+                            {% endif %}
+                                <div style="clear:both;"></div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% if pagesbar %}
+            <div class="cell last">
+                {{pagesbar|safe}}
+            </div>
+            {% endif %}
+    </div>
+
+        <section class="panel panel-default">
+            <header class="panel-heading bg-light">
+                <ul class="nav nav-tabs pull-right">
+                    <li class="active">
+                        <a href="#comments-1" data-toggle="tab"> <i class="fa fa-comment-o text-muted"></i>
+                            {{ i18n.Tr("optimal-comments") }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#comments-2" data-toggle="tab"> <i class="fa fa-comment text-muted"></i>
+                            {{ i18n.Tr("recent-comments") }}
+                        </a>
+                    </li>
+                </ul>
+                <span class="hidden-sm">{{ i18n.Tr("comment") }}</span>
+            </header>
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="comments-1">
+                        <div class="cell first">
+                          <strong><a href="/best/comments/">{{ i18n.Tr("optimal-comments") }}</a></strong>
+                        </div>
+                        {% if ConfidenceReplys %}
+                        <div class="post-list last">
+                            {% for reply in ConfidenceReplys %}
+                            <div class="post cell">
+                                <div class="avatar">
+                                    <a href="/user/{{reply.Author}}/" title="{{reply.Author}}">
+                                        <img src="{% if reply.AvatarMedium %}{{File(reply.AvatarMedium)}}{%else%}/identicon/{{reply.Author}}/48/default.png{% endif %}" alt="{{reply.Author}}'s Photo"></a>
+                                </div>
+                                {% if reply.Content %}
+                                <h3 class="title">
+                                    <a href="/topic/{{reply.Tid}}/#reply{{reply.Id}}">
+                                        {% with s=Htm2Str(reply.Content) %}
+                                          {%if not s %}
+                                            {{ reply.Author }} 回应了话题#{{reply.Tid}}
+                                          {%else%}
+                                            {{Cropword(s,0,48,"...")}}
+                                          {%endif%}
+                                        {% endwith %}
+                                    </a>
+                                </h3>
+                                {% endif %}
+                                <div class="meta">
+                                    <a href="/createdby/{{reply.Author}}/">{{reply.Author}}</a>
+                                    •
+                                    <span class="time">{{TimeSince(reply.Created)}}</span>
+                                </div>
+                            </div>
+                            {%endfor%}
+                        </div>
+                        {%else%}
+                        <div class="post-list last">
+                            <div class="post cell">
+                                {{ i18n.Tr("not-yet") }} {{ i18n.Tr("optimal-comments") }}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="tab-pane" id="comments-2">
+                        <div class="cell first">
+                          <strong>{{ i18n.Tr("recent-comments") }}</strong>
+                        </div>
+                        {% if replys %}
+                        <div class="post-list last">
+                            {% for reply in replys %}
+                            <div class="post cell">
+                                <div class="avatar">
+                                    <a href="/user/{{reply.Author}}/" title="{{reply.Author}}">
+                                        <img src="{% if reply.AvatarMedium %}{{File(reply.AvatarMedium)}}{%else%}/identicon/{{reply.Author}}/48/default.png{% endif %}" alt="{{reply.Author}}'s Photo"></a>
+                                </div>
+                                {% if reply.Content %}
+                                <h3 class="title">
+                                    <a href="/topic/{{reply.Tid}}/#reply{{reply.Id}}">
+                                        {% with s=Htm2Str(reply.Content) %}
+                                          {%if not s %}
+                                            {{ reply.Author }} 回应了话题#{{reply.Tid}}
+                                          {%else%}
+                                            {{Cropword(s,0,48,"...")}}
+                                          {%endif%}
+                                        {% endwith %}
+                                    </a>
+                                </h3>
+                                {% endif %}
+                                <div class="meta">
+                                    <a href="/createdby/{{reply.Author}}/">{{reply.Author}}</a>
+                                    •
+                                    <span class="time">{{TimeSince(reply.Created)}}</span>
+                                </div>
+                            </div>
+                            {%endfor%}
+                        </div>
+                        {%else%}
+                        <div class="post-list last">
+                            <div class="post cell">
+                                {{ i18n.Tr("not-yet") }} {{ i18n.Tr("recent-comments") }}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% include "navbox.html" %}
+    {% if IsSigned and curnode %}
+        <div class="box">
+            <div class="cell first last">
+                <form id="post-new" method="POST" action="/new/node/{{curnode.Id}}/topic/">
+                    <label class="control-label">快键发布</label>
+                    <div class="controls">
+                        <div class="form-group">
+                            <textarea class="editor" name="title" style="height:122px;width:100%;margin:0;"></textarea>
+                            <input value="{{curnode.Id}}" name="nodeid" type="hidden"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="button-bar" style="position: relative;">
+                            <button type="submit" class="btn btn-s-md btn-dark btn-rounded" onclick="javascript:SubmitHolder();">
+                                发布&nbsp;&nbsp; <i class="icon-chevron-sign-right"></i>
+                            </button>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </form>
+                {% include "editor-front.html" %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}

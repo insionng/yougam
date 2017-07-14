@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <title>{{SiteName}}管理系统</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/root/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/root/css/bootstrap-responsive.min.css" />
+  <link rel="stylesheet" href="/root/css/uniform.css" />
+  <link rel="stylesheet" href="/root/css/select2.css" />
+  <link rel="stylesheet" href="/root/css/matrix-style.css" />
+  <link rel="stylesheet" href="/root/css/matrix-media.css" />
+  <link href="/root/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+  <link href='/root/css/opensans.css' rel='stylesheet' type='text/css'></head>
+<body>
+{% include "header.html" %}
+{% include "sidebar.html" %}
+  <div id="content">
+    <div id="content-header">
+      <div id="breadcrumb">
+        <a href="#" title="控制面板" class="tip-bottom">
+          <i class="icon-home"></i>
+          控制面板
+        </a>
+        <a href="#" class="current">节点列表</a>
+      </div>
+      <h1>节点列表</h1>
+    </div>
+    <div class="container-fluid">
+      <hr>
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="widget-box">
+            <div class="widget-title">
+              <span class="icon">
+                <i class="icon-th"></i>
+              </span>
+              <h5>数据表格</h5>
+            </div>
+            <div class="widget-content nopadding">
+              <table class="table table-bordered data-table">
+                <thead>
+                  <tr>
+                    <th>标题</th>
+                    <th>分类状态</th>
+                    <th>作者</th>
+                    <th>日期</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+          {% if nodes %}
+              {% for nd in nodes %}
+                  <tr class="gradeX">
+                    <td><a href="/root/read/node/{{nd.Id}}/">{{nd.Title}}</a></td>
+                    <td>{% if nd.Cid<=-1 %}前端隐藏{% else %}前端显示{% endif %}</td>
+                    <td>{% if nd.Author=="" %}默认{% else %}{{nd.Author}}{% endif %}</td>
+                    <td>{% if nd.Created %}{{Unix2Time( nd.Created,"2006.01.02 15:04")}}{%endif%}</td>
+                    <td><a href="/root/delete/node/{{nd.Id}}/">删除</a> | <a href="/root/update/node/{{nd.Id}}/">更新</a></td>
+                  </tr>
+              {% endfor %}
+          {% else %}
+                  <tr class="gradeC">
+                    <td>尚无标题</td>
+                    <td>
+                      尚无内容
+                    </td>
+                    <td>尚无作者</td>
+                    <td>尚无日期</td>
+                    <td>N/A</td>
+                  </tr>
+          {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% include "footer.html" %}
+  <script src="/root/js/jquery.min.js"></script>
+  <script src="/root/js/jquery.ui.custom.js"></script>
+  <script src="/root/js/bootstrap.min.js"></script>
+  <script src="/root/js/jquery.uniform.js"></script>
+  <script src="/root/js/select2.min.js"></script>
+  <script src="/root/js/jquery.dataTables.min.js"></script>
+  <script src="/root/js/matrix.js"></script>
+  <script src="/root/js/matrix.tables.js"></script>
+</body>
+</html>

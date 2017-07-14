@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>{% if article.Title %}{{ Text(article.Title,0,50)|safe }}{% endif %}{% if article.Node %} / {{article.Node}}{% endif %} - {{SiteName}} / {{SiteTitle}}</title>
+{% endblock title %}
+
+{% block content %}
+    <div id="content" class="col-lg-9">
+        {% include "msgerr.html" %}
+        <div class="box">
+            <div class="cell first breadcrumb last">
+                <a href="/">{{SiteName}}</a>
+                {% if article.Node %}
+                    <i class="fa fa-caret-right"></i> <a class="tag" href="/node/{{article.Node}}/">{{article.Node}}</a>
+                {% endif %}
+            </div>
+            {% if topics %}
+                {% for topic in topics %}
+                    <div class="post-show">
+                        <div class="cell{% if not forloop.First %} subtle{% endif %}{% if forloop.First %} first{% endif %}{% if not topic.Content %} last{% endif %}">
+                            {% if forloop.First %}
+                                {% if article.Author %}
+                                    <div class="avatar pull-right">
+                                        <a href="/user/{{article.Author}}/" data-toggle="tooltip" data-placement="left" data-original-title="{% if author.Nickname %}{{author.Nickname}}{% else %}{{article.Author}}{% endif %}">
+                                            <img class="small" src="{% if author.AvatarMedium %}{{File(author.AvatarMedium)}}{% else %}/identicon/{{author.Username}}/48/default.png{% endif %}"/>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                                {% if article.Title %}
+                                    <h1 class="post-title">
+                                        {{ article.Title | safe }}
+                                    </h1>
+                                {% endif %}
+                            {% endif %}
+                            <div class="post-meta">
+                                {% if forloop.First %}
+                                    <span class="post-span votes"><a href="javascript:void(0);" onclick="javascript:$.get('/touch/like/topic/{{article.Id}}/?ver='+(new Date()).valueOf(), {Action:'get'}, function (data, textStatus){this;$('#score-{{article.Id}}').html(data);});" class="vote"><i class="fa fa-chevron-up"></i><span id="score-{{article.Id}}" style="padding-left:1em;">{{article.Hotscore}}</span></a> &nbsp;<a href="javascript:" onclick="javascript:$.get('/touch/hate/topic/{{article.Id}}/?ver='+(new Date()).valueOf(), {Action:'get'}, function (data, textStatus){this;$('#score-{{article.Id}}').html(data);});" class="vote"><i class="fa fa-chevron-down"></i></a>&nbsp;•&nbsp;</span>
+
+                                    {% if topic.Author %}
+                                        <a href="/createdby/{{topic.Author}}/">{{topic.Author}}</a>&nbsp;•&nbsp;
+                                    {% endif %}
+                                    {% if topic.Category %}
+                                        <a class="tag" href="/category/{{topic.Category}}/">{{topic.Category}}</a>&nbsp;•&nbsp;
+                                    {% endif %}
+                                    {% if topic.Node %}
+                                        <a class="tag" href="/node/{{topic.Node}}/">{{topic.Node}}</a>&nbsp;•&nbsp;
+                                    {% endif %}
+                                    {% if article.Ctype %}
+                                        <span class="tag">
+                                            {% if Compare(article.Ctype|lower, "==","-1") %}回复可见{%endif%}
+                                            {% if Compare(article.Ctype|lower, "==","-2") %}付费可见{%endif%}
+                                            {% if Compare(article.Ctype|lower, "==","-3") %}会员可见{%endif%}
+                                        </span>&nbsp;•&nbsp;
+                                    {% endif %}
+                                    {% if topic.ReplyLastUsername!="" %}
+                                        <span class="last-reply">
+                                            最后回复 <a href="/user/{{topic.ReplyLastUsername}}/">{{topic.ReplyLastUsername}}</a>&nbsp;•&nbsp;
+                                        </span>
+                                    {% endif %}
+                                    {% if topic.Created %}
+                                        <span class="time">{{TimeSince(topic.Created)}}&nbsp;•&nbsp;</span>
+                                    {% endif %}
+                                    {% if article.Id %}
+                                        <span class="topic-views"><span class="views">{%if article.Views%}{{article.Views}}{%else%}0{%endif%}</span> 点击</span>
+                                        <script type="text/javascript">
+                                            $.get("/touch/view/topic/{{article.Id}}/?ver="+(new Date()).valueOf(), function(data){
+                                                $(".topic-views").html(data+" 点击");
+                                            });
+                                        </script>
+                                    {% endif %}
+                                {% else %}
+                                    {% if topic.Created %}
+                                        <span class="time">第 {{forloop.Counter-1}} 条附言&nbsp;•&nbsp;{{TimeSince(topic.Created)}}</span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        {% comment %}
+                        {% if forloop.First %}
+                            <div class="cell breadcrumb">
+                                {% if (article.Uid == SignedUserID) %}
+                                    <a class="post-action-link" href="/subject/{{article.Id}}/topic/">补充附言</a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        {% endcomment %}
+                    {% if topic.Content %}
+                        <div class="cell{% if not forloop.First %} subtle{% endif %}{% if forloop.Last %} last{% endif %}"{% if SignedUser && forloop.Last %} style="border-bottom-left-radius:0px;border-bottom-right-radius:0px;"{% endif %}>
+                            <div class="post-content">
+                                {% if (topic.Attachment|length>0) %}
+                                    {% for img in Split(topic.Attachment,",") %}
+                                        <img src="{{domain47niu}}{{img}}?imageView/2/w/612/q/100" style="display:block;margin-bottom:1em;clear:both;width:100%;height:auto;"/>
+                                    {% endfor %}
+                                        <span class="clearfix"></span>
+                                {% endif %}
+                                {% if (Excerpt|length>0) and Compare(topic.Pid|lower,"==","0") %}
+                                    <div class="alert alert-warning">{{Excerpt|safe}}</div>
+                                {% endif %}
+                                {% if Allow or IsRoot %}
+                                    {{ topic.Content | safe }}
+                                {% else %}
+                                    {% if Compare(topic.Ctype|lower, "==","-1") %}
+                                        <div class="alert alert-info">
+                                            <button type="button" class="close" data-dismiss="alert">×</button>
+                                            <i class="fa fa-info-sign"></i>
+                                            <strong>提示!</strong>
+                                            此贴为回复可见贴,回复即可阅览！
+                                        </div>
+                                    {% endif %}
+                                    {% if (not Allow) and Compare(topic.Ctype|lower, "==","-2") %}
+                                    <div class="alert alert-info">
+                                        <button type="button" class="close" data-dismiss="alert">×</button> <i class="fa fa-info-sign"></i> <strong>提示!</strong>
+                                        此贴为付费可见贴,付费即可阅览！
+                                    </div>
+                                    <div class="modal-dialog fade in">
+                                        <form action="/pay/{{article.Author}}/10/{{article.Id}}/" method="POST">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">支付</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                请支付作者 {{article.Author}} [10] 金币后继续阅览。
+                                                <div class="clear">
+                                                    <label>输入密码：</label>
+                                                    <input type="password" class="form-control parsley-validated" data-required="true" name="password"></div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input class="btn btn-primary" type="submit" value="支付"/>
+                                            </div>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    {%endif%}
+                                    {% if Compare(topic.Ctype|lower, "==","-3") %}
+                                        <div class="alert alert-info">
+                                            <button type="button" class="close" data-dismiss="alert">×</button>
+                                            <i class="fa fa-info-sign"></i>
+                                            <strong>提示!</strong>
+                                            此贴为会员可见贴,注册会员即可阅览！
+                                        </div>
+                                    {% endif %}
+                                    {% if Compare(topic.Pid|lower,">","0") %}
+                                        <div class="alert alert-warning">此乃隐藏内容</div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <span class="clearfix"></span>
+                        </div>
+                    {% endif %}
+
+                    {% if forloop.Last %}
+                        <div class="holdbar">
+                            <div class="pull-left">
+                            {% if SignedUser %}
+                                <a class="btn btn-mini" href="javascript:" onclick="javascript:$.getJSON('/touch/favorite/topic/{{article.Id}}/?ver='+(new Date()).valueOf(), function(data) {
+                                    $('#favorite-{{article.Id}}').html('&nbsp;•&nbsp;'+data.FavoriteCount+' 人收藏');
+                                    if (data.isFavorite==true){
+                                        $('#favorite').html('取消收藏');
+                                    }else{
+                                        $('#favorite').html('收藏话题');
+                                    }
+                                });" style="margin-right:1em;">
+                                    <span id="favorite" >收藏话题</span>
+                                </a>
+                            {% endif %}
+                                {% if (article.Uid == SignedUserID)|| IsRoot %}
+                                    {% if (not replys)|| IsRoot %}
+                                    <a class="btn btn-mini" href="/modify/{{article.Id}}/">修改话题</a>
+                                    {% endif %}
+                                    <a class="btn btn-mini" href="/subject/{{article.Id}}/topic/">补充附言</a>
+                                    {% if IsRoot %}
+                                    <a class="btn btn-mini" href="/root/delete/topic/{{article.Id}}/">删除</a>
+                                    <span class="post-span votes"><a href="javascript:void(0);" onclick="javascript:$.get('/touch/top/topic/{{article.Id}}/?ver='+(new Date()).valueOf(), {Action:'get'}, function (data, textStatus){this;$('#sort-{{article.Id}}').html(data);});" class="btn btn-mini"><i class="fa fa-chevron-up"></i>置顶<span id="sort-{{article.Id}}" style="padding-left:1em;">{{article.Sort}}</span></a> &nbsp;<a href="javascript:" onclick="javascript:$.get('/touch/bottom/topic/{{article.Id}}/?ver='+(new Date()).valueOf(), {Action:'get'}, function (data, textStatus){this;$('#sort-{{article.Id}}').html(data);});" class="btn btn-mini"><i class="fa fa-chevron-down"></i>置底</a></span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="pull-right" style="line-height:26px; text-shadow: 0px 1px 0px #fff;">
+                                <span class="topic-views"><span class="views">{%if article.Views%}{{article.Views}}{%else%}0{%endif%}</span> 点击</span>
+                                <span><span id="favorite-{{article.Id}}">{% if article.FavoriteCount %}&nbsp;•&nbsp;{{article.FavoriteCount}} 人收藏{% endif %}</span></span>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% include "comment.html" %}
+        <span class="clearfix"></span>
+    </div>
+{% endblock content %}
+
+{% block sidebar %}{% include "sidebar-topic.html" %}{% endblock sidebar %}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <title>{{SiteName}}管理系统</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/root/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/root/css/bootstrap-responsive.min.css" />
+  <link rel="stylesheet" href="/root/css/matrix-style.css" />
+  <link rel="stylesheet" href="/root/css/matrix-media.css" />
+  <link href="/root/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+  <link href='/root/css/opensans.css' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/root/css/uniform.css" />
+</head>
+<body>
+{% include "header.html" %}
+{% include "sidebar.html" %}
+  <div id="content">
+    <div id="content-header">
+      <div id="breadcrumb">
+        <a href="#" title="管理面板" class="tip-bottom">
+          <i class="icon-home"></i>
+          管理面板
+        </a>
+        <a href="#">用户</a>
+      {% if (catpage=="RUpdateUserHandler")||(catpage=="RUpdateAdministratorHandler") %}
+        <a href="#" class="current">更新用户</a>
+      {% else %}
+        <a href="#" class="current">创建用户</a>
+      {% endif %}
+      </div>
+      {% if (catpage=="RUpdateUserHandler")||(catpage=="RUpdateAdministratorHandler") %}
+      <h1>更新用户</h1>
+      {% else %}
+      <h1>创建用户</h1>
+      {% endif %}
+    </div>
+    <div class="container-fluid">
+      <hr>
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="widget-box">
+            <div class="widget-title">
+              <span class="icon">
+                <i class="icon-pencil"></i>
+              </span>
+              <h5>设置用户基本资料</h5>
+            </div>
+            {% include "msgerr.html" %}
+            <div class="widget-content nopadding">
+              <form class="form-horizontal" method="post" action="">
+                  <div class="control-group">
+                    <label class="control-label">用户名 (*)</label>
+                    <div class="controls">
+                      <input id="username" type="text" name="username" value="{{usr.Username}}" />
+                    </div>
+                  </div>
+                  <div class="control-group">
+                    <label class="control-label">Email (*)</label>
+                    <div class="controls">
+                      <input type="text" name="email" value="{{usr.Email}}"/>
+                    </div>
+                  </div>
+                  <div class="control-group">
+                    <label class="control-label">昵称</label>
+                    <div class="controls">
+                      <input type="text" name="nickname" value="{{usr.Nickname}}"/>
+                    </div>
+                  </div>
+                  <div class="control-group">
+                    <label class="control-label">输入密码 (*)</label>
+                    <div class="controls">
+                      <input type="password" name="password"/>
+                    </div>
+                  </div>
+                  <div class="control-group">
+                    <label class="control-label">确认密码 (*)</label>
+                    <div class="controls">
+                      <input type="password" name="repassword"/>
+                    </div>
+                  </div>
+                  <div class="control-group">
+                    <label class="control-label">手机</label>
+                    <div class="controls">
+                      <input type="text" name="mobile" value="{{usr.Mobile}}"/>
+                    </div>
+                  </div>
+                  <div class="control-group">
+                    <label for="checkboxes" class="control-label">性别</label>
+                    <div class="controls">
+                      <div data-toggle="buttons-radio" class="btn-group">
+                        <button class='btn btn-primary{% ifequal usr.Gender|escape "-1" %} active{% endifequal %}' type="button" onclick="javascript:gender.value=this.value;" value="-1">保密</button>
+                        <button class='btn btn-primary{% ifequal usr.Gender|escape "1" %} active{% endifequal %}' type="button" onclick="javascript:gender.value=this.value;" value="1">男生</button>
+                        <button class='btn btn-primary{% ifequal usr.Gender|escape "2" %} active{% endifequal %}' type="button" onclick="javascript:gender.value=this.value;" value="2">女生</button>
+                        <input type="hidden" name="gender" id="gender">  
+                      </div>
+                    </div>
+                  </div>
+                  <div class="control-group">
+                    <label class="control-label">签名</label>
+                    <div class="controls">
+                      <textarea class="span11" name="content" style="height:100px;">{{usr.Content}}</textarea>
+                    </div>
+                    </div>
+                  <div class="form-actions">
+                    {% if (catpage=="RUpdateUserHandler")||(catpage=="RUpdateAdministratorHandler") %}
+                      <input type="submit" value="更新" class="btn btn-success">
+                    {% else %}
+                      <input type="submit" value="创建" class="btn btn-success">
+                    {% endif %}
+                  </div>
+                <div id="submitted"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% include "footer.html" %}
+  <script src="/root/js/jquery.min.js"></script>
+  <script src="/root/js/jquery.ui.custom.js"></script>
+  <script src="/root/js/bootstrap.min.js"></script>
+  <script src="/root/js/jquery.validate.js"></script>
+  <script src="/root/js/jquery.wizard.js"></script>
+  <script src="/root/js/matrix.js"></script>
+  <script src="/root/js/matrix.wizard.js"></script>
+</body>
+</html>

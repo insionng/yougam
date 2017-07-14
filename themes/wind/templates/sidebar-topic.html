@@ -1,0 +1,60 @@
+{% block sidebar %}
+    <div id="sidebar" class="col-lg-3">
+        {% block infobox %}
+          {% include "infobox.html" %}
+        {% endblock infobox %}
+        {% if topic_sidebar_hotness_10 %}
+          <div class="box">
+            {% include "adlist.html" %}
+            <div class="cell last">
+                <div class="cell first">
+                    <strong>{% if article.Node %}{{article.Node}}之{% endif %}热门话题</strong>
+                </div>
+                <ul class="cell sidebar-list last">
+                    {% for topic in topic_sidebar_hotness_10 %}
+                        <li>
+                          <a href="/topic/{{topic.Id}}/">
+                            {% with s=Htm2Str(topic.Title) %}
+                              <a href="/topic/{{topic.Id}}/">
+                              {%if not s %}
+                                {{ topic.Author }} {{TimeSince(topic.Created)}}在{{topic.Node}}节点发布了话题#{{topic.Id}}
+                              {%else%}
+                                {{Cropword(s,0,24,"...")}}
+                              {%endif%}
+                              </a>
+                            {% endwith %}
+                          </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+          </div>
+        {% endif %}
+        {% if TopicsByUser_10s %}
+          <div class="box">
+            <div class="cell last">
+                <div class="cell first">
+                    <strong>作者其他话题</strong>
+                </div>
+                <ul class="cell sidebar-list last">
+                    {% for topic in TopicsByUser_10s %}
+                        <li>
+                          <a href="/topic/{{topic.Id}}/">
+                            {% with s=Htm2Str(topic.Title) %}
+                              <a href="/topic/{{topic.Id}}/">
+                              {%if not s %}
+                                {{ topic.Author }} {{TimeSince(topic.Created)}}在{{topic.Node}}节点发布了话题#{{topic.Id}}
+                              {%else%}
+                                {{Cropword(s,0,24,"...")}}
+                              {%endif%}
+                              </a>
+                            {% endwith %}
+                          </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+          </div>
+        {% endif %}
+    </div>
+{% endblock sidebar %}

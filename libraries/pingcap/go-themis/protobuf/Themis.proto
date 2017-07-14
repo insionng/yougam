@@ -1,0 +1,132 @@
+option java_package = "org.apache.hadoop.hbase.themis.cp.generated";
+option java_outer_classname = "ThemisProtos";
+option java_generic_services = true;
+option java_generate_equals_and_hash = true;
+option optimize_for = SPEED;
+
+import "Client.proto";
+import "Cell.proto";
+
+message ThemisGetRequest {
+  required Get get = 1;
+  required uint64 startTs = 2;
+  required bool ignoreLock = 3;
+}
+
+message ThemisBatchGetRequest {
+  repeated Get gets = 1;
+  required uint64 startTs = 2;
+  required bool ignoreLock = 3;
+}
+
+message ThemisBatchGetResponse {
+  repeated Result rs = 1;
+}
+
+message ThemisPrewrite {
+  required bytes row = 1;
+  repeated Cell  mutations = 2;
+}
+
+message ThemisPrewriteRequest {
+  required ThemisPrewrite themisPrewrite = 1;
+  required uint64 prewriteTs = 2;
+  required bytes secondaryLock = 3;
+  required bytes primaryLock = 4;
+  required int32 primaryIndex = 5;
+}
+
+message ThemisPrewriteResponse {
+  optional ThemisPrewriteResult themisPrewriteResult = 1;
+}
+
+message ThemisBatchPrewriteSecondaryRequest {
+  repeated ThemisPrewrite themisPrewrite = 1;
+  required uint64 prewriteTs = 2;
+  required bytes secondaryLock = 3;
+}
+
+message ThemisBatchPrewriteSecondaryResponse {
+  repeated ThemisPrewriteResult themisPrewriteResult = 1;
+  repeated bytes rowsNotInRegion = 2;
+}
+
+message ThemisPrewriteResult {
+	required int64 newerWriteTs = 1;
+	required bytes existLock = 2;
+	required bytes family = 3;
+	required bytes qualifier = 4;
+	required bool lockExpired = 5;
+	required bytes row = 6;
+}
+
+message ThemisCommitRequest {
+  required ThemisCommit themisCommit = 1;
+}
+
+message ThemisCommitResponse {
+  required bool result = 1;
+}
+
+message ThemisBatchCommitSecondaryRequest {
+  repeated ThemisCommit themisCommit = 1;
+}
+
+message ThemisBatchCommitSecondaryResponse {
+  repeated ThemisBatchCommitSecondaryResult batchCommitSecondaryResult = 1;
+}
+
+message ThemisBatchCommitSecondaryResult {
+	required bytes row = 1;
+	required bool success = 2;
+}
+
+message ThemisCommit { 
+  required bytes row = 1;
+  repeated Cell  mutations = 2;
+  required uint64 prewriteTs = 3;
+  required uint64 commitTs = 4;
+  required int32 primaryIndex = 5;
+}
+
+message EraseLockRequest {
+  required bytes row = 1;
+  required bytes family = 2;
+  required bytes qualifier = 3;
+  required uint64 prewriteTs = 4;
+}
+
+message EraseLockResponse {
+  optional bytes lock = 1;
+}
+
+message LockExpiredRequest {
+  required uint64 timestamp = 1;
+}
+
+message LockExpiredResponse {
+  required bool expired = 1;
+}
+
+service ThemisService {
+  rpc themisBatchGet(ThemisBatchGetRequest)
+    returns (ThemisBatchGetResponse);
+  rpc themisGet(ThemisGetRequest)
+    returns (Result);
+  rpc prewriteRow(ThemisPrewriteRequest)
+    returns (ThemisPrewriteResponse);
+  rpc batchPrewriteSecondaryRows(ThemisBatchPrewriteSecondaryRequest)
+    returns (ThemisBatchPrewriteSecondaryResponse);
+  rpc prewriteSingleRow(ThemisPrewriteRequest)
+    returns (ThemisPrewriteResponse);
+  rpc commitRow(ThemisCommitRequest)
+    returns (ThemisCommitResponse);
+  rpc batchCommitSecondaryRows(ThemisBatchCommitSecondaryRequest)
+    returns (ThemisBatchCommitSecondaryResponse);
+  rpc commitSingleRow(ThemisCommitRequest)
+    returns (ThemisCommitResponse);
+  rpc getLockAndErase(EraseLockRequest)
+    returns (EraseLockResponse);
+  rpc isLockExpired(LockExpiredRequest)
+    returns (LockExpiredResponse);
+}

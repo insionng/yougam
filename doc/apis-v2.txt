@@ -1,0 +1,388 @@
+# YOUGAM APIs
+
+系统APIs V2说明文档 
+
+[登录]->TOKEN->[权限]
+
+
+### APIs
+
+#### GET from http://localhost/apis/v2/
+##### 获取版本
+```sh
+curl -X GET http://localhost/apis/v2/
+```
+
+返回结果：
+```json
+{"version":"2.0.0"}
+```
+
+
+#### POST to http://localhost/apis/v2/signup/
+##### 注册账号
+```sh
+curl -X POST -d 'username=yourname' -d 'password=youpass' -d 'mobile=13800000000' -d 'gender=1' -d 'email=you@yougam.com' -d 'content=Too young, too naive' -d 'group=user' http://localhost/apis/v2/signup/
+```
+
+返回结果：
+
+```json
+{"Id":4,"Pid":0,"Group":"user","Email":"you@yougam.com","Username":"yourname","Nickname":"","Realname":"","Content":"Too young, too naive","Avatar":"","AvatarLarge":"","AvatarMedium":"","AvatarSmall":"","Birth":0,"Province":"","City":"","Occupation":"","Company":"","Address":"","Postcode":"","Mobile":"13800000000","Website":"","Gender":1,"Age":0,"School":"","Weight":0,"Height":0,"ZodiacSign":"","Qq":"","Weixin":"","Weibo":"","Ctype":0,"Role":1,"Created":1479384541,"Updated":1479384541,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":0,"LastSigninTime":1479384541,"LastSigninIp":"","SigninCount":0,"NodeTime":0,"NodeCount":0,"NodeLastTid":0,"NodeLastTopic":"","TopicTime":0,"TopicCount":0,"TopicLastNid":0,"TopicLastNode":"","ReplyTime":0,"ReplyCount":0,"ReplyLastTid":0,"ReplyLastTopic":"","FavoriteCount":0,"NotificationCount":0,"Balance":0}
+```
+
+#### POST to http://localhost/apis/v2/signin/
+##### 登录账号
+###### 以用户名称登录：
+```sh
+curl -X POST -d 'username=root' -d 'password=rootpass' http://localhost/apis/v2/signin/
+```
+
+###### 以注册邮箱登录：
+```sh
+curl -X POST -d 'username=root@yougam.com' -d 'password=rootpass' http://localhost/apis/v2/signin/
+```
+
+###### 以手机号码登录：
+```sh
+curl -X POST -d 'mobile=13875300316' -d 'password=rootpass' http://localhost/apis/v2/signin/
+```
+
+返回结果：
+```json
+{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJc1Jvb3QiOnRydWUsIlVzZXJJZCI6MSwiVXNlcm5hbWUiOiJyb290IiwiZXhwIjoxNDgxMjYxODk1fQ.Rqt0y0FdfNq7AE0_SOL5PV3qFglSOKB40ZHv8emfOt8","user":{"Id":1,"Pid":0,"Group":"","Email":"root@yougam.com","Username":"root","Nickname":"root","Realname":"root","Content":"","Avatar":"/1/24faf6b9f2e6dcef829e87362cffa368713f7a7a4155a598.jpg","AvatarLarge":"/1/24faf6b9f2e6dcef829e87362cffa368713f7a7a4155a598_large.jpg","AvatarMedium":"/1/24faf6b9f2e6dcef829e87362cffa368713f7a7a4155a598_medium.jpg","AvatarSmall":"/1/24faf6b9f2e6dcef829e87362cffa368713f7a7a4155a598_small.jpg","Birth":0,"Province":"","City":"","Occupation":"","Company":"","Address":"","Postcode":"","Mobile":"","Website":"","Gender":1,"Age":0,"School":"","Weight":0,"Height":0,"ZodiacSign":"","Qq":"","Weixin":"","WeixinOpenId":"","Weibo":"","Ctype":0,"Role":-1000,"Created":1479699079,"Updated":1481256360,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":0,"LastSigninTime":1481256360,"LastSigninIp":"59.41.163.148","SigninCount":472,"NodeTime":1481097743,"NodeCount":4,"NodeLastTid":0,"NodeLastTopic":"0","TopicTime":1480390872,"TopicCount":2,"TopicLastNid":1,"TopicLastNode":"美术","ReplyTime":0,"ReplyCount":0,"ReplyLastTid":0,"ReplyLastTopic":"","FavoriteCount":1,"NotificationCount":0,"Balance":2003}}
+```
+
+#### GET from http://localhost/apis/v2/signout/
+##### 退出账号、客户端需要删除Token
+```sh
+curl -X GET http://localhost/apis/v2/signout/
+```
+
+#### POST to http://localhost/apis/v2/report/
+##### 举报、报告问题
+
+
+
+### 分类字段：
+```go
+	Id             int64
+	Pid            int64 //小于等于0 代表分类本身是顶层分类, pid大于0 代表属于某节点id的下级 本系统围绕node设计,分类亦可以是节点的下级
+	Uid            int64
+	Sort           int64
+	Ctype          int64
+	Title          string
+	Content        string
+	Attachment     string
+	Created        int64
+	Updated        int64
+	Hotness        float64
+	Confidence     float64 //信任度数值
+	Hotup          int64
+	Hotdown        int64
+	Hotscore       int64 //Hotup - Hotdown
+	Hotvote        int64 //Hotup + Hotdown
+	Views          int64
+	Author         string //这里指本分类创建者
+	NodeTime       int64
+	NodeCount      int64
+	NodeLastUserId int64
+```
+
+#### GET from http://localhost/apis/v2/categories/
+##### 获取分类列表
+```sh
+curl -X GET http://localhost/apis/v2/categories/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc1Jvb3QiOnRydWV9.a84oFcf6XUZ78i9LJnicZvJwxBkzq7iuFCZo6jtOvsM"
+```
+
+返回结果：
+```json
+[{"Id":3,"Pid":-1,"Uid":0,"Sort":0,"Ctype":0,"Title":"科技","Content":"\u003cp\u003e科技业界\u003c/p\u003e","Attachment":"","Created":1479372713,"Updated":1479372713,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":0,"Author":"","NodeTime":0,"NodeCount":0,"NodeLastUserId":0},{"Id":2,"Pid":-1,"Uid":0,"Sort":0,"Ctype":0,"Title":"音乐","Content":"\u003cp\u003e音乐业界\u003c/p\u003e","Attachment":"","Created":1479372697,"Updated":1479372697,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":0,"Author":"","NodeTime":0,"NodeCount":0,"NodeLastUserId":0},{"Id":1,"Pid":-1,"Uid":0,"Sort":0,"Ctype":0,"Title":"美术","Content":"\u003cp\u003e美术业界\u003c/p\u003e","Attachment":"","Created":1479372686,"Updated":1479372686,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":0,"Author":"","NodeTime":0,"NodeCount":0,"NodeLastUserId":0}]
+```
+请求参数：
+    offset int
+	page int64
+    limit int
+	field string
+    pid int64
+    ctype int64
+
+
+示例如下：
+
+特定CType分类列表
+```sh
+curl -G -d 'ctype=1' http://localhost/apis/v2/categories/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc1Jvb3QiOnRydWV9.a84oFcf6XUZ78i9LJnicZvJwxBkzq7iuFCZo6jtOvsM"
+```
+返回：
+```json
+[{"Id":6,"Pid":1,"Uid":1,"Sort":0,"Ctype":1,"Title":"Practice","Content":"ffffffffffffffff","Attachment":"","Created":1480405082,"Updated":1480405082,"Hotness":1567.7839512503836,"Confidence":0.8892785427134807,"Hotup":6,"Hotdown":0,"Hotscore":6,"Hotvote":6,"Views":6,"Author":"root","NodeTime":0,"NodeCount":3,"NodeLastUserId":0}]
+```
+
+特定CType分类列表并以field指定排序字段：
+```sh
+curl -G -d 'ctype=1' -d 'field=id' http://localhost/apis/v2/categories/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODA0NzIxODZ9.jpZGMjzf8MjQP4o04PfC2TL_gBePp6KRq7pgUKgDpsA"
+```
+返回：
+```json
+[{"Id":7,"Pid":-1,"Uid":0,"Sort":0,"Ctype":1,"Title":"中国历史","Content":"\u003cp\u003e中国历史详情~\u003c/p\u003e","Attachment":"","Created":1480416935,"Updated":1480416935,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":0,"Author":"","NodeTime":0,"NodeCount":0,"NodeLastUserId":0},{"Id":8,"Pid":-1,"Uid":0,"Sort":0,"Ctype":1,"Title":"会计基础","Content":"\u003cp\u003e会计基础详情\u003c/p\u003e","Attachment":"","Created":1480416960,"Updated":1480416960,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":0,"Author":"","NodeTime":0,"NodeCount":0,"NodeLastUserId":0},{"Id":9,"Pid":-1,"Uid":0,"Sort":0,"Ctype":1,"Title":"财务基础","Content":"\u003cp\u003e财务基础详情\u003c/p\u003e","Attachment":"","Created":1480416977,"Updated":1480416977,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":0,"Author":"","NodeTime":0,"NodeCount":0,"NodeLastUserId":0}]
+```
+
+#### GET from http://localhost/apis/v2/category/[id]/
+##### 获取特定分类
+```sh
+curl -X GET http://localhost/apis/v2/category/1/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc1Jvb3QiOnRydWV9.a84oFcf6XUZ78i9LJnicZvJwxBkzq7iuFCZo6jtOvsM"
+```
+
+#### GET,POST,PUT,DEL http://localhost/apis/v2/category/
+##### 分类增删改查操作
+###### GET 获取一个分类
+```sh
+curl -G -d "id=1" http://localhost/apis/v2/category/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc1Jvb3QiOnRydWV9.a84oFcf6XUZ78i9LJnicZvJwxBkzq7iuFCZo6jtOvsM"
+```
+返回：
+```json
+{"Id":1,"Pid":-1,"Uid":0,"Sort":0,"Ctype":0,"Title":"系统开发","Content":"\u003cp\u003e系统开发分类详情~\u003c/p\u003e","Attachment":"","Created":1479699261,"Updated":1480248717,"Hotness":1567.7839512503836,"Confidence":0.8892785427134807,"Hotup":6,"Hotdown":0,"Hotscore":6,"Hotvote":6,"Views":6,"Author":"","NodeTime":0,"NodeCount":3,"NodeLastUserId":0}
+```
+
+##### POST 创建一个分类
+```sh
+curl -X POST -d '{"Pid":1,"Uid":0,"Sort":0,"Ctype":1,"Title":"da shuju","Content":"ffffffffffffffff","Attachment":"","Created":1479699262,"Updated":1480248719,"Hotness":1567.7839512503836,"Confidence":0.8892785427134807,"Hotup":6,"Hotdown":0,"Hotscore":6,"Hotvote":6,"Views":6,"Author":"","NodeTime":0,"NodeCount":3,"NodeLastUserId":0}' http://localhost/apis/v2/category/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODAzNDA2Nzh9.1dAClEoC66tvIcLaHRiFV1hgHUFqfPZJPcYOPQzZrIo" -H "Content-Type: application/json"
+```
+返回：
+```json
+{"Id":1,"Pid":1,"Uid":1,"Sort":0,"Ctype":1,"Title":"da shuju","Content":"ffffffffffffffff","Attachment":"","Created":1480337275,"Updated":1480337275,"Hotness":1567.7839512503836,"Confidence":0.8892785427134807,"Hotup":6,"Hotdown":0,"Hotscore":6,"Hotvote":6,"Views":6,"Author":"root","NodeTime":0,"NodeCount":3,"NodeLastUserId":0}
+
+```
+##### PUT 更新一个分类
+```sh
+curl -X PUT -d '{"Id":1,"Pid":0,"Uid":0,"Sort":0,"Ctype":2,"Title":"Big Data","Content":"Data+ Data+ Data+ Data+ Data+ Data+","Attachment":"","Created":1479699269,"Updated":1480248720,"Hotness":1567.7839512503838,"Confidence":0.8892785427134809,"Hotup":7,"Hotdown":0,"Hotscore":6,"Hotvote":6,"Views":6,"Author":"","NodeTime":0,"NodeCount":3,"NodeLastUserId":0}' http://localhost/apis/v2/category/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODAzNDA2Nzh9.1dAClEoC66tvIcLaHRiFV1hgHUFqfPZJPcYOPQzZrIo" -H "Content-Type: application/json"
+```
+返回：
+```json
+{"Id":1,"Pid":0,"Uid":1,"Sort":0,"Ctype":2,"Title":"Big Data","Content":"Data+ Data+ Data+ Data+ Data+ Data+","Attachment":"","Created":1479699269,"Updated":1480338547,"Hotness":1567.7839512503838,"Confidence":0.889278542713481,"Hotup":7,"Hotdown":0,"Hotscore":6,"Hotvote":6,"Views":6,"Author":"root","NodeTime":0,"NodeCount":3,"NodeLastUserId":0}
+
+```
+##### DELETE 删除一个分类
+```sh
+ curl -X DELETE -d 'id=2' http://localhost/apis/v2/category/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODAzNDA2Nzh9.1dAClEoC66tvIcLaHRiFV1hgHUFqfPZJPcYOPQzZrIo"
+```
+返回：
+```json
+{"Status":200,"Message":"删除分类成功"}
+```
+
+
+### 节点字段：
+```go
+	Id              int64
+	Pid             int64 //pid为0 代表节点本身是顶层节点, pid大于0 代表上级节点id
+	Cid             int64 //所属分类的id
+	Uid             int64
+	Sort            int64
+	Ctype           int64  
+	Title           string 
+	Content         string
+	Attachment      string
+	Created         int64
+	Updated         int64
+	Hotness         float64
+	Confidence      float64 //信任度数值
+	Hotup           int64  
+	Hotdown         int64  
+	Hotscore        int64   //Hotup  -	Hotdown
+	Hotvote         int64   //Hotup  + 	Hotdown
+	Views           int64
+	Author          string //节点的创建者
+	Tid             int64  //最后一次发布的topic的Tid
+	Topic           int64  //最后一次发布的topic的标题
+	TopicTime       int64
+	TopicCount      int64
+	TopicLastUserId int64
+	FavoriteCount   int64
+```
+
+
+#### GET from http://localhost/apis/v2/nodes/
+##### 获取节点列表
+```sh
+curl -G http://localhost/apis/v2/nodes/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODEwOTk0ODh9.aWtdJVzgMO31dyayr7--eGmC8re1R8w-qHcLrYiMH6U"
+```
+
+返回结果：
+```json
+[{"Id":3,"Pid":-1,"Cid":1,"Uid":1,"Sort":0,"Ctype":0,"Title":"科技","Content":"\u003cp\u003e科技节点详情~\u003c/p\u003e","Attachment":"","Created":1479699349,"Updated":1480390488,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":5,"Author":"root","Tid":0,"Topic":0,"TopicTime":1479699410,"TopicCount":1,"TopicLastUserId":1,"FavoriteCount":0},{"Id":2,"Pid":-1,"Cid":1,"Uid":1,"Sort":0,"Ctype":0,"Title":"音乐","Content":"\u003cp\u003e音乐节点详情\u003c/p\u003e","Attachment":"","Created":1479699329,"Updated":1479699329,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":0,"Author":"","Tid":0,"Topic":0,"TopicTime":0,"TopicCount":0,"TopicLastUserId":0,"FavoriteCount":0},{"Id":1,"Pid":-1,"Cid":1,"Uid":1,"Sort":0,"Ctype":0,"Title":"美术","Content":"\u003ch3\u003e详细说明\u003c/h3\u003e\n\u003cp\u003e该函数是简写的 Ajax 函数，等价于：\u003c/p\u003e\n\u003cpre\u003e$.ajax({\n  url: \u003cem\u003eurl\u003c/em\u003e,\n  data: \u003cem\u003edata\u003c/em\u003e,\n  success: \u003cem\u003esuccess\u003c/em\u003e,\n  dataType: \u003cem\u003edataType\u003c/em\u003e\n});\u003c/pre\u003e\n\u003cp\u003e根据响应的不同的 MIME 类型，传递给 success 回调函数的返回数据也有所不同，这些数据可以是 XML root 元素、文本字符串、JavaScript 文件或者 JSON 对象。也可向 success 回调函数传递响应的文本状态。\u003c/p\u003e\n\u003cp\u003e对于 jQuery 1.4，也可以向 success 回调函数传递 XMLHttpRequest 对象。\u003c/p\u003e\n\u003ch3\u003e \u003c/h3\u003e","Attachment":"","Created":1479699309,"Updated":1480390883,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":2,"Author":"root","Tid":0,"Topic":0,"TopicTime":1480390872,"TopicCount":1,"TopicLastUserId":1,"FavoriteCount":0}]
+
+```
+请求参数：
+    offset int
+	page int64
+    limit int
+	field string
+    cid int64
+    pid int64
+    ctype int64
+
+##### 特定CType节点列表
+```sh
+curl -G -d 'ctype=1' http://localhost/apis/v2/nodes/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODEwOTk0ODh9.aWtdJVzgMO31dyayr7--eGmC8re1R8w-qHcLrYiMH6U"
+```
+
+特定CType节点列表并以field指定排序字段：
+```sh
+curl -G -d 'ctype=1' -d 'field=id' http://localhost/apis/v2/nodes/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODEwOTk0ODh9.aWtdJVzgMO31dyayr7--eGmC8re1R8w-qHcLrYiMH6U"
+```
+
+
+#### GET from http://localhost/apis/v2/node/[id]/
+##### 获取特定节点
+```sh
+curl -X GET http://localhost/apis/v2/node/1/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODEwOTk0ODh9.aWtdJVzgMO31dyayr7--eGmC8re1R8w-qHcLrYiMH6U"
+```
+返回：
+```json
+{"Id":1,"Pid":-1,"Cid":1,"Uid":1,"Sort":0,"Ctype":0,"Title":"美术","Content":"\u003ch3\u003e详细说明\u003c/h3\u003e\n\u003cp\u003e该函数是简写的 Ajax 函数，等价于：\u003c/p\u003e\n\u003cpre\u003e$.ajax({\n  url: \u003cem\u003eurl\u003c/em\u003e,\n  data: \u003cem\u003edata\u003c/em\u003e,\n  success: \u003cem\u003esuccess\u003c/em\u003e,\n  dataType: \u003cem\u003edataType\u003c/em\u003e\n});\u003c/pre\u003e\n\u003cp\u003e根据响应的不同的 MIME 类型，传递给 success 回调函数的返回数据也有所不同，这些数据可以是 XML root 元素、文本字符串、JavaScript 文件或者 JSON 对象。也可向 success 回调函数传递响应的文本状态。\u003c/p\u003e\n\u003cp\u003e对于 jQuery 1.4，也可以向 success 回调函数传递 XMLHttpRequest 对象。\u003c/p\u003e\n\u003ch3\u003e \u003c/h3\u003e","Attachment":"","Created":1479699309,"Updated":1480390883,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":2,"Author":"root","Tid":0,"Topic":0,"TopicTime":1480390872,"TopicCount":1,"TopicLastUserId":1,"FavoriteCount":0}
+```
+
+#### GET,POST,PUT,DEL http://localhost/apis/v2/node/
+##### 节点增删改查操作
+###### GET 获取一个节点
+```sh
+curl -G -d "id=1" http://localhost/apis/v2/node/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODEwOTk0ODh9.aWtdJVzgMO31dyayr7--eGmC8re1R8w-qHcLrYiMH6U"
+```
+返回：
+```json
+{"Id":1,"Pid":-1,"Cid":1,"Uid":1,"Sort":0,"Ctype":0,"Title":"美术","Content":"\u003ch3\u003e详细说明\u003c/h3\u003e\n\u003cp\u003e该函数是简写的 Ajax 函数，等价于：\u003c/p\u003e\n\u003cpre\u003e$.ajax({\n  url: \u003cem\u003eurl\u003c/em\u003e,\n  data: \u003cem\u003edata\u003c/em\u003e,\n  success: \u003cem\u003esuccess\u003c/em\u003e,\n  dataType: \u003cem\u003edataType\u003c/em\u003e\n});\u003c/pre\u003e\n\u003cp\u003e根据响应的不同的 MIME 类型，传递给 success 回调函数的返回数据也有所不同，这些数据可以是 XML root 元素、文本字符串、JavaScript 文件或者 JSON 对象。也可向 success 回调函数传递响应的文本状态。\u003c/p\u003e\n\u003cp\u003e对于 jQuery 1.4，也可以向 success 回调函数传递 XMLHttpRequest 对象。\u003c/p\u003e\n\u003ch3\u003e \u003c/h3\u003e","Attachment":"","Created":1479699309,"Updated":1480390883,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":2,"Author":"root","Tid":0,"Topic":0,"TopicTime":1480390872,"TopicCount":1,"TopicLastUserId":1,"FavoriteCount":0}
+```
+
+##### POST 创建一个节点
+```sh
+curl -X POST -d '{"Pid":1,"Uid":0,"Sort":0,"Ctype":1,"Title":"Big Data","Content":"ffffffffffffffff","Attachment":"","Created":1479699262,"Updated":1480248719,"Hotness":1567.7839512503836,"Confidence":0.8892785427134807,"Hotup":6,"Hotdown":0,"Hotscore":6,"Hotvote":6,"Views":6,"Author":"","NodeTime":0,"NodeCount":3,"NodeLastUserId":0}' http://localhost/apis/v2/node/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODEwOTk0ODh9.aWtdJVzgMO31dyayr7--eGmC8re1R8w-qHcLrYiMH6U" -H "Content-Type: application/json"
+```
+返回：
+```json
+{"Id":4,"Pid":1,"Cid":0,"Uid":1,"Sort":0,"Ctype":1,"Title":"Big Data","Content":"ffffffffffffffff","Attachment":"","Created":1481096322,"Updated":1481096322,"Hotness":1567.7839512503836,"Confidence":0.8892785427134807,"Hotup":6,"Hotdown":0,"Hotscore":6,"Hotvote":6,"Views":6,"Author":"root","Tid":0,"Topic":0,"TopicTime":0,"TopicCount":0,"TopicLastUserId":0,"FavoriteCount":0}
+```
+
+##### PUT 更新一个节点
+```sh
+curl -X PUT -d '{"Id":1,"Pid":0,"Uid":0,"Sort":0,"Ctype":2,"Title":"Big Data!","Content":"Data+ Data+ Data+ Data+ Data+ Data+","Attachment":"","Created":1479699269,"Updated":1480248720,"Hotness":1567.7839512503838,"Confidence":0.8892785427134809,"Hotup":7,"Hotdown":0,"Hotscore":6,"Hotvote":6,"Views":6,"Author":"","NodeTime":0,"NodeCount":3,"NodeLastUserId":0}' http://localhost/apis/v2/node/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODEwOTk0ODh9.aWtdJVzgMO31dyayr7--eGmC8re1R8w-qHcLrYiMH6U" -H "Content-Type: application/json"
+```
+返回：
+```json
+{"Id":1,"Pid":0,"Cid":0,"Uid":1,"Sort":0,"Ctype":2,"Title":"Big Data!","Content":"Data+ Data+ Data+ Data+ Data+ Data+","Attachment":"","Created":1479699269,"Updated":1481096374,"Hotness":1567.7839512503838,"Confidence":0.889278542713481,"Hotup":7,"Hotdown":0,"Hotscore":6,"Hotvote":6,"Views":6,"Author":"root","Tid":0,"Topic":0,"TopicTime":0,"TopicCount":0,"TopicLastUserId":0,"FavoriteCount":0}
+```
+
+##### DELETE 删除一个节点
+```sh
+curl -X DELETE -d 'id=2' http://localhost/apis/v2/node/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODEwOTk0ODh9.aWtdJVzgMO31dyayr7--eGmC8re1R8w-qHcLrYiMH6U"
+```
+返回：
+```json
+{"Status":200,"Message":"删除节点成功"}
+```
+
+
+#### GET from http://localhost/apis/v2/topics/
+##### 获取话题列表
+```sh
+curl -G http://localhost/apis/v2/topics/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc1Jvb3QiOnRydWV9.a84oFcf6XUZ78i9LJnicZvJwxBkzq7iuFCZo6jtOvsM"
+
+```
+返回：
+```json
+[{"Id":1,"Pid":0,"Cid":1,"Nid":3,"Uid":1,"Sort":0,"Ctype":0,"Title":"科技话题标题","Excerpt":"","Content":"\u003cp\u003e科技话题内容~\u003c/p\u003e","Tailinfo":"","Attachment":0,"Thumbnails":"","ThumbnailsLarge":"","ThumbnailsMedium":"","ThumbnailsSmall":"","Avatar":"/1/24faf6b9f2e6dcef829e87362cffa368713f7a7a4155a598.jpg","AvatarLarge":"/1/24faf6b9f2e6dcef829e87362cffa368713f7a7a4155a598_large.jpg","AvatarMedium":"/1/24faf6b9f2e6dcef829e87362cffa368713f7a7a4155a598_medium.jpg","AvatarSmall":"/1/24faf6b9f2e6dcef829e87362cffa368713f7a7a4155a598_small.jpg","Tags":"","Created":1479699410,"Updated":1480060399,"Hotness":1567.0091111111112,"Confidence":0,"Hotup":1,"Hotdown":0,"Hotscore":1,"Hotvote":1,"Views":5,"Author":"root","Category":"系统开发","Node":"科技","ReplyTime":0,"ReplyCount":0,"ReplyLastUserId":0,"ReplyLastUsername":"","ReplyLastNickname":"","FavoriteCount":1,"Latitude":0,"Longitude":0,"Version":7}]
+```
+请求参数：
+
+	offset int
+	page int64
+	pid int64
+	limit int
+	field string
+	ctype int64
+
+
+#### GET from http://localhost/apis/v2/topic/[id]/
+##### 获取特定话题
+```sh
+curl -G http://localhost/apis/v2/topic/1/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc1Jvb3QiOnRydWV9.a84oFcf6XUZ78i9LJnicZvJwxBkzq7iuFCZo6jtOvsM"
+```
+返回：
+```json
+{"Id":1,"Pid":0,"Cid":1,"Nid":3,"Uid":1,"Sort":0,"Ctype":0,"Title":"科技话题标题","Excerpt":"","Content":"\u003cp\u003e科技话题内容~\u003c/p\u003e","Tailinfo":"","Attachment":0,"Thumbnails":"","ThumbnailsLarge":"","ThumbnailsMedium":"","ThumbnailsSmall":"","Avatar":"/1/24faf6b9f2e6dcef829e87362cffa368713f7a7a4155a598.jpg","AvatarLarge":"/1/24faf6b9f2e6dcef829e87362cffa368713f7a7a4155a598_large.jpg","AvatarMedium":"/1/24faf6b9f2e6dcef829e87362cffa368713f7a7a4155a598_medium.jpg","AvatarSmall":"/1/24faf6b9f2e6dcef829e87362cffa368713f7a7a4155a598_small.jpg","Tags":"","Created":1479699410,"Updated":1480060399,"Hotness":1567.0091111111112,"Confidence":0,"Hotup":1,"Hotdown":0,"Hotscore":1,"Hotvote":1,"Views":5,"Author":"root","Category":"系统开发","Node":"科技","ReplyTime":0,"ReplyCount":0,"ReplyLastUserId":0,"ReplyLastUsername":"","ReplyLastNickname":"","FavoriteCount":1,"Latitude":0,"Longitude":0,"Version":7}
+
+```
+#### GET,POST http://localhost/apis/v2/content/
+##### 获取或创建话题
+##### GET
+```sh
+curl -G -d "id=1" http://localhost/apis/v2/content/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc1Jvb3QiOnRydWV9.a84oFcf6XUZ78i9LJnicZvJwxBkzq7iuFCZo6jtOvsM"
+```
+返回：
+```json
+[{"Id":1,"Pid":0,"Cid":-1,"Nid":1,"Uid":1,"Sort":0,"Ctype":0,"Title":"系统开发详情","Excerpt":"","Content":"巴拉巴拉巴拉巴拉巴拉巴拉巴拉巴","Tailinfo":"","Attachment":0,"Thumbnails":"","ThumbnailsLarge":"","ThumbnailsMedium":"","ThumbnailsSmall":"","Avatar":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025.jpg","AvatarLarge":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_large.jpg","AvatarMedium":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_medium.jpg","AvatarSmall":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_small.jpg","Tags":"","Created":1480330518,"Updated":1480330532,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":2,"Author":"root","Category":"","Node":"系统开发","ReplyTime":0,"ReplyCount":0,"ReplyLastUserId":0,"ReplyLastUsername":"","ReplyLastNickname":"","FavoriteCount":0,"Latitude":0,"Longitude":0,"Version":3}]
+
+```
+
+##### POST
+```sh
+curl -X POST -d '{"Pid":0,"Cid":-1,"Nid":1,"Uid":1,"Sort":0,"Ctype":0,"Title":"topic title test","Excerpt":"","Content":"content content+.....","Tailinfo":"","Attachment":0,"Thumbnails":"","ThumbnailsLarge":"","ThumbnailsMedium":"","ThumbnailsSmall":"","Avatar":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025.jpg","AvatarLarge":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_large.jpg","AvatarMedium":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_medium.jpg","AvatarSmall":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_small.jpg","Tags":"","Created":1480330518,"Updated":1480330532,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":2,"Author":"root","Category":"","Node":"os","ReplyTime":0,"ReplyCount":0,"ReplyLastUserId":0,"ReplyLastUsername":"","ReplyLastNickname":"","FavoriteCount":0,"Latitude":0,"Longitude":0,"Version":3}' http://localhost/apis/v2/content/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODAzNDY1NDJ9.McP3KJsdoj-h0k61L05xkeXuahSNcqoRmMjl4BVm2p4" -H "Content-Type: application/json"
+```
+返回：
+```json
+{"Id":2,"Pid":0,"Cid":-1,"Nid":1,"Uid":1,"Sort":0,"Ctype":0,"Title":"topic title test","Excerpt":"","Content":"content content+.....","Tailinfo":"","Attachment":0,"Thumbnails":"","ThumbnailsLarge":"","ThumbnailsMedium":"","ThumbnailsSmall":"","Avatar":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025.jpg","AvatarLarge":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_large.jpg","AvatarMedium":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_medium.jpg","AvatarSmall":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_small.jpg","Tags":"","Created":1480343425,"Updated":1480343425,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":2,"Author":"root","Category":"","Node":"os","ReplyTime":0,"ReplyCount":0,"ReplyLastUserId":0,"ReplyLastUsername":"","ReplyLastNickname":"","FavoriteCount":0,"Latitude":0,"Longitude":0,"Version":1}
+```
+
+#### GET,POST http://localhost/apis/v2/comment/
+##### 获取或创建评论
+##### GET
+```sh
+curl -G -d "tid=1" http://localhost/apis/v2/comment/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc1Jvb3QiOnRydWV9.a84oFcf6XUZ78i9LJnicZvJwxBkzq7iuFCZo6jtOvsM"
+```
+返回：
+```json
+[{"Id":2,"Pid":0,"Uid":1,"Tid":1,"Sort":0,"Ctype":1,"Content":"\u003cp\u003e测试回复~\u003c/p\u003e","Tailinfo":0,"Attachment":"","Avatar":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025.jpg","AvatarLarge":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_large.jpg","AvatarMedium":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_medium.jpg","AvatarSmall":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_small.jpg","Created":1480332391,"Updated":1480332391,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":0,"Author":"root","AuthorSignature":"","Email":"root@yougam.com","Website":"","ReplyTime":1480332391,"ReplyCount":0,"ReplyLastUserId":0,"ReplyLastUsername":"","ReplyLastNickname":"","ReplyLastTopic":"","Latitude":0,"Longitude":0},{"Id":1,"Pid":0,"Uid":1,"Tid":1,"Sort":0,"Ctype":1,"Content":"\u003cp\u003e回复测试~\u003c/p\u003e","Tailinfo":0,"Attachment":"","Avatar":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025.jpg","AvatarLarge":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_large.jpg","AvatarMedium":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_medium.jpg","AvatarSmall":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_small.jpg","Created":1480332379,"Updated":1480332379,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":0,"Author":"root","AuthorSignature":"","Email":"root@yougam.com","Website":"","ReplyTime":1480332379,"ReplyCount":0,"ReplyLastUserId":0,"ReplyLastUsername":"","ReplyLastNickname":"","ReplyLastTopic":"","Latitude":0,"Longitude":0}]
+```
+
+#### GET from http://localhost/apis/v2/users/
+##### 获取用户列表
+```sh
+curl -X GET http://localhost/apis/v2/users/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODA0MDY1MDR9.Etvqa3Xqy4fjbXVGFphSv00pyPBJ1O6WRdqwcjvv55U"
+```
+返回：
+```json
+[{"Id":1,"Pid":0,"Group":"","Email":"root@yougam.com","Username":"root","Nickname":"root","Realname":"root","Content":"","Avatar":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025.jpg","AvatarLarge":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_large.jpg","AvatarMedium":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_medium.jpg","AvatarSmall":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_small.jpg","Birth":0,"Province":"","City":"","Occupation":"","Company":"","Address":"","Postcode":"","Mobile":"","Website":"","Gender":1,"Age":0,"School":"","Weight":0,"Height":0,"ZodiacSign":"","Qq":"","Weixin":"","Weibo":"","Ctype":0,"Role":-1000,"Created":1480046132,"Updated":1480402904,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":0,"LastSigninTime":1480402904,"LastSigninIp":"127.0.0.1","SigninCount":6,"NodeTime":0,"NodeCount":0,"NodeLastTid":0,"NodeLastTopic":"","TopicTime":1480343425,"TopicCount":2,"TopicLastNid":1,"TopicLastNode":"os","ReplyTime":1480332391,"ReplyCount":2,"ReplyLastTid":1,"ReplyLastTopic":"","FavoriteCount":0,"NotificationCount":0,"Balance":1999}]
+```
+
+#### GET from http://localhost/apis/v2/user/[id]/
+##### 获取特定用户
+```sh
+curl -X GET http://localhost/apis/v2/user/1/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODA0MDY1MDR9.Etvqa3Xqy4fjbXVGFphSv00pyPBJ1O6WRdqwcjvv55U"
+```
+返回：
+```json
+{"Id":1,"Pid":0,"Group":"","Email":"root@yougam.com","Username":"root","Nickname":"root","Realname":"root","Content":"","Avatar":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025.jpg","AvatarLarge":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_large.jpg","AvatarMedium":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_medium.jpg","AvatarSmall":"/1/90e5607db4176f68617f75329a1f5fbe156475cd41c84025_small.jpg","Birth":0,"Province":"","City":"","Occupation":"","Company":"","Address":"","Postcode":"","Mobile":"","Website":"","Gender":1,"Age":0,"School":"","Weight":0,"Height":0,"ZodiacSign":"","Qq":"","Weixin":"","Weibo":"","Ctype":0,"Role":-1000,"Created":1480046132,"Updated":1480402904,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":0,"LastSigninTime":1480402904,"LastSigninIp":"127.0.0.1","SigninCount":6,"NodeTime":0,"NodeCount":0,"NodeLastTid":0,"NodeLastTopic":"","TopicTime":1480343425,"TopicCount":2,"TopicLastNid":1,"TopicLastNode":"os","ReplyTime":1480332391,"ReplyCount":2,"ReplyLastTid":1,"ReplyLastTopic":"","FavoriteCount":0,"NotificationCount":0,"Balance":1999}
+```
+
+#### PUT http://localhost/apis/v2/user/[id]/
+##### 更新特定用户
+```sh
+curl -X PUT -d 'id=4' -d 'nickname=hero' -d 'gender=1' -d 'avatar=http://www.biqudao.com/BookFiles/BookImages/1081.jpg' http://localhost/apis/v2/user/1/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6InVzZXIiLCJJc1Jvb3QiOmZhbHNlLCJVc2VySWQiOjR9.6sPCsLyB1jpqELi1p8l9zUW32eCCGVe8tQ2l00SWrYs"
+```
+
+返回数据：
+```json
+{"Id":4,"Pid":0,"Group":"user","Email":"you@yougam.com","Username":"yourname","Nickname":"hero","Realname":"","Content":"Too young, too naive","Avatar":"http://www.biqudao.com/BookFiles/BookImages/1081.jpg","AvatarLarge":"","AvatarMedium":"","AvatarSmall":"","Birth":0,"Province":"","City":"","Occupation":"","Company":"","Address":"","Postcode":"","Mobile":"13800000000","Website":"","Gender":1,"Age":0,"School":"","Weight":0,"Height":0,"ZodiacSign":"","Qq":"","Weixin":"","Weibo":"","Ctype":0,"Role":1,"Created":1479384541,"Updated":1479392595,"Hotness":0,"Confidence":0,"Hotup":0,"Hotdown":0,"Hotscore":0,"Hotvote":0,"Views":0,"LastSigninTime":1479391694,"LastSigninIp":"14.145.190.211:7797","SigninCount":2,"NodeTime":0,"NodeCount":0,"NodeLastTid":0,"NodeLastTopic":"","TopicTime":0,"TopicCount":0,"TopicLastNid":0,"TopicLastNode":"","ReplyTime":0,"ReplyCount":0,"ReplyLastTid":0,"ReplyLastTopic":"","FavoriteCount":0,"NotificationCount":0,"Balance":0}
+```
+
+
+#### GET,POST,PUT,DEL http://localhost/apis/v2/user/
+##### 用户增删改查操作
+
+#### GET http://localhost/apis/v2/user/[id]/topics/
+##### 获取特定用户话题数据
+```sh
+curl -X GET http://localhost/apis/v2/user/1/topics/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cCI6IiIsIklzUm9vdCI6dHJ1ZSwiVXNlcklkIjoxLCJVc2VybmFtZSI6InJvb3QiLCJleHAiOjE0ODAzODY1ODZ9.wfRrx2ak81hgQKOBOPr-dvXYhCKmZXfsOiVQsrW3esQ"
+```
+

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>忘记密码 - 优姬</title>
+{% endblock title %}
+
+{% block mainland %}
+    <div id="main" class="container">
+        <div class="row">
+            <div id="content" class="col-md-8 col-md-offset-2">
+                <div class="box">
+                    <div class="cell first breadcrumb">
+                        <a href="/"> <i class="ahead icon-home"></i>
+                        </a> <i class="fa fa-caret-right"></i>
+                        忘记密码
+                    </div>
+                    <div class="cell last slim">
+                        <div class="row">
+
+                            <div class="col-md-6 auth-page">
+                                <h3 class="title">
+                                    <i class="icon icon-user"></i>
+                                    忘记密码
+                                </h3>
+                                <form action="/forgot/" method="POST">
+                                    <div class="form-group">
+
+                                        <label class="control-label" for="ForgotForm-Email">邮箱</label>
+                                        <input id="ForgotForm-Email" name="email" type="text" class="form-control">
+                                        <p class="help-block">该操作将会向您的邮箱发送一个密码重置安全链接</p>
+
+                                    </div>
+
+                                    <button class="btn btn-s-md btn-dark btn-rounded">
+                                        重置密码&nbsp;&nbsp;
+                                        <i class="icon-chevron-sign-right"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="col-md-6 auth-page">
+                                <div class="auth-page">
+                                    <h3 class="title">
+                                        <i class="icon icon-question"></i>
+                                        帮助
+                                    </h3>
+                                    {% include "msgerr.html" %}
+                                    <p class="well">若果想起了您的密码，请使用原密码登录账号。</p>
+                                    <p>
+                                        <a href="/signin/" class="btn btn-s-md btn-default btn-rounded">
+                                            现在登录&nbsp;&nbsp;
+                                            <i class="icon-chevron-sign-right"></i>
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock mainland %}

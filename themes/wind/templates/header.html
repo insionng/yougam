@@ -1,0 +1,154 @@
+<header class="bg-white-only header header-md navbar navbar-fixed-top-xs">
+    <div class="navbar-header aside">
+        <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html"> <i class="icon-list"></i>
+        </a>
+        <a href="/" class="navbar-brand text-lt">
+            <img src="/img/logo.png" alt="YOUGAM">
+            <span class="hidden-nav-xs m-l-sm hide">YOUGAM</span>
+        </a>
+        <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
+            <i class="icon-settings"></i>
+        </a>
+    </div>
+    <form action="/search/" class="navbar-form navbar-left input-s-lg m-t m-l-n-xs hidden-xs" role="search">
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-sm bg-white btn-icon rounded">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+                <input name="keyword" type="text" class="form-control input-sm no-border rounded" placeholder="搜索话题..." {% if search_keyword %}value="{{search_keyword}}"{% endif %}/>
+            </div>
+        </div>
+    </form>
+    <div class="navbar-right">
+        <ul class="nav navbar-nav m-n hidden-xs nav-user user">
+            <li{% if catpage=="home" %} class="active"{% endif %}>
+                <a href="/">{{ i18n.Tr("home") }}</a>
+            </li>
+            {% if categorys %}
+                {% for category in categorys %}
+                    {%if forloop.Counter<=12 %}
+                    <li><a href="/category/{{category.Title|urlencode}}/">{{category.Title}}</a></li>
+                    {%endif%}
+                {% endfor %}
+            {% endif %}
+            <li{% if catpage=="UsersHandler" %} class="active"{% endif %}>
+                <a href="/users/">{{ i18n.Tr("users") }}</a>
+            </li>
+            {% if IsSigned %}
+                <li{% if catpage=="ContactHandler" %} class="active"{% endif %}>
+                    <a href="/contact/">{{ i18n.Tr("contact") }}</a>
+                </li>
+            <li class="hidden-xs{% if catpage=="NotificationHandler" %} active{% endif %}">
+                <a href="/notifications/"{% comment %} class="dropdown-toggle lt" data-toggle="dropdown"{% endcomment %}>
+                    <i class="icon-bell"></i>{% if SignedUser.NotificationCount>0 %}
+                    <span class="badge badge-sm up bg-danger count" style="display: inline-block;">{{SignedUser.NotificationCount}}</span>{% endif %}
+                </a>
+            {% comment %}
+                <section class="dropdown-menu aside-xl animated fadeInUp">
+                    <section class="panel bg-white">
+                        <div class="panel-heading b-light bg-light"> <strong>你有 <span class="count" style="display: inline;">3</span> 个通知</strong>
+                        </div>
+                        <div class="list-group list-group-alt">
+                            <a href="#" class="media list-group-item" style="display: block;">
+                                <span class="pull-left thumb-sm text-center">
+                                    <i class="fa fa-envelope-o fa-2x text-success"></i>
+                                </span>
+                                <span class="media-body block m-b-none">
+                                    Sophi sent you a email
+                                    <br>
+                                    <small class="text-muted">1 minutes ago</small>
+                                </span>
+                            </a>
+                            <a href="#" class="media list-group-item">
+                                <span class="pull-left thumb-sm">
+                                    <img src="{{File(SignedUser.AvatarMedium)}}" alt="..." class="img-circle"></span>
+                                <span class="media-body block m-b-none">
+                                    Use awesome animate.css
+                                    <br>
+                                    <small class="text-muted">10 minutes ago</small>
+                                </span>
+                            </a>
+                            <a href="#" class="media list-group-item">
+                                <span class="media-body block m-b-none">
+                                    1.0 initial released
+                                    <br>
+                                    <small class="text-muted">1 hour ago</small>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="panel-footer text-sm">
+                            <a href="#" class="pull-right">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="/notifications/" data-toggle="class:show animated fadeInRight">查看所有通知</a>
+                        </div>
+                    </section>
+                </section>
+            {% endcomment %}
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle bg clear" data-toggle="dropdown">
+                        <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
+                            <img src="{% if SignedUser.AvatarMedium %}{{File(SignedUser.AvatarMedium)}}{% else %}/identicon/{{SignedUser.Username}}/48/default.png{% endif %}" alt="{{SignedUser.Username}}"></span>
+                        {{SignedUser.Username}} <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight">
+                        <li>
+                            <a href="/notifications/">{% if SignedUser.NotificationCount>0 %}<span class="badge bg-danger pull-right">{{SignedUser.NotificationCount}}</span>{% endif %}
+                                {{ i18n.Tr("notifications") }}
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="/new/topic/">{{ i18n.Tr("new-topic") }}</a></li>
+                        <li><a href="/new/node/">{{ i18n.Tr("new-node") }}</a></li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/user/{{SignedUser.Username}}/">{{ i18n.Tr("profile") }}</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/settings/profile/">{{ i18n.Tr("settings-profile") }}</a>
+                        </li>
+                        <li>
+                            <a href="/settings/avatar/">{{ i18n.Tr("settings-avatar") }}</a>
+                        </li>
+                        <li>
+                            <a href="/settings/password/">{{ i18n.Tr("settings-password") }}</a>
+                        </li>
+                        {% if IsRoot %}<li><a href="/root/signin/">{{ i18n.Tr("dashboard") }}</a></li>{% endif %}
+                        <li class="divider"></li>
+                        <li><a href="/signout/">{{ i18n.Tr("signout") }}</a></li>
+                    </ul>
+                </li>
+            {% else %}
+                <li{% if catpage=="SigninHandler" %} class="active"{% endif %}>
+                    <a href="/signin/">{{ i18n.Tr("signin") }}</a>
+                </li>
+                <li{% if catpage=="SignupHandler" %} class="active"{% endif %}>
+                    <a href="/signup/">{{ i18n.Tr("signup") }}</a>
+                </li>
+            {% endif %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle bg clear" data-toggle="dropdown">
+                        {{ LangName }} <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight">
+                        <li>
+                            <a href="javascript:;">选择语言</a>
+                        </li>
+                        <li class="divider"></li>
+                        {% if AllLangs %}
+                        <li>
+                            {% for lang in AllLangs %}
+                            <a href="?lang={{lang.Lang}}">{{lang.Name}}</a>
+                            {% endfor%}
+                        </li>
+                        {% endif%}
+                    </ul>
+                </li>
+        </ul>
+    </div>
+</header>

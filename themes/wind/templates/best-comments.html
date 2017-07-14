@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="content" class="col-lg-9">
+    {% include "msgerr.html" %}
+    <div class="box">
+        {% if curnode %}
+            <div class="cell first breadcrumb last">
+                <a href="/">{{SiteName}}</a>
+                {% if curnode.Title %}
+                    <i class="fa fa-caret-right"></i> <a class="tag" href="/node/{{curnode.Title|urlencode}}/">{{curnode.Title}}</a>
+                {% endif %}
+            </div>
+        {%else%}
+            {%if nodes%}
+                <div class="cell nav-cats breadcrumb first">
+                    {% for node in nodes %}
+                        {%if forloop.Counter<=10 %}
+                            <span class="cat">
+                                <a {% if CurNdTitle ==node.Title %}class="active" {% endif %} href="/node/{{node.Title|urlencode}}/">{{node.Title}}</a>
+                            </span>
+                        {%endif%}
+                    {%endfor%}
+                </div>
+            {%endif%}
+                <div class="cell nav-cats breadcrumb">
+                    <span class="cat">
+                        <a {% if not curnode %}class="active" {% endif %} href="/"> <i class="fa fa-refresh"></i>
+                        </a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="best" && isdefault==true %}class="active" {% endif %} href="/best/">优质话题</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="lastest" && isdefault==true %}class="active" {% endif %} href="/lastest/">新鲜话题</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="hotness" && isdefault==true %}class="active" {% endif %} href="/hotness/">热辣话题</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="rising" && isdefault==true %}class="active" {% endif %} href="/rising/">话题趋势</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="scores" && isdefault==true %}class="active" {% endif %} href="/scores/">高分话题</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="votes" && isdefault==true %}class="active" {% endif %} href="/votes/">高票话题</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="controversial" && isdefault==true %}class="active" {% endif %} href="/controversial/">热议话题</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="popular" && isdefault==true %}class="active" {% endif %} href="/popular/">流行话题</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="cold" && isdefault==true %}class="active" {% endif %} href="/cold/">冷门话题</a>
+                    </span>
+                    <span class="cat">
+                        <a {% if tab=="favorites" && isdefault==true %}class="active" {% endif %} href="/favorites/">话题收藏</a>
+                    </span>
+                    {% comment %}
+                    <span class="cat">
+                        <a href="/follow/">关注</a>
+                    </span>
+                    {% endcomment %}
+                </div>
+        {% endif %}
+    </div>
+{% if ConfidenceReplys %}
+    <div class="box">
+        <div class="cell nav-cats breadcrumb first">
+            <span class="cat">
+                <a href="/best/comments/" class="active">优质评论</a>
+            </span>
+        </div>
+        <div class="post-list last">
+        {% for reply in ConfidenceReplys %}
+            <div class="post cell">
+            {% if reply.AvatarMedium %}
+                <div class="avatar">
+                    <a href="/user/{{reply.Username}}/" title="{{reply.Username}}">
+                        <img src="{{File(reply.AvatarMedium)}}" alt="{{reply.Username}}'s Photo"></a>
+                </div>
+            {% endif %}
+            {% if reply.Content %}
+                <h3 class="title">
+                    <a href="/topic/{{reply.Tid}}/#reply{{reply.Id}}">{{ Text(reply.Content,0,100)|safe }}</a>
+                </h3>
+            {% endif %}
+                <div class="meta">
+                    <a href="/user/insion/">{{reply.Author}}</a>
+                    •
+                    <span class="time">{{TimeSince(reply.Created)}}</span>
+                </div>
+            </div>
+        {%endfor%}
+        </div>
+        {% if pagesbar %}
+            <div class="cell last">
+                {{pagesbar|safe}}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
+        {%if nodes %}
+            <div class="box">
+                <div class="cell breadcrumb first">节点导航</div>
+                <div class="cell nav-cats last">
+                    {% for node in nodes %}
+                        {%if forloop.Counter<=32 %}
+                            <span class="cat">
+                                <a href="/node/{{node.Title|urlencode}}/">{{node.Title}}</a>
+                            </span>
+                        {%endif%}
+                    {%endfor%}
+                </div>
+            </div>
+        {% endif %}
+        {%if categorys %}
+            <div class="box">
+                {% for category in categorys %}
+                    {%if forloop.Counter<=16 %}
+                        <div class="cell breadcrumb first"><a href="/category/{{category.Title|urlencode}}/" style="background:black;color:white;" class="badge">{{category.Title}}</a></div>
+                        <div class="cell nav-cats last" style="border-bottom:1px solid gray;">
+                            {% for node in GetNodesByCid(category.Id, 0, 0, "id") %}
+                                {%if forloop.Counter<=32 %}
+                                <span class="cat">
+                                    <a href="/node/{{node.Title|urlencode}}/">{{node.Title}}</a>
+                                </span>
+                                {%endif%}
+                            {%endfor%}
+                        </div>
+                    {%endif%}
+                {%endfor%}
+            </div>
+        {%endif%}
+</div>
+{% endblock content %}

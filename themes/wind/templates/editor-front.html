@@ -1,0 +1,79 @@
+<script src="/libs/tinymce/tinymce.min.js"></script>
+<script type="text/javascript">
+  tinymce.init({
+    selector: ".inline",
+    inline: true,
+    height : "48",
+    relative_urls:false,
+    menubar : false,
+    statusbar : false,
+    language: 'zh_CN',
+    theme: "modern",
+    skin : 'lightgray',
+    extended_valid_elements: "video[*],audio[*],object[data|width|height|classid|codebase],param[name|value],embed[src|type|width|height|align|flashvars|wmode|quality|allowfullscreen|allowscriptaccess]",
+    plugins: [
+        "advlist autolink lists link jbimages image charmap print preview hr anchor pagebreak",
+        "searchreplace visualblocks visualchars code fullscreen",
+        "insertdatetime media nonbreaking save table contextmenu directionality",
+        "emoticons template paste textcolor colorpicker textpattern imagetools"
+    ],
+    toolbar: "undo redo | styleselect | bullist numlist table | outdent indent | pagebreak hr | insertdatetime emoticons charmap visualblocks visualchars | code link | jbimages image media"
+  });
+
+  tinymce.init({
+    selector: ".editor",
+    relative_urls:false,
+    menubar : false,
+    statusbar : false,
+    language: 'zh_CN',
+    theme: "modern",
+    skin : 'lightgray',
+    extended_valid_elements: "video[*],audio[*],object[data|width|height|classid|codebase],param[name|value],embed[src|type|width|height|align|flashvars|wmode|quality|allowfullscreen|allowscriptaccess]",
+    plugins: [
+            "advlist autolink lists link jbimages image charmap print preview hr anchor pagebreak",
+            "searchreplace visualblocks visualchars code fullscreen",
+            "insertdatetime media nonbreaking save table contextmenu directionality",
+            "emoticons paste textcolor colorpicker textpattern imagetools"
+    ],
+    toolbar: "undo redo | styleselect | bullist numlist table | outdent indent pagebreak hr | insertdatetime emoticons charmap | print searchreplace | code link jbimages image media"
+  });
+
+  function SubmitHolder(){
+    var pretitle=tinyMCE.get('PostForm-Title').getContent();
+    var precontent=tinyMCE.get('PostForm-Content').getContent();
+    var title=$("#title");
+    var content=$("#postcontent");
+    {% comment %}
+        var pretitle=tinyMCE.editors[0].getContent();
+        var precontent=tinyMCE.editors[1].getContent();
+        var mdtitle= toMarkdown(pretitle);
+        title.val(mdtitle);
+        var mdcontent= toMarkdown(precontent);
+        content.val(mdcontent);
+    {% endcomment %}
+    title.val(pretitle);
+    content.val(precontent);
+    var f=$("#post-new");
+    f.submit();
+  }
+
+  function SubmitHolder2(){
+    var precontent=tinyMCE.activeEditor.getContent();
+    var content=$("#postcontent");
+    {% comment %}
+        var mdcontent= toMarkdown(precontent);
+        content.val(mdcontent);
+    {% endcomment %}
+    content.val(precontent);
+    var f=$("#post-new");
+    f.submit();
+  }
+
+  function CommentHolder(){
+    var cfm=tinyMCE.get('CommentForm-Message').getContent();
+    var content=$("#comment");
+    content.val(cfm);
+    var f=$("#post-reply");
+    f.submit();
+  }
+</script>

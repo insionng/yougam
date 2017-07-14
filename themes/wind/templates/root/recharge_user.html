@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <title>{{SiteName}}管理系统</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/root/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/root/css/bootstrap-responsive.min.css" />
+  <link rel="stylesheet" href="/root/css/uniform.css" />
+  <link rel="stylesheet" href="/root/css/select2.css" />
+  <link rel="stylesheet" href="/root/css/matrix-style.css" />
+  <link rel="stylesheet" href="/root/css/matrix-media.css" />
+
+  <link href="/root/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+  <link href='/root/css/opensans.css' rel='stylesheet' type='text/css'>
+</head>
+<body>
+{% include "header.html" %}
+{% include "sidebar.html" %}
+  <div id="content">
+    <div id="content-header">
+      <div id="breadcrumb">
+        <a href="#" title="控制面板" class="tip-bottom">
+          <i class="icon-home"></i>
+          控制面板
+        </a>
+        <a href="#" class="current">充值金币</a>
+      </div>
+      <h1>充值金币</h1>
+    </div>
+    <div class="container-fluid">
+      <hr>
+      <div class="row-fluid">
+      <div class="span12">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
+            <h5>充值金币[{{usr.Username}},当前余额:{{usr.Balance}}]</h5>
+          </div>
+          {% include "msgerr.html" %}
+          <div class="widget-content nopadding">
+            <form id="form-wizard" class="form-horizontal ui-formwizard" method="POST" novalidate="novalidate">
+              <div id="form-wizard-1" class="step ui-formwizard-content" style="display: block;">
+              <div class="control-group">
+                <label class="control-label">充值数额</label>
+                <div class="controls">
+                  <div class="input-append">
+                    <input name="amount" type="text" placeholder="5.000" class="span11">
+                    <span class="add-on">$</span> </div>
+                </div>
+              </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-success">保存修改</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+{% include "footer.html" %}
+  <script src="/root/js/jquery.min.js"></script>
+  <script src="/root/js/jquery.ui.custom.js"></script>
+  <script src="/root/js/bootstrap.min.js"></script>
+  <script src="/root/js/jquery.uniform.js"></script>
+  <script src="/root/js/select2.min.js"></script>
+  <script src="/root/js/jquery.dataTables.min.js"></script>
+  <script src="/root/js/matrix.js"></script>
+  <script src="/root/js/matrix.tables.js"></script>
+</body>
+</html>

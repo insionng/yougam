@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}
+<title>会员榜 - {{SiteName}}</title>
+{% endblock title %}
+
+{% block content %}
+    <div id="content" class="col-lg-9">
+        <section class="vbox box">
+                <section class="scrollable wrapper-lg">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h1 class="h2 m-b-md m-t-none font-thin">活跃会员</h1>
+                            <div class="row">
+                            {% for user in ActiveUsers %}
+                                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                                    <div class="pos-rlt ">
+                                        <a href="/user/{{user.Username}}/" class="">
+                                            <img src="{% if user.AvatarLarge %}{{File(user.AvatarLarge)}}{%else%}/identicon/{{user.Username}}/100/default.png{% endif %}" alt="{{user.Username}}" class="img-full r"></a>
+                                    </div>
+                                    <div class="padder-v text-center">
+                                        <a href="/user/{{user.Username}}/" class="m-t-sm m-b-sm text-ellipsis">{{user.Username}}</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            </div>
+                            {% comment %}
+                            <div class="nav-links m-t-md m-b-md clearfix">
+                                <span class="page-numbers current">1</span>
+                                <a class="page-numbers" href="/page/2/">2</a>
+                                <a class="next page-numbers" href="/page/2/"> <i class="fa fa-chevron-right"></i>
+                                </a>
+                            </div>
+                            {% endcomment %}
+                        </div>
+                        <div class="col-sm-3">
+                        {% if UsersConfidence %}
+                            <div class="widget-1 widget-odd widget_music_term_widget widget">
+                                <h4 class="widget-title">最赞会员</h4>
+                                <div class="list-group list-group-lg ">
+                                {% for User in UsersConfidence %}
+                                    <div class="list-group-item clearfix">
+                                        <div class="pos-rlt pull-left m-r">
+                                            <a href="/user/{{User.Username}}/" class="thumb-sm">
+                                                <img src="{% if User.AvatarLarge %}{{File(User.AvatarLarge)}}{%else%}/identicon/{{User.Username}}/100/default.png{% endif %}" alt="Miaow" class="img-full rounded"></a>
+                                        </div>
+                                        <div class="">
+                                            <a href="/user/{{User.Username}}/" class="m-t-sm m-b-sm text-ellipsis">{{User.Username}}</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        </div>
+                    </div>
+                </section>
+        </section>
+    {% include "navbox.html" %}
+    </div>
+{% endblock content %}
+
+{% block sidebar %}
+    {% if IsSigned  %}
+        {% include "contact-sidebar.html" %}
+    {% else %}
+        {% include "sidebar.html" %}
+    {% endif %}
+{% endblock sidebar %}

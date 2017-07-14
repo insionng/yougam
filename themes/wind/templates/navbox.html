@@ -1,0 +1,32 @@
+{%if nodes %}
+            <div class="box">
+                <div class="cell breadcrumb first">节点导航</div>
+                <div class="cell nav-cats last">
+                    {% for node in nodes %}
+                        {%if forloop.Counter<=32 %}
+                            <span class="cat">
+                                <a href="/node/{{node.Title|urlencode}}/">{{node.Title}}</a>
+                            </span>
+                        {%endif%}
+                    {%endfor%}
+                </div>
+            </div>
+{% endif %}
+{%if categorys %}
+            <div class="box">
+                {% for category in categorys %}
+                    {%if forloop.Counter<=16 %}
+                        <div class="cell breadcrumb first"><a href="/category/{{category.Title|urlencode}}/" style="background:black;color:white;" class="badge">{{category.Title}}</a></div>
+                        <div class="cell nav-cats last" style="border-bottom:1px solid gray;">
+                            {% for node in GetNodesByCid(category.Id, 0, 0, "id") %}
+                                {%if forloop.Counter<=32 %}
+                                <span class="cat">
+                                    <a href="/node/{{node.Title|urlencode}}/">{{node.Title}}</a>
+                                </span>
+                                {%endif%}
+                            {%endfor%}
+                        </div>
+                    {%endif%}
+                {%endfor%}
+            </div>
+{%endif%}

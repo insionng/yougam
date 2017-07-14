@@ -1,0 +1,100 @@
+<!--sidebar-menu-->
+<div id="sidebar"><a href="/root/dashboard/" class="visible-phone"><i class="icon icon-home"></i> 仪表</a>
+  <ul>
+    <li{% if catpage %}{% if catpage=="RDashboardHandler" %} class='active'{% endif %}{% endif %}><a href="/root/dashboard/"><i class="icon icon-home"></i> <span>仪表</span></a> </li>
+
+    <li class='submenu{% if catpage %}{% if (catpage=="RCreateReportHandler") || (catpage=="RReadReportHandler") || (catpage=="RUpdateReportHandler") || (catpage=="RDeleteReportHandler") || (catpage=="RRechargeReportHandler") %} active open{% endif %}{% endif %}'> <a href="###"><i class="icon icon-table"></i> <span>报表</span>{# <span class="label label-important">5</span>#}</a>
+      <ul>
+        <li{% if catpage %}{% if (catpage=="RReadReportHandler") || (catpage=="RRechargeReportHandler") %} class='active'{% endif %}{% endif %}><a href="/root/read/report/">销售报表</a></li>
+      </ul>
+    </li>
+
+    <li class='submenu{% if catpage %}{% if (catpage=="RCreateUserHandler") || (catpage=="RReadUserHandler") || (catpage=="RUpdateUserHandler") || (catpage=="RDeleteUserHandler") || (catpage=="RRechargeUserHandler") %} active open{% endif %}{% endif %}'> <a href="###"><i class="icon icon-user"></i> <span>用户</span>{# <span class="label label-important">5</span>#}</a>
+      <ul>
+        <li{% if catpage %}{% if (catpage=="RCreateUserHandler") %} class='active'{% endif %}{% endif %}><a href="/root/create/user/">创建用户</a></li>
+        <li{% if catpage %}{% if (catpage=="RReadUserHandler") || (catpage=="RRechargeUserHandler") %} class='active'{% endif %}{% endif %}><a href="/root/read/user/">用户列表</a></li>
+      </ul>
+    </li>
+
+    <li class='submenu{% if catpage %}{% if (catpage=="RThemeHandler") %} active open{% endif %}{% endif %}'> <a href="###"><i class="icon icon-th"></i> <span>主题</span>{# <span class="label label-important">5</span>#}</a>
+      <ul>
+        <li{% if catpage %}{% if catpage=="RThemeHandler" %} class='active'{% endif %}{% endif %}><a href="/root/theme/">主题模板</a></li>
+      </ul>
+    </li>
+    
+    <li class='submenu{% if catpage %}{% if (catpage=="RCreatePageHandler") || (catpage=="RReadPageHandler") || (catpage=="RUpdatePageHandler") || (catpage=="RDeletePageHandler") %} active open{% endif %}{% endif %}'> <a href="###"><i class="icon icon-file"></i> <span>页面</span>{# <span class="label label-important">5</span>#}</a>
+      <ul>
+        <li{% if catpage %}{% if catpage=="RCreatePageHandler" %} class='active'{% endif %}{% endif %}><a href="/root/create/page/">创建页面</a></li>
+        <li{% if catpage %}{% if catpage=="RReadPageHandler" %} class='active'{% endif %}{% endif %}><a href="/root/read/page/">页面列表</a></li>
+      </ul>
+    </li>
+
+    <li class='submenu{% if catpage %}{% if (catpage=="RCreateNodeHandler") || (catpage=="RReadNodeHandler") || (catpage=="RUpdateNodeHandler") || (catpage=="RDeleteNodeHandler") %} active open{% endif %}{% endif %}'> <a href="###"><i class="icon icon-th-list"></i> <span>节点</span>{# <span class="label label-important">3</span>#}</a>
+      <ul>
+        <li{% if catpage %}{% if catpage=="RCreateNodeHandler" %} class='active'{% endif %}{% endif %}><a href="/root/create/node/">创建节点</a></li>
+        <li{% if catpage %}{% if catpage=="RReadNodeHandler" %} class='active'{% endif %}{% endif %}><a href="/root/read/node/">节点列表</a></li>
+      </ul>
+    </li>
+
+    <li class='submenu{% if catpage %}{% if (catpage=="RCreateCategoryHandler") || (catpage=="RReadCategoryHandler") || (catpage=="RUpdateCategoryHandler") || (catpage=="RDeleteCategoryHandler") %} active open{% endif %}{% endif %}'> <a href="###"><i class="icon icon-file"></i> <span>分类</span>{# <span class="label label-important">5</span>#}</a>
+      <ul>
+        <li{% if catpage %}{% if catpage=="RCreateCategoryHandler" %} class='active'{% endif %}{% endif %}><a href="/root/create/category/">创建分类</a></li>
+        <li{% if catpage %}{% if catpage=="RReadCategoryHandler" %} class='active'{% endif %}{% endif %}><a href="/root/read/category/">分类列表</a></li>
+      </ul>
+    </li>
+    
+    <li class='submenu{% if catpage %}{% if (catpage=="RCreateTopicHandler") || (catpage=="RReadTopicHandler") || (catpage=="RUpdateTopicHandler") || (catpage=="RDeleteTopicHandler") || (catpage=="RReadTopicHandlerlist") || (catpage=="RMoveTopicHandler") %} active open{% endif %}{% endif %}'> <a href="###"><i class="icon icon-th-list"></i> <span>话题</span>{# <span class="label label-important">3</span>#}</a>
+      <ul>
+        <li{% if catpage %}{% if catpage=="RCreateTopicHandler" %} class='active'{% endif %}{% endif %}><a href="/root/create/topic/">创建话题</a></li>
+        <li{% if catpage %}{% if (catpage=="RReadTopicHandler") || (catpage=="RReadTopicHandlerlist") || (catpage=="RMoveTopicHandler") %} class='active'{% endif %}{% endif %}><a href="/root/read/topic/">话题列表</a></li>
+      </ul>
+    </li>
+    
+    <li class='submenu{% if catpage %}{% if (catpage=="RReadReplyHandler") || (catpage=="RUpdateReplyHandler") %} active open{% endif %}{% endif %}'> <a href="###"><i class="icon icon-info-sign"></i> <span>评论</span></a>
+      <ul>
+        <li{% if catpage %}{% if catpage=="RReadReplyHandler" %} class='active'{% endif %}{% endif %}><a href="/root/read/reply/">评论列表</a></li>
+      </ul>
+    </li>
+
+    <li class='submenu{% if catpage %}{% if (catpage=="RReadIssueHandler") %} active open{% endif %}{% endif %}'> <a href="###"><i class="icon icon-th-list"></i> <span>举报</span>{# <span class="label label-important">3</span>#}</a>
+      <ul>
+        <li{% if sidebar %}{% if sidebar=="issues" %} class='active'{% endif %}{% endif %}><a href="/root/read/issue/">所有举报</a></li>
+        <li{% if sidebar %}{% if sidebar=="rtopics" %} class='active'{% endif %}{% endif %}><a href="/root/read/issue/topic/">话题举报</a></li>
+        <li{% if sidebar %}{% if sidebar=="rreplys" %} class='active'{% endif %}{% endif %}><a href="/root/read/issue/reply/">评论举报</a></li>
+      </ul>
+    </li>
+
+    <li class='submenu{% if catpage %}{% if (catpage=="RCreateLinkHandler") || (catpage=="RReadLinkHandler") || (catpage=="RUpdateLinkHandler") || (catpage=="RDeleteLinkHandler") %} active open{% endif %}{% endif %}'> <a href="###"><i class="icon icon-file"></i> <span>友链</span>{# <span class="label label-important">5</span>#}</a>
+      <ul>
+        <li{% if catpage %}{% if catpage=="RCreateLinkHandler" %} class='active'{% endif %}{% endif %}><a href="/root/create/link/">创建友链</a></li>
+        <li{% if catpage %}{% if catpage=="RReadLinkHandler" %} class='active'{% endif %}{% endif %}><a href="/root/read/link/">友链列表</a></li>
+      </ul>
+    </li>
+
+    <li class='submenu{% if catpage %}{% if (catpage=="RSettingPasswordHandler") || (catpage=="RCreateAdministrator") || (catpage=="RReadAdministrator") %} active open{% endif %}{% endif %}'> <a href="###"><i class="icon icon-signal"></i> <span>常规</span></a>
+      <ul>
+        <li{% if catpage %}{% if catpage=="RCreateAdministrator" %} class='active'{% endif %}{% endif %}><a href="/root/create/administrator/">创建管理员</a></li>
+        <li{% if catpage %}{% if (catpage=="RReadAdministrator") || (catpage=="RUpdateAdministratorHandler") %} class='active'{% endif %}{% endif %}><a href="/root/read/administrator/">管理员列表</a></li>
+        <li{% if catpage %}{% if catpage=="RSettingPasswordHandler" %} class='active'{% endif %}{% endif %}><a href="/root/setting/password/">设置密码</a></li>
+      </ul>
+    </li>
+    <li><a href="/" target="_blank"><i class="icon icon-tint"></i> <span>网站</span></a></li>
+{% comment %}
+    <li class="content"> <span>Monthly Bandwidth Transfer</span>
+      <div class="progress progress-mini progress-danger active progress-striped">
+        <div style="width: 77%;" class="bar"></div>
+      </div>
+      <span class="percent">77%</span>
+      <div class="stat">21419.94 / 14000 MB</div>
+    </li>
+    <li class="content"> <span>Disk Space Usage</span>
+      <div class="progress progress-mini active progress-striped">
+        <div style="width: 87%;" class="bar"></div>
+      </div>
+      <span class="percent">87%</span>
+      <div class="stat">604.44 / 4000 MB</div>
+    </li>
+{% endcomment %}
+  </ul>
+</div>
+<!--sidebar-menu-->

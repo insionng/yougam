@@ -1,0 +1,53 @@
+{% extends "../base.html" %}
+
+{% block title %}
+<title>{{SiteName}} › 账户余额</title>
+{% endblock title %}
+
+{% block content %}
+    <div id="content" class="col-lg-9">
+        <div class="box cell first last">
+            <div class="breadcrumb">
+                <a href="/">{{SiteName}}</a> <i class="fa fa-caret-right"></i> <a class="tag" href="/user/{{SignedUser.Username}}/balance/">账户余额</a>
+                {% comment %}
+                <div class="pull-right"><a href="/balance/rich/" class="badge">社区财富排行榜</a> <a href="/balance/player/" class="badge">社区消费排行榜</a> <a href="/balance/add/alipay/" class="badge btn-warning">充值</a></div>
+                {% endcomment %}
+            </div>
+            <div class="cell first breadcrumb last">
+                <div class="cell">
+                    <p>当前账户</p>
+                    <p><span class="btn-dark badge" style="font-size: 24px; line-height: 24px;">{{SignedUser.Balance|default: "0"}} <i class="fa fa-bitcoin"></i></span></p>
+                </div>
+                <div style="margin-top:1em;margin-bottom:1em;">
+                    <span class="col-lg-4">时间</span>
+                    <span class="col-lg-2">类型</span>
+                    <span class="col-lg-3">数额</span>
+                    <span class="col-lg-3">真实余额</span>
+                </div>
+                <div class="clear" style="clear:both"></div>
+                {% for balance in balances %}
+                <div style="padding-top:1em;border-top:solid #000 1px;">
+                    <span class="col-lg-4"><small>{{TimeSince(balance.Time)}}</small></span>
+                    <span class="col-lg-2">
+                        <small>
+                            {% ifequal balance.Ctype|escape "1" %}创建主题{% endifequal %}
+                            {% ifequal balance.Ctype|escape "2" %}注册{% endifequal %}
+                            {% ifequal balance.Ctype|escape "3" %}充值{% endifequal %}
+                            {% ifequal balance.Ctype|escape "4" %}话题被赞{% endifequal %}
+                            {% ifequal balance.Ctype|escape "5" %}话题卖出{% endifequal %}
+                            {% ifequal balance.Ctype|escape "-1" %}创建回复{% endifequal %}
+                            {% ifequal balance.Ctype|escape "-2" %}创建主题附言{% endifequal %}
+                            {% ifequal balance.Ctype|escape "-3" %}付费话题{% endifequal %}
+                        </small>
+                    </span>
+                    <span class="col-lg-3">{{balance.Amount}}</span>
+                    <span class="col-lg-3">{{balance.Balance}}</span>
+                    <div class="clear" style="clear:both"></div>
+                    <div class="box.nobg" style="padding:1em;">{{balance.Description|safe}}</div>
+                </div>
+                <div class="clear" style="clear:both"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,102 @@
+{% include "head.html" %}
+<body>
+{% include "header.html" %}
+
+{% include "sidebar.html" %}
+
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="/root/dashboard/" title="控制面板" class="tip-bottom"><i class="icon-home"></i> 控制面板</a> <a href="javascript:void();">
+    {%if catpage%}
+      {%if catpage=="RReadCategoryHandler" %}
+      阅览
+      {%else%}
+      创建
+      {%endif%}
+    {%endif%}</a> <a href="/root/create/topic/" class="current">分类</a></div>
+    {% if catpage %}
+      {%if catpage=="RReadCategoryHandler" %}
+      <h1>阅览分类</h1>
+      {%else%}
+      <h1>创建分类</h1>
+      {%endif%}
+    {%endif%}
+  </div>
+  <div class="container-fluid"><hr>
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="widget-box">
+            <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
+              <h5>撰写</h5>
+            </div>
+            {% include "msgerr.html" %}
+            <div class="widget-content nopadding">
+              <form class="form-horizontal" method="post" action="/root/create/category/" novalidate="novalidate">
+                <div class="control-group">
+                  <label class="control-label">标题</label>
+                  <div class="controls">
+                    <input type="text" name="title" value="{% if category %}{{category.Title}}{% endif %}"/>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">内容</label>
+                  <div class="controls">
+                    <textarea rows="14" class="span11 editor" name="content">{% if category %}{{ category.Content|safe }}{% endif %}</textarea>
+                  </div>
+                </div>
+
+                {% include "../editor.html" %}
+                <div class="control-group">
+                  <label class="control-label">节点</label>
+                  <div class="controls">
+                    <select id="selectError" name="nodeid">
+                    {%if (nodes!=nil)||(category!=nil)%}
+                            <option value="-1">归属ROOT</option>
+                            {%if category%}
+                                    {% if category.Pid > 0 %}
+                                      <option value="{{category.Pid}}" selected>
+                                      {%if nodes%}
+                                          {% for node in nodes %}
+                                                {%if node.Id==category.Pid%}
+                                                    {{node.Title}}
+                                                {%endif%}
+                                          {% endfor %}
+                                      {%else%}
+                                          {% if category.Pid %}分类{{category.Pid}}{%endif%}
+                                      {%endif%}
+                                      </option>
+                                    {%endif%}
+                            {%endif%}
+                            {%if nodes %}
+                                {% for node in nodes %}
+                                      <option value="{{node.Id}}">{{node.Title}}</option>
+                                {% endfor %}
+                            {%endif%}
+                    {%else%}
+                        <option value="-1" selected>默认归属ROOT</option>
+                    {%endif%}
+                    </select>
+                    <span class="help-inline">（选择所属节点，可选）</span>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <input type="submit" value="发布" class="btn btn-success">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% include "footer.html" %}
+<script src="/root/js/jquery.min.js"></script>
+<script src="/root/js/jquery.ui.custom.js"></script>
+<script src="/root/js/bootstrap.min.js"></script>
+<script src="/root/js/jquery.uniform.js"></script>
+<script src="/root/js/select2.min.js"></script>
+<script src="/root/js/jquery.validate.js"></script>
+<script src="/root/js/matrix.js"></script>
+
+</body>
+</html>

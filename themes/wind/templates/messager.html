@@ -1,0 +1,185 @@
+<section class="panel panel-default">
+    <header class="panel-heading bg-light" style="padding:1em 1em 0 1em;">
+      <div class="col-md-3 no-padder">
+            <p>
+              <a href="/user/{{SignedUser.Username}}/"{% if SignedUser.Username %} data-toggle="tooltip" data-placement="right" data-original-title="{{SignedUser.Username}}"{% endif %}>
+                  <img src="{% if SignedUser.AvatarMedium %}{{File(SignedUser.AvatarMedium)}}{% else %}/identicon/{{SignedUser.Username}}/48/default.png{% endif %}" width="48px" height="48px"/>
+              </a>
+            </p>
+      </div>
+      <div class="col-md-6 no-padder">
+              <p style="text-align:left;margin-top:10px;padding-left:10px;">
+                <span class="small pull-left" style="margin-top:2px;" data-toggle="tooltip" data-placement="bottom" data-original-title="{{SignedUser.Content}}">{% if SignedUser.Content %}{{Cropword(SignedUser.Content,0,15,"..")}}{%else%}不记得了也好，忘却也是一种幸福。{% endif %}</span>
+                <div class="clear"></div>
+              </p>
+      </div>
+      <div class="col-md-3 no-padder">
+                <a href="/user/{{SignedUser.Username}}/balance/" class="pull-right btn-dark badge">{{SignedUser.Balance|default: "0"}} <i class="fa fa-btc"></i></a>
+      </div>
+      <div class="clear"></div>
+    </header>
+    <section class="panel-body no-padder">
+      <section class="panel panel-default m-b-none">
+        <header class="panel-heading bg-light">
+          <ul class="nav nav-tabs pull-right">
+            <li{% if not (catpage=="ContactHandler") %} class="active"{% endif %}>
+              <a href="#msa" data-toggle="tab"> <i class="fa fa-pencil-square text-muted"></i> </a>
+            </li>
+            <li{% if catpage=="ContactHandler" %} class="active"{% endif %}>
+              <a href="#ams" data-toggle="tab"> <i class="fa fa-comments text-muted"></i> </a>
+            </li>
+          </ul>
+          <span class="hidden-sm">
+            <a href="/user/{{SignedUser.Username}}/"{% if SignedUser.Nickname %} data-toggle="tooltip" data-placement="right" data-original-title="{{SignedUser.Nickname}}"{% endif %}>{% if SignedUser.Username %}{{Cropword(SignedUser.Username,0,6,"..")}}{% endif %}</a>
+          </span>
+        </header>
+        <section>
+          <div class="tab-content">
+            <div class="tab-pane{% if not messager %} active{% endif %}" id="msa">
+              <section class="panel-body no-padder">
+                <div style="padding-top:1em;padding-bottom:1em;">
+                    <span class="col-lg-4">
+                          <a href="/user/{{SignedUser.Username}}/topics/">
+                            我的话题
+                          </a>
+                    </span>
+                    <span class="col-lg-4">
+                          <a href="/user/{{SignedUser.Username}}/replys/">
+                            最近回复
+                          </a>
+                    </span>
+                    <span class="col-lg-4">
+                          <a href="/user/{{SignedUser.Username}}/favorites/">
+                            收藏话题
+                          </a>
+                    </span>
+                    <div class="clear"></div>
+                </div>
+                {% if curnode.Title %}
+                <section class="panel panel-info" style="margin:0 1em 1em 1em;">
+                  <div class="panel-body">
+                    <strong>[{{curnode.Title}}]</strong>
+                    <div class="post-span votes pull-right">
+                      <span class="badge" id="bscore-{{curnode.Id}}">{{curnode.Hotscore}}</span> 分 <span class="pull-right"><a href="javascript:void(0);" onclick="javascript:$.get('/touch/like/node/{{curnode.Id}}/?ver='+(new Date()).valueOf(), {Action:'get'}, function (data, textStatus){this;$('#bscore-{{curnode.Id}}').html(data);});" class="vote"><i class="fa fa-chevron-up"></i></a> &nbsp;<a href="javascript:" onclick="javascript:$.get('/touch/hate/node/{{curnode.Id}}/?ver='+(new Date()).valueOf(), {Action:'get'}, function (data, textStatus){this;$('#bscore-{{curnode.Id}}').html(data);});" class="vote"><i class="fa fa-chevron-down"></i></a></span>
+                      <div class="clear"></div>
+                    </div>
+                    <div class="clear">
+                      {% if curnode.Author %}
+                        <span>创始人：<a href="/user/{{curnode.Author}}/" class="text-info">@{{curnode.Author}}<i class="icon-twitter"></i></a></span>
+                      {% endif %}
+                        <small class="block text-muted">{{curnode.Views}} 浏览 / {{curnode.TopicCount}} 话题</small>
+                        {% comment %}
+                          <a href="#/signin/?next=/subscribe/3/" class="btn btn-xs btn-success m-t-xs">加入</a>
+                          <a href="#/signin/?next=/subscribe/3/" class="btn btn-xs btn-success m-t-xs">订阅</a>
+                        {% endcomment %}
+                    </div>
+                  </div>
+                </section>
+                {% endif %}
+              </section>
+              <footer class="panel-footer">
+                <p style="text-align:center;">
+                  <a href="{% if curnode %}/new/node/{{curnode.Id}}/topic/{% else %}/new/topic/{% endif %}" class="btn btn-s-md btn-dark btn-rounded"><i class="fa fa-pencil-square-o"></i> 创建{% if curnode.Title %} [{{curnode.Title}}] {% endif %}话题</a>
+                </p>
+              </footer>
+            </div>
+            <div class="tab-pane{% if messager %} active{% endif %}" id="ams">
+              <section class="panel-body vbox no-padder">
+                      <header class="header bg-light lt">
+                          <ul class="nav nav-tabs nav-white">
+                              <li class="active">
+                                  <a href="#ims" data-toggle="tab">联系</a>
+                              </li>
+                              <li>
+                                  <a href="#imf" data-toggle="tab">消息</a>
+                              </li>
+                          </ul>
+                      </header>
+                      <section class="scrollable hover messager">
+                          <div class="tab-content">
+                              <div class="tab-pane active" id="ims">
+                                  <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
+                                  {% if friends %}
+                                    {% for friend in friends %}
+                                      <li class="list-group-item">
+                                          <div class="clearfix{% if Compare(friend.Friend.Accept|lower,"==","1") %} alert alert-warning{% endif %}">
+                                            <a href="/{% if Compare(friend.Friend.Accept|lower,"==","1") %}user{% else %}connect{% endif %}/{{friend.User.Username}}/" class="pull-left thumb-sm avatar b-3x m-r">
+                                              <img src="{% if friend.User.AvatarMedium %}{{File(friend.User.AvatarMedium)}}{% else %}/identicon/{{friend.User.Username}}/48/default.png{% endif %}" class="img-circle"></a><small class="pull-right">
+                                                {% if Compare(friend.Friend.Accept|lower,"==","1") %}
+                                                  <a href="/friend/deny/{{friend.User.Id}}/" data-dismiss="alert" class="btn btn-default btn-xs pull-right m-l-xs"> <i class="fa fa-times-circle-o text-muted"></i>拒绝</a>
+                                                  <a href="/friend/allow/{{friend.User.Id}}/" data-dismiss="alert" class="btn btn-default btn-xs pull-right m-l-xs"> <i class="fa fa-check-circle-o text-muted"></i>通过</a>
+                                                {% else %}
+                                                  <a href="/friend/delete/{{friend.User.Id}}/" data-dismiss="alert" class="btn btn-default btn-xs pull-right"> <i class="fa fa-trash-o text-muted"></i>删除</a>
+                                                {% endif %}
+                                              </small>
+                                            <div class="clear">
+                                              <div class="h3 m-t-xs m-b-xs">
+                                                <a href="/{% if Compare(friend.Friend.Accept|lower,"==","1") %}user{% else %}connect{% endif %}/{{friend.User.Username}}/">{{friend.User.Username}}</a>
+                                                {% if Compare(friend.Friend.Accept|lower,"==","1") %} <i class="fa fa-circle text-warning pull-right text-xs m-t-sm"></i>{%else%} <i class="fa fa-circle text-success pull-right text-xs m-t-sm"></i>{%endif%}
+                                              </div>
+                                              <small class="text-muted">{% if Compare(friend.Friend.Accept|lower,"==","1") and friend.Friend.Content %}{{friend.Friend.Content}}{% else %}{% if friend.User.Content %}{{friend.User.Content}}{% else %}等了十年，我还以为国家经已忘记了我~{% endif %}{% endif %}</small>
+                                            </div>
+                                          </div>
+                                      </li>
+                                    {% endfor %}
+                                  {% else %}
+                                      <li class="list-group-item">
+                                          <div class="clearfix">
+                                              <div class="h3 m-t-xs m-b-xs">
+                                                <span>尚无好友</span>
+                                              </div>
+                                              <small class="text-muted">请你添加好友,开启聊天之旅～</small>
+                                            <div class="clear"></div>
+                                          </div>
+                                      </li>
+                                  {% endif %}
+                                  </ul>
+                              </div>
+                              <div class="tab-pane" id="imf">
+                                  <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border" id="mlist">
+                                  {% if messages %}
+                                      {% for message in messages %}
+                                        <li class="list-group-item">
+                                            <div class="clearfix">
+                                              <a href="/user/{{message.Sender}}/" class="pull-left thumb-sm avatar b-3x m-r">
+                                                <img src="/identicon/{{message.Sender}}/100/default.png" class="img-circle"></a><small class="pull-right">{{TimeSince(message.Created)}}</small>
+                                              <div class="clear">
+                                                <div class="h3 m-t-xs m-b-xs">
+                                                  <a href="/connect/{{message.Sender}}/">{{message.Sender}}</a> <i class="fa fa-circle text-success pull-right text-xs m-t-sm"></i>
+                                                </div>
+                                                <small class="text-muted">{{message.Content|safe}}</small>
+                                              </div>
+                                            </div>
+                                        </li>
+                                      {% endfor %}
+                                  {% else %}
+                                      <li class="list-group-item">
+                                          <div class="clearfix">
+                                            <div class="clear">
+                                              <div class="h3 m-t-xs m-b-xs">
+                                                尚无消息
+                                              </div>
+                                              <small class="text-muted">你尚未收到好友消息..</small>
+                                            </div>
+                                          </div>
+                                      </li>
+                                  {% endif %}
+                                  </ul>
+                              </div>
+                          </div>
+                      </section>
+              </section>
+              <footer class="panel-footer">
+                  <p style="text-align:center;">
+                      <a href="/contact/search/" class="btn btn-s-md btn-dark btn-rounded">
+                          <i class="fa fa-search-plus"></i>
+                          查找好友
+                      </a>
+                  </p>
+              </footer>
+            </div>
+          </div>
+        </section>
+      </section>
+    </section>
+</section>

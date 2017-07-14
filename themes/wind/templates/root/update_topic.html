@@ -1,0 +1,108 @@
+{% include "head.html" %}
+<body>
+{% include "header.html" %}
+{% include "sidebar.html" %}
+
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="/root/dashboard/" title="控制面板" class="tip-bottom"><i class="icon-home"></i> 控制面板</a> <a href="javascript:void();">更新</a> <a href="/root/create/topic/" class="current">话题</a> </div>
+    <h1>更新话题</h1>
+  </div>
+  <div class="container-fluid"><hr>  
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="widget-box">
+            <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
+              <h5>撰写</h5>
+            </div>
+            {% include "msgerr.html" %}
+            <div class="widget-content nopadding">
+              <form class="form-horizontal" method="post"{% if catpage=="RUpdateTopicHandler" %} action="/root/update/topic/{% if topic %}{{topic.Id}}{% endif %}/" {% else %} action="/root/create/topic/"{% endif %} action="/root/create/topic/" novalidate="novalidate">
+              {% if topic.Pid==0 %}
+                <div class="control-group">
+                  <label class="control-label">标题</label>
+                  <div class="controls">
+                    <input type="text" name="title" class="editor" value="{% if topic %}{{topic.Title}}{% endif %}"/>
+                  </div>
+                </div>
+              {% endif %}
+                <div class="control-group">
+                  <label class="control-label">内容</label>
+                  <div class="controls">
+                    <textarea rows="14" class="span11 editor" name="content">{% if topic %}{{topic.Content}}{% endif %}</textarea>
+                  </div>
+                </div>
+              {% if images %}
+                  <div class="control-group">
+                    <label class="control-label">图片</label>
+                    <div class="controls">
+                      <ul class="thumbnails">
+                        {% for img in Split(images,",") %}
+                          <li class="span2" id="n{{img}}"> <a> <img src="{{domain47niu}}{{img}}?imageView/2/w/157/q/85"/> </a>
+                            <div class="actions"> <a href="####" onclick="removem('{{img}}')" style="margin-right:1em;"><i class="icon-remove"></i></a> <a class="lightbox_trigger" href="{{domain47niu}}{{img}}"><i class="icon-search"></i></a> </div>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+              {% endif %}
+
+                {% include "../editor.html" %}
+                {% if topic.Pid==0 %}
+                <div class="control-group">
+                  <label class="control-label">节点</label>
+                  <div class="controls">
+                    <select id="selectError" name="nodeid">
+                    {% if (nodes||topic) %}
+                            <option value="-1">归属ROOT</option>
+                            {% if topic %}
+                                    {% if topic.Nid>0 %}
+                                      <option value="{{topic.Nid}}" selected>
+                                      {% if nodes %}
+                                          {% for nd in nodes %}
+                                                {% if nd.Id==topic.Nid %}
+                                                    {{nd.Title}}
+                                                {% endif %}
+                                          {% endfor %}
+                                      {% else %}
+                                            {% if topic.Node %}{{topic.Node}}{% else %}节点{{topic.Nid}}{% endif %}
+                                      {% endif %}
+                                      </option>
+                                    {% endif %}
+                            {% endif %}
+                            {% if nodes %}
+                                {% for nd in nodes %}
+                                      <option value="{{nd.Id}}">{{nd.Title}}</option>
+                                {% endfor %}
+                            {% endif %}
+                    {% else %}
+                        <option value="-1" selected>默认归属ROOT</option>
+                    {% endif %}
+                    </select>
+                    <span class="help-inline">（选择所属节点，可选）</span>
+                  </div>
+                </div>
+                {% endif %}
+                <div class="form-actions">
+                  <input type="submit" value="发布" class="btn btn-success">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+{% include "footer.html" %}
+<script src="/root/js/jquery.min.js"></script>
+<script src="/root/js/jquery.ui.custom.js"></script>
+<script src="/root/js/bootstrap.min.js"></script>
+<script src="/root/js/jquery.uniform.js"></script>
+<script src="/root/js/select2.min.js"></script>
+<script src="/root/js/jquery.validate.js"></script>
+<script src="/root/js/matrix.js"></script>
+<script src="/root/js/jquery.gritter.min.js"></script> 
+
+</body>
+</html>

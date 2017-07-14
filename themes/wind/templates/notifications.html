@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>通知讯息 - {{SiteName}}</title>
+{% endblock title %}
+
+{% block content %}
+    <div id="content" class="col-lg-9">
+        {% include "msgerr.html" %}
+        <div class="box post-comments" data-user="{{username}}">
+            <div class="cell first breadcrumb">你有 {{ notifications|length }} 通知
+            </div>
+        {% if notifications %}
+            <section class="comment-list block">
+                {% if not hasavatar %}
+                    {%if Flash.WarningMsg%}
+                    <div class="alert-warning cell">
+                        <a class="close" data-dismiss="alert" href="#">×</a>
+                        <h4 class="alert-heading">警告</h4>
+                        {{Flash.WarningMsg}}
+                        <div class="text-center">
+                            <a href="/settings/avatar/" class="btn"> <i class="icon-picture"></i>
+                                设置头像
+                            </a>
+                        </div>
+                    </div>
+                    {%endif%}
+                {% endif %}
+                {% for notific in notifications %}
+                    <article id="comment-id-{{notific.Id}}" class="comment-item">
+                        <a class="pull-left thumb-sm avatar">
+                            <img src="{% if notific.AvatarMedium %}{{File(notific.AvatarMedium)}}{% else %}/identicon/{{notific.Author}}/48/default.png{% endif %}" class="img-circle" alt="{{notific.Author}}"></a>
+                        <span class="arrow left"></span>
+                        <section class="comment-body panel panel-default">
+                            <header class="panel-heading bg-white">
+                                <a href="/user/{{notific.Author}}/">{{notific.Author}}</a>
+                                <label class="label bg-info m-l-xs">{{Unix2Time(notific.Created,"2006.01.02")}}</label>
+                                <span class="text-muted m-l-sm pull-right"> <i class="fa fa-clock-o"></i>
+                                    {{TimeSince(notific.Created)}}
+                                </span>
+                            </header>
+                            <div class="panel-body">
+                                <div>
+                                    <a href="/user/{{notific.Author}}/">{{notific.Author}}</a> {% if notific.Created %}<span class="time">{{TimeSince(notific.Created)}}</span>{% endif %}在话题「<a href="/topic/{{notific.Tid}}/">{{ Markdown2Text(notific.Subject)|safe }}</a>」，说道「<a href="/topic/{{notific.Tid}}/{% if notific.Rid>0 %}#reply{{notific.Rid}}{% endif %}">{{ Markdown2Text(notific.Reply)|safe }}</a>」
+                                </div>
+
+                                <div class="comment-action m-t-sm">
+                                    <a href="javascript:void(0);" data-toggle="class" onclick="javascript:$.get('/touch/like/reply/{{notific.Rid}}/?ver='+(new Date()).valueOf(), {Action:'get'}, function (data, textStatus){this;if (data!=''){$(this).addClass('disabled');}});" class="btn btn-default btn-xs"> <i class="fa fa-star-o text-muted text"></i>
+                                        <i id="rpscore-{{notific.Rid}}" class="fa fa-star text-danger text-active"></i>
+                                        喜欢
+                                    </a>
+
+                                    <a href="javascript:;" rel="quick-reply" data-target="quick-comment-{{notific.Id}}" data-user="{{notific.Author}}" class="btn btn-default btn-xs">
+                                        <i class="fa fa-mail-reply text-muted"></i>
+                                        回复
+                                    </a>
+                                    <a href="/delete/notification/{{notific.Id}}/" data-dismiss="alert" class="btn btn-default btn-xs">
+                                        <i class="fa fa-trash-o text-muted"></i>
+                                        删除
+                                    </a>
+                                </div>
+                                <section class="media-body">
+                                    <form action="/subject/{{notific.Tid}}/comment/" class="m-t-sm m-b-none hide" id="quick-comment-{{notific.Id}}" method="POST">
+                                        <div class="input-group">
+                                            <input type="text" name="comment" class="form-control" placeholder="快键评论">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-s-md btn-dark" type="submit">回复</button>
+                                            </span>
+                                        </div>
+                                    </form>
+                                </section>
+                            </div>
+                        </section>
+                    </article>
+                {% endfor %}
+                {% if pagesbar %}
+                    <div class="cell last">
+                        {{pagesbar|safe}}
+                    </div>
+                {% endif %}
+            </section>
+        {% else %}
+            <div class="cell last">没有通知讯息!</div>
+        {% endif %}
+            <span class="clearfix"></span>
+        </div>
+    </div>
+{% endblock content %}

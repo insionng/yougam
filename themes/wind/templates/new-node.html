@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>创建节点 - {{SiteName}}</title>
+{% endblock title %}
+
+{% block mainland %}
+    <div id="main" class="container">
+
+        <div class="row">
+            <div id="content" class="col-md-9">
+                <div class="box">
+                    <div class="cell first breadcrumb">
+                        <a href="/"> <i class="icon icon-home"></i>
+                        </a> <i class="fa fa-caret-right"></i>
+                        创建节点
+                    </div>
+                    {% include "msgerr.html" %}
+                    <div class="cell last">
+                        <form id="post-new" method="POST" action="">
+                            <div class="control-group">
+                                      <label class="control-label">归属设定</label>
+                                      <div class="controls">
+                                        <p class="btn-group">
+                                        {% comment %}
+                                            <select id="selectError1" name="nodeid" class="select2-offscreen" rel="select2" tabindex="-1" placeholder="选择节点...">
+                                            {% if (nodes||node) %}
+                                                    <option value="-1">[选择节点]</option>
+                                                    {% if node %}
+                                                            {% if node.Pid>0 %}
+                                                              <option value="{{node.Pid}}" selected>
+                                                              {% if nodes %}
+                                                                  {% for nd in nodes %}
+                                                                        {% if nd.Id==node.Pid %}
+                                                                            {{nd.Title}}
+                                                                        {% endif %}
+                                                                  {% endfor %}
+                                                              {% else %}
+                                                                    {% if node.Title %}{{node.Title}}{% else %}节点{{node.Pid}}{% endif %}
+                                                              {% endif %}
+                                                              </option>
+                                                            {% endif %}
+                                                    {% endif %}
+                                                    {% if nodes %}
+                                                        {% if node %}
+                                                            {% for nd in nodes %}
+                                                              {% if nd.Id!=node.Id %}
+                                                                <option value="{{nd.Id}}">{{nd.Title}}</option>
+                                                              {% endif %}
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            {% for nd in nodes %}
+                                                                <option value="{{nd.Id}}">{{nd.Title}}</option>
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endif %}
+                                            {% else %}
+                                                <option value="-1" selected>[选择节点]</option>
+                                            {% endif %}
+                                            </select>
+                                        {% endcomment %}
+                                            <select style="width:100px" class="chosen-select" name="cid" >
+                                                <optgroup label="选择分类">
+                                            {% if (categorys||category) %}
+                                                    <option value="-1">节点导航</option>
+                                                    {% if category %}
+                                                              <option value="{{category.Id}}" selected>
+                                                              {% if categorys %}
+                                                                  {% for cat in categorys %}
+                                                                        {% if cat.Id==category.Id %}
+                                                                            {{cat.Title}}
+                                                                        {% endif %}
+                                                                  {% endfor %}
+                                                              {% else %}
+                                                                    {% if category.Title %}{{category.Title}}{% else %}分类{{category.Id}}{% endif %}
+                                                              {% endif %}
+                                                              </option>
+                                                    {% endif %}
+                                                    {% if categorys %}
+                                                        {% if category %}
+                                                            {% for cat in categorys %}
+                                                              {% if (cat.Id!=category.Id) %}
+                                                                  <option value="{{cat.Id}}">{{cat.Title}}</option>
+                                                              {% endif %}
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            {% for cat in categorys %}
+                                                                <option value="{{cat.Id}}">{{cat.Title}}</option>
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endif %}
+                                            {% else %}
+                                                <option value="-1" selected>默认设置</option>
+                                            {% endif %}
+                                                </optgroup>
+                                            </select>
+                                        </p>
+                                        <span class="help-inline">（选择所属分类）</span>
+                                      </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="form-group">
+                                <input id="PostForm-Title" name="title" type="text" value="" class="form-control" placeholder="请输入节点标题" autocomplete="off">
+                            </div>
+                            <div class="markdown-editor" data-preview-url="/api/markdown/" data-savekey="post/new">
+                                <div class="form-group">
+                                    <div class="md-textarea">
+                                        <div class="textcomplete-wrapper" style="position: relative; display: block;">
+                                            <ul class="dropdown-menu" style="position: absolute; top: 0px; left: 0px; z-index: 100; display: none;"></ul>
+                                            <textarea id="PostForm-Content" name="content" rows="5" class="form-control editor" placeholder="请输入节点内容.." style="overflow: hidden; word-wrap: break-word; resize: none; height: 345px;"></textarea>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="button-bar" style="position: relative;">
+                                    {% if haspid==false %}
+                                            <button type="submit" class="btn btn-s-md btn-dark btn-rounded pull-left">
+                                                提交&nbsp;&nbsp;<i class="icon-chevron-sign-right"></i>
+                                            </button>
+                                    {% else %}
+                                            <div class="text-left">
+                                                <span class="btn-group">
+                                                    <a target="_blank" href="/topic/{{curpid}}/" class="btn btn-s-md btn-dark btn-rounded"> <i class="icon-chevron-sign-left"></i> 浏览</a>
+                                                    <button type="submit" class="btn btn-s-md btn-dark btn-rounded pull-right">提交 <i class="icon-chevron-sign-right"></i> </button>
+                                                </span>
+                                            </div>
+                                    {% endif %}
+                                        <div class="clearfix"></div>
+                                </div>
+                                {% include "editor-front.html" %}
+                                <div class="clearfix"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="sidebar" class="col-md-3">
+                <div class="box">
+                    <div class="cell first">创建节点须知</div>
+                    <div class="cell last">
+                        <ul class="sidebar-list">
+                            <li>若果已经存在类似节点，请不要再创建节点。</li>
+                            <li>节点的内容描述请尽量精准，简明扼要。</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="cell first">金币规则</div>
+                    <div class="cell last">
+                        <ul class="sidebar-list">
+                            <li><b>发帖</b> 奖励 <b>1金币</b></li>
+                            <li><b>回复</b> 消耗 <b>1金币</b></li>
+                            <li><b>创建节点</b> 消耗 <b>1000金币</b></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock mainland %}

@@ -1,0 +1,353 @@
+{% extends "../base.html" %}
+
+{% block title %}
+<title>{{username}} - {{SiteName}}</title>
+{% endblock title %}
+
+{% block mainland %}
+    <div id="main" class="container">
+        <div class="row">
+            <div id="content">
+                <div class="col-md-3">
+                    <div class="box">
+                        <ul class="nav nav-side">
+                            <li class="cell first">
+                                <h4 class="head"> <i class="icon icon-cogs"></i>
+                                    设置
+                                </h4>
+                            </li>
+                            <li class="active">
+                                <a href="/settings/profile/">个人信息</a>
+                            </li>
+                            <li>
+                                <a href="/settings/avatar/">我的头像</a>
+                            </li>
+                            <li>
+                                <a href="/settings/password/">修改密码</a>
+                            </li>
+                            <li class="cell last"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="box">
+                        <div class="cell first breadcrumb">
+                            <a href="/"> <i class="icon icon-home"></i>
+                            </a>
+                            <i class="fa fa-caret-right"></i>
+                            <a href="">个人信息</a>
+                        </div>
+                        <div class="cell last slim">
+
+                            <h3 class="underline">基本信息</h3>
+                            <form method="POST" action="">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        {% include "../msgerr.html" %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="profile-username">用户名</label>
+                                            <input id="profile-username" value="{{user.Username}}" type="text" class="form-control" disabled="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-Realname">真实姓名</label>
+                                            <input id="ProfileForm-Realname" name="realname" type="text" value="{{user.Realname}}" class="form-control"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group{# has-warning#}">
+                                            <label class="control-label" for="ProfileForm-Email">Email</label>
+                                            <input id="ProfileForm-Email" name="email" type="text" value="{{user.Email}}" class="form-control">
+                                            {#<p class="error-block">请认证您的邮箱地址。</p>#}
+                                        </div>
+                                    {% comment %}
+                                        <div class="form-group">
+                                            <label>
+                                                <input type="hidden" name="PublicEmail" value="false">
+                                                <button type="button" data-toggle="button" data-name="PublicEmail" class="btn btn-default btn-xs btn-checked">
+                                                    <i class="icon icon-ok"></i>
+                                                </button>
+                                                公开您的邮箱
+                                            </label>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button id="verify-mail-send" type="button" data-loading-text="已发送！" class="btn btn-warning btn-xs">发送认证邮件</button>
+                                        </div>
+                                    {% endcomment %}
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label class="control-label" for="ProfileForm-Nickname">昵称</label>
+                                            <input id="ProfileForm-Nickname" name="nickname" type="text" value="{{user.Nickname}}" class="form-control" placeholder="请输入您的昵称"></div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-GrEmail">你的头像</label>
+                                            <div class="profile-avatar avatar" data-url="/">
+                                            {% if user.Avatar %}
+                                                {% if user.AvatarLarge %}
+                                                    <img src="{{File(user.AvatarLarge)}}" style="width:100px;height:100px;">
+                                                {% endif %}
+                                                {% if user.AvatarMedium %}
+                                                    <img src="{{File(user.AvatarMedium)}}" style="width:48px;height:48px;">
+                                                {% endif %}
+                                                {% if user.AvatarSmall %}
+                                                    <img src="{{File(user.AvatarSmall)}}" style="width:32px;height:32px;">
+                                                {% endif %}
+                                            {% else %}
+                                                <img src="/img/d100.png" style="width:100px;height:100px;">
+                                                <img src="/img/d48.png" style="width:48px;height:48px;">
+                                                <img src="/img/d32.png" style="width:32px;height:32px;">
+                                            {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label class="control-label" for="ProfileForm-Info">个人签名</label>
+                                            <textarea id="ProfileForm-Info" name="content" rows="5" class="form-control">{{user.Content}}</textarea>
+                                            <p class="help-block">写一句个性签名或人生格言</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-Gender">性别</label>
+                                            <div>
+                                              <span style="margin-right:1em;">
+                                                <input type="radio" id="male" name="gender" value="1"{% if user.Gender > 0 %} checked {% endif %}/>
+                                              <label for="male"><span>男</span></label></span>
+                                              <span><input type="radio" id="female" name="gender" value="-1"{% if user.Gender < 0 %} checked {% endif %}/>
+                                              <label for="female"><span>女</span></label></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-School">学校</label>
+                                            <input id="ProfileForm-School" name="school" type="text" value="{{user.School}}" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-Age">年龄</label>
+                                            <input id="ProfileForm-Age" name="age" type="text" value="{{user.Age}}" class="form-control">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-Occupation">职业</label>
+                                            <input id="ProfileForm-Occupation" name="occupation" type="text" value="{{user.Occupation}}" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-Weight">体重</label>
+                                            <input id="ProfileForm-Weight" name="weight" type="text" value="{{user.Province}}" class="form-control">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-Height">身高</label>
+                                            <input id="ProfileForm-Height" name="height" type="text" value="{{user.Height}}" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-Weibo">微博</label>
+                                            <input id="ProfileForm-Weibo" name="weibo" type="text" value="{{user.Weibo}}" class="form-control">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-Weixin">微信</label>
+                                            <input id="ProfileForm-Weixin" name="weixin" type="text" value="{{user.Weixin}}" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-ZodiacSign">星座</label>
+                                            <input id="ProfileForm-ZodiacSign" name="zodiacsign" type="text" value="{{user.ZodiacSign}}" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-Postcode">邮编</label>
+                                            <input id="ProfileForm-Postcode" name="postcode" type="text" value="{{user.Postcode}}" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-Website">主页</label>
+                                            <input id="ProfileForm-Website" name="website" type="text" value="{{user.Website}}" class="form-control">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-Province">省份</label>
+                                            <input id="ProfileForm-Province" name="province" type="text" value="{{user.Province}}" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-Mobile">手机</label>
+                                            <input id="ProfileForm-Mobile" name="mobile" type="text" value="{{user.Mobile}}" class="form-control">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-Qq">QQ</label>
+                                            <input id="ProfileForm-Qq" name="qq" type="text" value="{{user.Qq}}" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-City">城市</label>
+                                            <input id="ProfileForm-City" name="city" type="text" value="{{user.City}}" class="form-control">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label" for="ProfileForm-Address">地址</label>
+                                            <input id="ProfileForm-Address" name="address" type="text" value="{{user.Address}}" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {% comment %}
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <label class="control-label" for="s2id_autogen1">首选语言</label>
+                                            <div class="select2-container form-control" id="s2id_ProfileForm-Lang">
+                                                <a href="javascript:void(0)" onclick="return false;" class="select2-choice" tabindex="-1">
+                                                    <span class="select2-chosen">简体中文</span> <abbr class="select2-search-choice-close"></abbr>
+                                                    <span class="select2-arrow"> <b></b>
+                                                    </span>
+                                                </a>
+                                                <input class="select2-focusser select2-offscreen" type="text" id="s2id_autogen1">
+                                                <div class="select2-drop select2-display-none select2-with-searchbox">
+                                                    <div class="select2-search">
+                                                        <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input"></div>
+                                                    <ul class="select2-results"></ul>
+                                                </div>
+                                            </div>
+                                            <select id="ProfileForm-Lang" name="Lang" class="form-control select2-offscreen" rel="select2" tabindex="-1">
+                                                %!!(string=
+                                                <option></option>
+                                                <option value="0">English</option>
+                                                <option value="1" selected="selected">简体中文</option>
+                                                )s(MISSING)
+                                            </select>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <h3 class="underline">社会化信息</h3>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-github-alt"></i>
+                                                </span>
+                                                <input id="ProfileForm-Github" name="Github" type="text" value="" class="form-control"></div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-weibo"></i>
+                                                </span>
+                                                <input id="ProfileForm-Weibo" name="Weibo" type="text" value="" class="form-control"></div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-linkedin"></i>
+                                                </span>
+                                                <input id="ProfileForm-Linkedin" name="Linkedin" type="text" value="" class="form-control"></div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-google-plus"></i>
+                                                </span>
+                                                <input id="ProfileForm-Google" name="Google" type="text" value="" class="form-control"></div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-twitter"></i>
+                                                </span>
+                                                <input id="ProfileForm-Twitter" name="Twitter" type="text" value="" class="form-control"></div>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="icon-facebook"></i>
+                                                </span>
+                                                <input id="ProfileForm-Facebook" name="Facebook" type="text" value="" class="form-control"></div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            {% endcomment %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="hidden" name="action" value="save-profile">
+                                            <button type="submit" class="btn btn-s-md btn-dark btn-rounded">
+                                                保存信息&nbsp;&nbsp;
+                                                <i class="icon-chevron-sign-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock mainland %}

@@ -1,0 +1,89 @@
+{% extends "../base.html" %}
+
+{% block title %}
+<title>{{username}} - {{SiteName}}</title>
+{% endblock title %}
+
+{% block mainland %}
+    <div id="main" class="container">
+
+        <div class="row">
+            <div id="content">
+                <div class="col-md-3">
+                    <div class="box">
+                        <ul class="nav nav-side">
+                            <li class="cell first">
+                                <h4 class="head"> <i class="icon icon-cogs"></i>
+                                    设置
+                                </h4>
+                            </li>
+                            <li>
+                                <a href="/settings/profile/">个人信息</a>
+                            </li>
+                            <li class="active">
+                                <a href="/settings/avatars/">我的头像</a>
+                            </li>
+                            <li>
+                                <a href="/settings/password/">修改密码</a>
+                            </li>
+                            <li class="cell last"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="box">
+                        <div class="cell first breadcrumb">
+                            <a href="/"> <i class="icon icon-home"></i>
+                            </a>
+                            <i class="fa fa-caret-right"></i>
+                            <a href="">我的头像</a>
+                        </div>
+                        <div class="cell last slim">
+                            <h3 class="underline">设置头像</h3>
+                            <form method="POST" action="/settings/avatars/" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-12 cell last slim">
+                                        {% include "../msgerr.html" %}
+                                        <div class="form-group">
+                                            <p style="margin-bottom:10px;"> <strong>支持jpeg/png/gif格式，大小500k以内，推荐格式200x200px。</strong>
+                                            </p>
+                                        </div>
+                                        <div class="form-group">
+                                            {% include "../qiniu4pluploader.html" %}
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="text-left">
+                                                <span class="btn-group">
+                                                    <button type="button" data-meta="image" data-placement="bottom" id="pickfiles" class="btn btn-primary"> <i class="icon-picture"></i> 上传头像</button>
+                                                    <button type="submit" class="btn btn-primary"> 保存设置&nbsp;&nbsp; <i class="icon-chevron-sign-right"></i> </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                            {% if user.Avatar %}
+                                                <img src="{{user.Avatar}}" style="width:200px;height:200px;">
+                                                {% if user.AvatarLarge %}
+                                                    <img src="{{user.AvatarLarge}}" style="width:100px;height:100px;">
+                                                {% endif %}
+                                                {% if user.AvatarMedium %}
+                                                    <img src="{{user.AvatarMedium}}" style="width:48px;height:48px;">
+                                                {% endif %}
+                                                {% if user.AvatarSmall %}
+                                                    <img src="{{user.AvatarSmall}}" style="width:32px;height:32px;">
+                                                {% endif %}
+                                            {% else %}
+                                                <img src="/img/d200.png" style="width:200px;height:200px;">
+                                                <img class="middle" src="/img/d100.png" style="width:100px;height:100px;">
+                                                <img src="/img/d48.png" style="width:48px;height:48px;">
+                                                <img src="/img/d32.png" class="middle">
+                                            {% endif %}
+                                </div>
+                            </div>
+                            </form>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock mainland %}
